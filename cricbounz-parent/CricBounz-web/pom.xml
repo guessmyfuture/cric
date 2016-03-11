@@ -25,6 +25,11 @@
 	<artifactId>javax.servlet-api</artifactId>
 	<version>3.1.0</version>
 </dependency>
+<dependency>
+<groupId>com.coeuz.cricbounz</groupId>
+  <artifactId>CricBounz-rest</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+</dependency>
   </dependencies>
   <build>
     <finalName>CricBounz-web</finalName>

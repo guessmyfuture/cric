@@ -5,5 +5,14 @@
     <artifactId>cricbounz-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
+  <groupId>com.coeuz.cricbounz</groupId>
   <artifactId>CricBounz-rest</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <dependencies>
+  <dependency>
+  <groupId>com.coeuz.cricbounz</groupId>
+  <artifactId>CricBounz-model</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  </dependency>
+  </dependencies>
 </project>
