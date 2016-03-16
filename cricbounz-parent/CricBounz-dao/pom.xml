@@ -5,6 +5,15 @@
     <artifactId>cricbounz-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
+  <groupId>com.coeuz.cricbounz</groupId>
   <artifactId>CricBounz-dao</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
   <name>CricBounz-dao</name>
+  <dependencies>
+  <dependency>
+  <groupId>com.coeuz.cricbounz</groupId>
+  <artifactId>CricBounz-model</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  </dependency>
+  </dependencies>
 </project>
