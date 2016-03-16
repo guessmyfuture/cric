@@ -9,10 +9,10 @@
 	<name>CricBounz_Parent</name>
 	<description>This is the parent Project</description>
 	<modules>
-		<module>CricBounz-web</module>
-		<module>CricBounz-rest</module>
-		<module>CricBounz-dao</module>
 		<module>CricBounz-model</module>
+		<module>CricBounz-dao</module>
+		<module>CricBounz-rest</module>
+		<module>CricBounz-web</module>
 	</modules>
 	<properties>
 		<java-version>1.8</java-version>
