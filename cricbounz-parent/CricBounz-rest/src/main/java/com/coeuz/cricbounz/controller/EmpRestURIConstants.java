@@ -1,7 +1,7 @@
 package com.coeuz.cricbounz.controller;
 
 public class EmpRestURIConstants {
-	 public static final String DUMMY_EMP = "/rest/emp/dummy";
+	 	public static final String DUMMY_EMP = "/rest/emp/dummy";
 	    public static final String GET_EMP = "/rest/emp/{id}";
 	    public static final String GET_ALL_EMP = "/rest/emps";
 	    public static final String CREATE_EMP = "/rest/emp/create";
