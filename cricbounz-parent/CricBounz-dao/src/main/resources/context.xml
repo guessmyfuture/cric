@@ -17,11 +17,7 @@
 
 	<bean id="sessionFactory" class="org.springframework.orm.hibernate4.LocalSessionFactoryBean">
 		<property name="dataSource" ref="hiberDataSource"/>
-		<property name="annotatedClasses">
-			<list>
-				<value>com.coeuz.cricbounz.model.Ground</value>
-			</list>
-		</property>
+		<property name="packagesToScan" value="com.coeuz.cricbounz.model"/>
 		<property name="hibernateProperties">
 			<props>
 				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
