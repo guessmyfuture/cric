@@ -1,0 +1,154 @@
+<div class="col-md-6" ng-controller="userCtrl">
+    <form class="form-horizontal" name="EditProfileForm" ng-submit="postEditUser()"  novalidate>
+        <fieldset style="background-color:#eddcdc;">
+            <!-- Form Name -->
+            <legend style="background-color:#ffebe1">Edit Profile</legend>
+            <div class="form-group">
+                <label class="control-label col-md-4">Name</label>
+                <div class="col-md-4 form-control-static">
+                    <b>Senthil Kumar</b>
+                </div>
+            </div>
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textinput">Profile Name</label> 
+
+                <div class="col-md-4">
+                    <input  name="pName" ng-model="pName" type="text" placeholder="Profile Name" class="form-control input-md" required="">
+                    <span style="color:red" ng-show="EditProfileForm.pName.$invalid && submitted">
+                        <span ng-show="EditProfileForm.pName.$error.required && submitted">Profile Name is required.</span>                      
+                    </span>
+                </div>    
+
+            </div>
+
+            <!-- File Button --> 
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="filebutton">Profile Picture</label>
+                <div class="col-md-4">
+                    <input  name="profilePicture"  ng-model="profilePicture"class="input-file" type="file">
+
+                </div> 
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textinput">E-mail</label>  
+                <div class="col-md-4">
+                    <input name="email" ng-model="email" type="email" placeholder="Enter Your E-mail" class="form-control input-md" required="">
+                    <span style="color:red" ng-show="EditProfileForm.email.$invalid && submitted">
+                        <span ng-show="EditProfileForm.email.$error.required && submitted">E-mail is required.</span>                                              
+                        <span ng-show="EditProfileForm.email.$invalid && !EditProfileForm.email.$error.required">Please enter a valid email address!</span>
+                    </span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textinput">Mobile Number</label>  
+                <div class="col-md-4">
+                    <input  name="mobileNumber" ng-model="mobileNumber" type="text" placeholder="Mobile Number" class="form-control input-md" required="">
+                    <span style="color:red" ng-show="EditProfileForm.mobileNumber.$invalid && submitted">
+                        <span ng-show="EditProfileForm.mobileNumber.$error.required && submitted">Mobile Number is required.</span>                      
+                    </span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textinput">D.O.B</label>  
+                <div class="col-md-4">
+                    <div class="datepicker input-group date" data-date-format="mm-dd-yyyy">
+                        <input class="form-control" type="text" readonly ng-model="dob" name="dob" required/>                      
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                     <span style="color:red" ng-show="EditProfileForm.dob.$invalid && submitted">
+                        <span ng-show="EditProfileForm.dob.$error.required && submitted">Dob is required.</span>                      
+                    </span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textinput">Area</label>  
+                <div class="col-md-4">
+                    <input id="textinput" name="area"  ng-model="area" type="text" placeholder="Area" class="form-control input-md" required="">
+                    <span style="color:red" ng-show="EditProfileForm.area.$invalid && submitted">
+                        <span ng-show="EditProfileForm.area.$error.required && submitted">Area is required.</span>                      
+                    </span>
+                </div>
+            </div>
+
+            <!-- Text input-->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textinput">City</label>  
+                <div class="col-md-4">
+                    <input id="textinput" name="city" ng-model="city"  type="text" placeholder="City" class="form-control input-md" required="">
+                    <span style="color:red" ng-show="EditProfileForm.city.$invalid && submitted">
+                        <span ng-show="EditProfileForm.city.$error.required && submitted">City is required.</span>                      
+                    </span>
+                </div>
+            </div>
+
+            <!-- Multiple Radios (inline) -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="radios">Batting Style</label>
+                <div class="col-md-4"> 
+                    <label class="radio-inline" for="radios-1">
+                        <input type="radio" name="battingHandStyle"  ng-model="battingStyle" ng-value="RH" ng-checked="true">
+                        Right Hand
+                    </label> 
+                    <label class="radio-inline" for="radios-2">
+                        <input type="radio" name="battingHandStyle" id="radios-2" value="12" ng-model="battingStyle" ng-value="LH" ng-click="countCheck()">
+                        Left Hand
+                    </label>                 
+                </div>
+            </div>
+
+            <!-- Multiple Radios (inline) -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="radios">Bowling Style</label>
+                <div class="col-md-4"> 
+                    <label class="radio-inline" for="radios-0">
+                        <input type="radio" name="bowlingHandStyle" ng-model="bowlingStyle" ng-value="RH" ng-checked="true">
+                        Right Hand
+                    </label> 
+                    <label class="radio-inline" for="radios-1">
+                        <input type="radio" name="bowlingHandStyle" ng-model="bowlingStyle" ng-value="LH">
+                        Left Hand
+                    </label>                  
+                </div>
+            </div>
+
+            <!-- Select Basic -->
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="selectbasic">Bowling Style</label>
+                <div class="col-md-4">
+                    <select id="selectbasic" name="bowlingSpeed" ng-model="bowlingSpeed" class="form-control">
+                        <option value="1">Fast</option>
+                        <option value="2">Medium</option>
+                        <option value="3">Spin</option>
+                    </select>
+                </div>
+            </div>
+            <div>
+            </div>
+            <!-- Button -->
+            <div class="form-group" style="margin-left:185px;">
+                <label class="col-md-3 control-label" for="singlebutton"></label>
+                <div class="col-md-4">
+                    <button  type="submit" name="singlebutton" class="btn btn-primary">Update</button>
+                </div>
+            </div>          
+        </fieldset>
+    </form>
+</div>
+<script type="text/javascript">
+    $(function () {
+        $(".datepicker").datepicker({
+            autoclose: true,
+            todayHighlight: true
+        }).datepicker('update', new Date());
+        ;
+    });
+</script>

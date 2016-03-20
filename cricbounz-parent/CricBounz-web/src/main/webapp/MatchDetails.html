@@ -1,0 +1,1379 @@
+<div class="col-md-6" ng-controller="scoreCtrl">
+    <h4>Match Details</h4>
+    <div class="row" style='background-color:#ffffff;'>
+        <div class="col-sm-6" > 
+            <div class="table-responsive">          
+                <table class="table table-striped text-danger bg-info" style="font-weight: bold;">
+                    <tr>
+                        <td align='justify'>
+                            Teams:                            
+                        </td>
+                        <td align='justify'>
+                            {{teama}} Vs {{teamb}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align='justify'>
+                            No of Overs :
+                        </td>
+                        <td align='justify'>
+                            {{noOfOvers}}
+                        </td >
+                    </tr>
+                    <tr>
+                        <td align='justify'>
+                            Toss Won: 
+                        </td>
+                        <td align='justify'>
+                            {{wonTossTeam}}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align='justify'>
+                            Batting First: 
+                        </td>
+                        <td align='justify'>
+                            {{battingFirstTeam}}
+                        </td>
+                    </tr>
+                </table>                
+            </div>
+        </div>
+        <div class="table-responsive">          
+            <table class="table table-striped text-danger bg-info" style="font-weight: bold;">
+                <tr>
+                    <td align='justify'>
+                        Venue:
+                    </td>
+                    <td align='justify'>
+                        Chennai
+                    </td>
+                </tr>
+                <tr>
+                    <td align='justify'>
+                        Date:
+                    </td>
+                    <td align='justify'>
+                        3 Mar 2016
+                    </td>
+                </tr>
+                <tr>
+                    <td align='justify'>
+                        Time:
+                    </td>
+                    <td align='justify'>
+                        6 PM
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <button class="btn btn-info btn-lg btn-success" data-toggle="modal" data-target="#playerModal"  ng-click="" ng-disabled="!startScore">Start Scoring</button>
+        </div>
+    </div>
+
+    <div class="row" ng-show="startPlay">
+        <div class="panel with-nav-tabs panel-primary" style='margin-top:15px;'>
+            <div class="panel-heading" style='border-color:#337ab7;background-color:#ffffff;'>
+                <ul class="nav nav-tabs navmen">
+                    <li class="active"><a href="#tab1primary" data-toggle="tab">Summary</a></li>
+                    <li><a href="#tab2primary" data-toggle="tab">First Innings</a></li>
+                    <li><a href="#tab3primary" data-toggle="tab">Second Innings</a></li>
+                </ul>
+            </div>
+            <div class="panel-body">
+                <div class="tab-content" id="team">
+                    <div class="tab-pane fade in active" id="tab1primary">
+                        <div class="row">
+                            <span class="uneditable-input">United Arab Emirates</span>
+                            <span class="uneditable-input" style='font-weight:bold'>81/9 (20/20 ov)</span><br>
+                            <span class="uneditable-input">India</span>
+                            <span class="uneditable-input" style='font-weight:bold'>82/1 (10.1/20 ov)</span><br>
+                            <span class="uneditable-input">India won by 9 wickets (with 59 balls remaining)</span>
+                            <div class="table-responsive">          
+                                <table class="table">
+                                    <thead style='font-weight:bold;'>                                       
+                                        <tr>
+                                            <td>Batsman</td>
+                                            <td>Runs</td>
+                                            <td>Balls</td>
+                                            <td>4s</td>
+                                            <td>6s</td>
+                                            <td>Strike Rate</td>
+                                        </tr>
+                                    </thead>                                    
+                                    <tr class="" style="background-color: #009688;color:#ffffff" title="current batsman" ng-show="bmStriker.name">
+                                        <td style="color:#11C1F3;font-weight: bold;"><span class="icon-bat"></span>{{bmStriker.name}}</td>
+                                        <td>{{bmStriker.runs}}</td>
+                                        <td>{{bmStriker.balls}}</td>
+                                        <td>{{bmStriker.four}}</td>
+                                        <td>{{bmStriker.six}}</td>
+                                        <td>{{bmStriker.strikeRate}}</td>
+                                    </tr> 
+                                    <tr class="bg-info">
+                                        <td>{{bmNonStriker.name}}</td>
+                                        <td>{{bmNonStriker.runs}}</td>
+                                        <td>{{bmNonStriker.balls}}</td>
+                                        <td>{{bmNonStriker.four}}</td>
+                                        <td>{{bmNonStriker.six}}</td>
+                                        <td>{{bmNonStriker.strikeRate}}</td>
+                                    </tr> 
+                                    <tr class="bg-success">
+                                        <td>Extras</td>
+                                        <td colspan="5">{{extraRun}}</td>
+                                    </tr>
+                                </table>
+                                <table class="table">
+                                    <thead style='font-weight:bold;'>
+                                    <td colspan="6">
+                                        <input ng-show="true" type="button" class="btn btn-lg btn-info pull-right"  data-toggle="modal" data-target="#bowlerModal" ng-click="loadBowlerList();" value="Add Bowler">
+                                    </td>
+                                    <tr>
+                                        <td>Bowler</td>
+                                        <td>Overs</td>
+                                        <td>Maiden</td>
+                                        <td>Runs</td>
+                                        <td>Wickets</td>
+                                        <td>Economy</td>
+                                    </tr>
+                                    </thead>
+                                    <tr  style="background-color: #009688;color:#ffffff" title="Current Bowler">
+                                        <td style="color:#11C1F3;font-weight: bold;">{{currentBowler.name}}</td>
+                                        <td>{{currentBowler.over}}</td>
+                                        <td>{{currentBowler.maiden}}</td>
+                                        <td>{{currentBowler.runs}}</td>
+                                        <td>{{currentBowler.wickets}}</td>
+                                        <td>{{currentBowler.economy}}</td>                                       
+                                    </tr> 
+                                    <tr class="bg-info" ng-show="nextBowler.name">
+                                        <td>{{nextBowler.name}}</td>
+                                        <td>{{nextBowler.over}}</td>
+                                        <td>{{nextBowler.maiden}}</td>
+                                        <td>{{nextBowler.runs}}</td>
+                                        <td>{{nextBowler.wickets}}</td>
+                                        <td>{{nextBowler.economy}}</td>                                       
+                                    </tr>   
+                                </table>
+                            </div>
+                        </div>
+
+                        <div class="row form-group" style='margin-left:85px;'>                            
+                            Runs :
+                            <div class="row  no-gutters">                             
+                                <div class="col-sm-1"  ng-repeat="sb in scoreBox">
+                                    <div class="row">
+                                        <div class="col-md-12" style="height:35px;">  
+                                            <div class="row">                                               
+                                                <div class="col-md-10">
+                                                    <!-- <span ng-show="sb.wideFlag" class="col-md-12" style='background-color:green;color:#FFFFFF;font-size:15px;border-radius: 50%;'>W</span>                              
+                                                     <span ng-show="sb.nbFlag" class="col-md-12" style='background-color:green;color:#FFFFFF;font-size:15px;border-radius: 50%;'>NB</span> -->
+                                                    <img src="images/umpire_signs/wide.png" ng-show="sb.wideFlag" class="img-circle" alt="Wide" title="Wide"/>
+                                                    <img src="images/umpire_signs/no_ball.png" ng-show="sb.nbFlag" class="img-circle" alt="NB" title="No Ball"/>
+                                                </div>                                               
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row" style="">
+                                        <div class="col-md-12">
+                                            <input type="text" ng-show="false" ng-model="sb.ballId" ng-init="sb.ballId = $index + 1">
+                                            <input type="text" ng-show="false" ng-model="sb.wideFlag" ng-init="sb.wideFlag = false">
+                                            <input type="text" ng-show="false" ng-model="sb.nbFlag" ng-init="sb.nbFlag = false">
+                                            <input type="text" ng-show="false" ng-model="sb.ldFlag" ng-init="sb.ldFlag = false">
+                                            <input type="text" ng-show="false" ng-model="sb.scoredByBatsMan" ng-init="sb.scoredByBatsMan = false">
+                                            <input type="text" ng-show="false" ng-model="sb.byes" ng-init="sb.byes = false">
+                                            <input type="text" ng-show="false" ng-model="sb.legByes" ng-init="sb.legByes = false">
+                                            <input type="text" ng-show="false" ng-model="sb.wicket" ng-init="sb.wicket = false">
+                                            <input type="text" ng-show="false" ng-model="sb.wicketType" ng-init="sb.wicketType = false">
+                                            <input type="text" ng-show="false" ng-model="sb.run" ng-init="sb.run = ''">
+                                            <input type="text" size="2" class="form-control" maxlength="1" valid-number ng-model="sb.run" ng-focus="$parent.currentIndex = $index">                             
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-show="false">
+                                {{scoreBox|| json}}
+                            </div>
+                        </div>
+
+                        <div class="row" style='margin-top:15px;'>
+                            <fieldset>
+                                <legend>Score Calculator</legend>
+                                <div class="row">
+                                    <div class="col-md-12" ng-show="false">
+                                        Legal ball Count <input type="text" ng-model="legalBallCount"><br>
+                                        Total ball Count <input type="text" ng-model="grandTotalBallCount"><br>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!--<div class="row" style='float:center;'> -->
+                                        <fieldset ng-disabled="isRunButton">
+                                            <span style='margin-left:20px;'>
+                                                <button type="button" class="btn btn-circle btn-lg zero" title="Dot" ng-click="run = 0;addRunToScoreBox(0)"><i>0</i></button>
+                                                <button type="button" class="btn btn-primary btn-circle btn-lg rou" ng-click="run = 1;addRunToScoreBox(1)"><i>1</i></button>
+                                                <button type="button" class="btn btn-success btn-circle btn-lg rou" ng-click="run = 2;addRunToScoreBox(2)"><i>2</i></button>
+                                                <button type="button" class="btn btn-info btn-circle btn-lg rou" ng-click="run = 3;addRunToScoreBox(3)"><i>3</i></button>                                      
+                                                <button type="button" class="btn btn-info btn-circle btn-lg rou" ng-click="run = 4;addRunToScoreBox(4)"><i>4</i></button>
+                                                <button type="button" class="btn btn-warning btn-circle btn-lg rou" ng-click="run = 5;addRunToScoreBox(5)"><i>5</i></button>
+                                                <button type="button" class="btn btn-success btn-circle btn-lg rou" ng-click="run = 6;addRunToScoreBox(6)"><i>6</i></button>                                           
+                                            </span>
+                                            <div class="row" style='margin-left:15px;margin-top:15px;'>
+                                                <form class="form-inline" role="form">
+                                                    <div class="form-group">
+                                                        <label class="sr-only" for="mtext">Manual Enter:</label>
+                                                        <input type="text" class="form-control" name="mtext" id="mtext">
+                                                    </div>
+                                                </form>                                      
+                                            </div>
+                                        </fieldset>
+                                    </div>
+                                </div>                                
+                                <div class="row">
+                                    <div class="col-md-4">                                         
+                                        <div class="col-md-12" style="padding:20px;padding-top:6px;padding-bottom:0px;">      
+                                            <button type="button" ng-disabled="isLegalDelivery" class="btn btn-primary btn-md center-block btn-block"  ng-click="ballType = 'LD';isByes = false;isLegByes = false;isScoredbyBatsman = false;isWicket = false;isDotBall = false;disableBallType(true);">Legal Delivery</button>
+                                        </div>
+                                        <div class="col-md-12" style="padding:20px;padding-top:6px;padding-bottom:0px;">      
+                                            <button type="button" ng-disabled="isWide" class="btn btn-primary btn-md center-block btn-block"  ng-click="ballType = 'WIDE';isByes = false;isLegByes = true;isScoredbyBatsman = true;isWicket = false;isDotBall = false;disableBallType(true);">Wide</button>
+                                        </div>
+                                        <div class="col-md-12" style="padding:20px;padding-top:6px;padding-bottom:0px;">      
+                                            <button type="button" ng-disabled="isNoBall" class="btn btn-primary btn-md center-block btn-block"  ng-click="ballType = 'NB';isByes = false;isLegByes = false;isScoredbyBatsman = false;isWicket = false;isDotBall = false;disableBallType(true);">No Ball</button> 
+                                        </div>                                        
+                                    </div>
+                                    <div class="col-md-4">
+                                        <fieldset>
+                                            <div class="col-md-12" style="padding:20px;padding-top:6px;padding-bottom:0px;">      
+                                                <button type="button" class="btn btn-primary btn-md center-block btn-block" ng-disabled="isDotBall"  ng-click="disableAllAction();addRunToScoreBox(0);">Dot Ball</button> 
+                                            </div>
+                                            <div class="col-md-12" style="padding:20px;padding-top:6px;padding-bottom:0px;">                                          
+                                                <button type="button" ng-disabled="isScoredbyBatsman" class="btn btn-primary btn-md btn-block center-block" ng-click="disableAllAction();enableScoreButton('SBB');">Scored by Batsman</button>
+                                            </div>
+                                            <div class="col-md-12" style="padding:20px;padding-top:6px;padding-bottom:0px;">                                           
+                                                <button type="button" ng-disabled="isByes" class="btn btn-primary btn-md btn-block center-block" ng-click="disableAllAction();enableScoreButton('BYES');">Byes</button>
+                                            </div>
+                                            <div class="col-md-12" style="padding:20px;padding-top:6px;padding-bottom:0px;">                                           
+                                                <button type="button" ng-disabled="isLegByes" class="btn btn-primary btn-md btn-block center-block" ng-click="disableAllAction();enableScoreButton('LBYES');">Leg Byes</button>
+                                            </div>                                            
+                                        </fieldset>
+                                    </div>                               
+                                    <div class="col-md-4" style="padding:5px;">
+                                        <div class="col-md-12" style="padding:20px;padding-top:6px;padding-bottom:0px;">                                           
+                                            <button type="button" class="btn btn-primary btn-md btn-block center-block" ng-click="isWicketBox = false;disableAllAction();">Wicket</button>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <fieldset ng-disabled="isWicketBox">
+                                                <div class="col-md-12" style="margin-top:7px;">  
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <select id="selectbasic" name="selectbasic" ng-model="wicketType" class="form-control">
+                                                                <option value="" selected disabled>Select Wicket Type</option>
+                                                                <option value="1">Bowled</option>
+                                                                <option value="2">Caught</option>
+                                                                <option value="3">Run Out</option>
+                                                                <option value="4">Stumping</option>
+                                                                <option value="5">Hit Wicket</option>
+                                                                <option value="6">Handled the ball</option>
+                                                                <option value="7">Timed out</option>
+                                                                <option value="8">Leg before wicket</option>
+                                                                <option value="9">Obstructing the field</option>                                        
+                                                                <option value="4">Retired Hurt</option>
+                                                                <option value="4">Retired out</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" ng-show="wicketType==3">
+                                                        <div class="col-md-12">
+                                                            <form class="form-horizontal" role="form">
+                                                                <div class="form-group">                                                                    
+                                                                    <div class="col-sm-12" style="margin-top: 5px;">
+                                                                        <input type="text" class="form-control" ng-model="roRun" 
+                                                                               id="inputEmail3" placeholder="Enter The Run"/>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="form-group">
+                                                                    <div class="col-sm-offset-2 col-sm-10">
+                                                                        <button type="submit" class="btn btn-success" data-dismiss="modal" ng-click="addRunToScoreBox(roRun)">Update Run</button>
+                                                                    </div>
+                                                                </div>
+                                                            </form>          
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-md-12">
+                                                            <button type="button" data-toggle="modal"  class="btn btn-danger btn-lg center-block" style='margin-top:15px;' ng-click="currentBatsmanOut();"><i>OUT</i></button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                    <div class="tab-pane fade" id="tab2primary">
+                        <div class="row">
+                            <div class="table-responsive">          
+                                <table class="table">
+                                    <thead>
+                                        <tr style='font-weight:bold;background-color:#02a2df;border-top:1px solid #07569E;'>
+                                            <td align='center'>
+                                                Unpredictable Guy's(innings)
+                                            </td>                                          
+                                            <!--<td align='center'>
+                                                Matches
+                                            </td >-->
+                                            <td align='center'>
+                                                Runs
+                                            </td >
+
+                                            <td align='center'>
+                                                Balls
+                                            </td>
+                                            <td align='center'>
+                                                4S
+                                            </td>
+                                            <td align='center'>
+                                                6S
+                                            </td>
+                                            <td align='center'>
+                                                SR
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr class=""  ng-repeat="obm in innings1BatsManList">
+                                            <td align='center'>{{obm.name}}</td>
+                                            <td align='center'>{{obm.runs}}</td>
+                                            <td align='center'>{{obm.balls}}</td>
+                                            <td align='center'>{{obm.four}}</td>
+                                            <td align='center'>{{obm.six}}</td>
+                                            <td align='center'>{{obm.strikeRate}}</td>
+                                        </tr> 
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-responsive">          
+                                <table class="table">
+                                    <thead>
+                                        <tr style='font-weight:bold;background-color:#02a2df'>
+                                            <td align='center'>
+                                                Bowlers
+                                            </td>
+                                            <td align='center'>
+
+                                            </td>
+
+                                            <td align='center'>
+                                                Overs
+                                            </td >
+                                            <td align='center'>
+                                                Maidens
+                                            </td >
+                                            <td align='center'>
+                                                runs
+                                            </td>
+                                            <td align='center'>
+                                                wickets
+                                            </td>
+                                            <td align='center'>
+                                                economy
+                                            </td>
+                                            <td align='center'>
+                                                0s
+                                            </td>
+                                            <td align='center'>
+                                                4s
+                                            </td>
+                                            <td align='center'>
+                                                6s
+                                            </td>
+                                            <td align='center'>
+
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <td align='center'>
+                                        <a href="#">Abhishek</a>
+                                    </td>
+                                    <td align='center'>
+
+                                    </td>
+                                    <td align='center'>
+                                        <b>10</b>
+                                    </td>
+                                    <td align='center'>
+                                        0
+                                    </td>
+                                    <td align='center'>
+                                        65
+                                    </td>
+                                    <td align='center'>
+                                        2
+                                    </td>
+                                    <td align='center'>
+                                        19.6
+                                    </td>
+                                    <td align='center'>
+                                        9
+                                    </td>
+                                    <td align='center'>
+                                        6
+                                    </td>
+                                    <td align='center'>
+                                        2
+                                    </td>
+                                    <td align='center'>
+                                        (1w)
+                                    </td>
+                                    </tr>
+
+                                    <tr>
+
+                                        <td align='center'>
+                                            <a href="#">Mari Muthu</a>
+                                        </td>
+                                        <td align='center'>
+
+                                        </td>
+                                        <td align='center'>
+                                            <b>10   </b>
+                                        </td>
+                                        <td align='center'>
+                                            2
+                                        </td>
+                                        <td align='center'>
+                                            39
+                                        </td>
+                                        <td align='center'>
+                                            3
+                                        </td>
+                                        <td align='center'>
+                                            16.5
+                                        </td>
+                                        <td align='center'>
+                                            9
+                                        </td>
+                                        <td align='center'>
+                                            2
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td align='center'>
+                                            <a href="#"> MuthuKumar</a>
+                                        </td>
+                                        <td align='center'>
+
+                                        </td>
+                                        <td align='center'>
+                                            <b>5</b>
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            30
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            25
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            3
+                                        </td>
+                                        <td align='center'>
+                                            1
+                                        </td>
+                                        <td align='center'>
+                                            (2w)
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td align='center'>
+                                            <a href="#">AbhiRock</a>
+                                        </td>
+                                        <td align='center'>
+
+                                        </td>
+                                        <td align='center'>
+                                            <b>2</b>
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            15
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            21.25
+                                        </td>
+                                        <td align='center'>
+                                            3
+                                        </td>
+                                        <td align='center'>
+                                            22
+                                        </td>
+                                        <td align='center'>
+                                            1
+                                        </td>
+                                        <td align='center'>
+                                            (1w)
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom:3px solid #D1EDFF;">
+
+                                        <td align='center'>
+                                            <a href="#">shek Gaur</a>
+                                        </td>
+                                        <td align='center'>
+
+                                        </td>
+                                        <td align='center'>
+                                            <b>1    </b>
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            5
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            29.59
+                                        </td>
+                                        <td align='center'>
+                                            1
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tab-pane fade" id="tab3primary">
+                        <div class="row">
+                            <div class="table-responsive">          
+                                <table class="table">
+                                    <thead>
+                                        <tr style='font-weight:bold;background-color:#02a2df;border-top:1px solid #07569E;'>
+                                            <td align='center'>
+                                                Unpredictable Guy's(innings)
+                                            </td>
+                                            <td align='center'>
+                                            </td>
+                                            <td align='center'>
+                                                Runs
+                                            </td >
+                                            <td align='center'>
+                                                Matches
+                                            </td >
+                                            <td align='center'>
+                                                Balls
+                                            </td>
+                                            <td align='center'>
+                                                4S
+                                            </td>
+                                            <td align='center'>
+                                                6S
+                                            </td>
+                                            <td align='center'>
+                                                SR
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td align='center'>
+                                                <a href="#">ChandruRam</a>
+                                            </td>
+                                            <td align='center'>
+                                                c †Dhoni b Nehra
+                                            </td>
+                                            <td align='center'>
+                                                <b>100</b>
+                                            </td>
+                                            <td align='center'>
+                                                5
+                                            </td>
+                                            <td align='center'>
+                                                35
+                                            </td>
+                                            <td align='center'>
+                                                4
+                                            </td>
+                                            <td align='center'>
+                                                0
+                                            </td>
+                                            <td align='center'>
+                                                85
+                                            </td>
+
+                                        </tr>
+                                        <tr>
+                                            <td align='center'>
+                                                <a href="#">BalaKumaran</a>
+                                            </td>
+                                            <td align='center'>
+                                                c Ashwin b Pandya
+                                            </td>
+                                            <td align='center'>
+                                                <b>150</b>
+                                            </td>
+                                            <td align='center'>
+                                                6
+                                            </td>
+                                            <td align='center'>
+                                                225
+                                            </td>
+                                            <td align='center'>
+                                                5
+                                            </td>
+                                            <td align='center'>
+                                                1
+                                            </td>
+                                            <td align='center'>
+                                                78
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align='center'>
+                                                <a href="#">Alfred David</a>
+                                            </td>
+                                            <td align='center'>
+                                                c Pandya b Bumrah
+                                            </td>
+                                            <td align='center'>
+                                                <b>250</b>
+                                            </td>
+                                            <td align='center'>
+                                                5
+                                            </td>
+                                            <td align='center'>
+                                                250
+                                            </td>
+                                            <td align='center'>
+                                                10
+                                            </td>
+                                            <td align='center'>
+                                                3
+                                            </td>
+                                            <td align='center'>
+                                                100
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align='center'>
+                                                <a href="#"> Syed Gaur</a>
+                                            </td>
+                                            <td align='center'>
+                                                c Pandya b Bumrah
+                                            </td>
+                                            <td align='center'>
+                                                <b>100</b>
+                                            </td>
+                                            <td align='center'>
+                                                10
+                                            </td>
+                                            <td align='center'>
+                                                200
+                                            </td>
+                                            <td align='center'>
+                                                1
+                                            </td>
+                                            <td align='center'>
+                                                0
+                                            </td>
+                                            <td align='center'>
+                                                25
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align='center'>
+                                                <a href="#">Abhishek</a>
+                                            </td>
+                                            <td align='center'>
+                                                c Pandya b Bumrah
+                                            </td>
+                                            <td align='center'>
+                                                <b>  500</b>
+                                            </td>
+                                            <td align='center'>
+                                                15
+                                            </td>
+                                            <td align='center'>
+                                                750
+                                            </td>
+                                            <td align='center'>
+                                                10
+                                            </td>
+                                            <td align='center'>
+                                                4
+                                            </td>
+                                            <td align='center'>
+                                                75.54
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align='center'>
+                                                <a href="#">Mari Muthu</a>
+                                            </td>
+                                            <td align='center'>
+                                                c Pandya b Bumrah
+                                            </td>
+                                            <td align='center'>
+                                                <b>200  </b>
+                                            </td>
+                                            <td align='center'>
+                                                18
+                                            </td>
+                                            <td align='center'>
+                                                300
+                                            </td>
+                                            <td align='center'>
+                                                2
+                                            </td>
+                                            <td align='center'>
+                                                0
+                                            </td>
+                                            <td align='center'>
+                                                19.43
+                                            </td>
+                                        </tr>
+
+                                        <tr>
+
+                                            <td align='center'>
+                                                <a href="#"> MuthuKumar</a>
+                                            </td>
+                                            <td align='center'>
+                                                c Pandya b Bumrah
+                                            </td>
+                                            <td align='center'>
+                                                <b>1500</b>
+                                            </td>
+                                            <td align='center'>
+                                                510
+                                            </td>
+                                            <td align='center'>
+                                                3000
+                                            </td>
+                                            <td align='center'>
+                                                43
+                                            </td>
+                                            <td align='center'>
+                                                13
+                                            </td>
+                                            <td align='center'>
+                                                67.89
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align='center'>
+                                                <a href="#">AbhiRock</a>
+                                            </td>
+                                            <td align='center'>
+                                                run out (Kohli/†Dhoni)
+                                            </td>
+                                            <td align='center'>
+                                                <b>2500</b>
+                                            </td>
+                                            <td align='center'>
+                                                89
+                                            </td>
+                                            <td align='center'>
+                                                4500
+                                            </td>
+                                            <td align='center'>
+                                                33
+                                            </td>
+                                            <td align='center'>
+                                                5
+                                            </td>
+                                            <td align='center'>
+                                                45.67
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align='center'>
+                                                <a href="#">shek Gaur</a>
+                                            </td>
+                                            <td align='center'>
+                                                not out
+                                            </td>
+                                            <td align='center'>
+                                                <b>500  </b>
+                                            </td>
+                                            <td align='center'>
+                                                40
+                                            </td>
+                                            <td align='center'>
+                                                650
+                                            </td>
+                                            <td align='center'>
+                                                22
+                                            </td>
+                                            <td align='center'>
+                                                2
+                                            </td>
+                                            <td align='center'>
+                                                43.0
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td align='center'>
+                                                Extras
+                                            </td>
+                                            <td align='center'>
+                                                (lb 5, w 4, nb 1)
+                                            </td>
+                                            <td align='center'>
+                                                <b>10   </b>
+                                            </td>
+                                            <td align='center'>
+
+                                            </td>
+                                            <td align='center'>
+
+                                            </td>
+                                            <td align='center'>
+
+                                            </td>
+                                            <td align='center'>
+
+                                            </td>
+                                            <td align='center'>
+
+                                            </td>
+                                        </tr>
+                                        <tr style="border-bottom:3px solid #D1EDFF;">
+
+                                            <td align='center'>
+                                                <b>Total</b>
+                                            </td>
+                                            <td align='center'>
+                                                (9 wickets; 20 overs; 92 mins)
+                                            </td>
+                                            <td align='center'>
+                                                <b>134</b>
+                                            </td>
+                                            <td align='center'>
+                                                (6.90 runs per over)
+                                            </td>
+                                            <td align='center'>
+
+                                            </td>
+                                            <td align='center'></td>
+
+                                            <td align='center'>
+
+                                            </td>
+                                            <td align='center'>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+
+
+
+                            <div class="table-responsive">          
+                                <table class="table">
+
+                                    <thead>
+                                        <tr style='font-weight:bold;background-color:#02a2df;'>
+                                            <td align='center'>
+                                                Bowlers
+                                            </td>
+                                            <td align='center'>
+
+                                            </td>
+
+                                            <td align='center'>
+                                                Overs
+                                            </td >
+                                            <td align='center'>
+                                                Maidens
+                                            </td >
+                                            <td align='center'>
+                                                runs
+                                            </td>
+                                            <td align='center'>
+                                                wickets
+                                            </td>
+                                            <td align='center'>
+                                                economy
+                                            </td>
+                                            <td align='center'>
+                                                0s
+                                            </td>
+                                            <td align='center'>
+                                                4s
+                                            </td>
+                                            <td align='center'>
+                                                6s
+                                            </td>
+                                            <td align='center'>
+
+                                            </td>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+
+                                    <td align='center'>
+                                        <a href="#">Abhishek</a>
+                                    </td>
+                                    <td align='center'>
+
+                                    </td>
+                                    <td align='center'>
+                                        <b>10</b>
+                                    </td>
+                                    <td align='center'>
+                                        0
+                                    </td>
+                                    <td align='center'>
+                                        65
+                                    </td>
+                                    <td align='center'>
+                                        2
+                                    </td>
+                                    <td align='center'>
+                                        19.6
+                                    </td>
+                                    <td align='center'>
+                                        9
+                                    </td>
+                                    <td align='center'>
+                                        6
+                                    </td>
+                                    <td align='center'>
+                                        2
+                                    </td>
+                                    <td align='center'>
+                                        (1w)
+                                    </td>
+                                    </tr>
+
+                                    <tr>
+
+                                        <td align='center'>
+                                            <a href="#">Mari Muthu</a>
+                                        </td>
+                                        <td align='center'>
+
+                                        </td>
+                                        <td align='center'>
+                                            <b>10   </b>
+                                        </td>
+                                        <td align='center'>
+                                            2
+                                        </td>
+                                        <td align='center'>
+                                            39
+                                        </td>
+                                        <td align='center'>
+                                            3
+                                        </td>
+                                        <td align='center'>
+                                            16.5
+                                        </td>
+                                        <td align='center'>
+                                            9
+                                        </td>
+                                        <td align='center'>
+                                            2
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td align='center'>
+                                            <a href="#">MuthuKumar</a>
+                                        </td>
+                                        <td align='center'>
+
+                                        </td>
+                                        <td align='center'>
+                                            <b>5</b>
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            30
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            25
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            3
+                                        </td>
+                                        <td align='center'>
+                                            1
+                                        </td>
+                                        <td align='center'>
+                                            (2w)
+                                        </td>
+                                    </tr>
+                                    <tr>
+
+                                        <td align='center'>
+                                            <a href="#">AbhiRock</a>
+                                        </td>
+                                        <td align='center'>
+
+                                        </td>
+                                        <td align='center'>
+                                            <b>2</b>
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            15
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            21.25
+                                        </td>
+                                        <td align='center'>
+                                            3
+                                        </td>
+                                        <td align='center'>
+                                            22
+                                        </td>
+                                        <td align='center'>
+                                            1
+                                        </td>
+                                        <td align='center'>
+                                            (1w)
+                                        </td>
+                                    </tr>
+                                    <tr style="border-bottom:3px solid #D1EDFF;">
+
+                                        <td align='center'>
+                                            <a href="#">shek Gaur</a>
+                                        </td>
+                                        <td align='center'>
+
+                                        </td>
+                                        <td align='center'>
+                                            <b>1    </b>
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            5
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            29.59
+                                        </td>
+                                        <td align='center'>
+                                            1
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                            0
+                                        </td>
+                                        <td align='center'>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+
+                                </table>
+                            </div>
+                        </div> 
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--Toss Winner Modal -->
+    <div id="tossModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{teama}} vs {{teamb}}</h4>
+                </div>
+                <div class="modal-body bg-success">
+                    <div class="row" style="padding-top:12px;">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">No Of Overs</label>
+                            <div class="col-md-5">
+                                <input type="text" valid-number ng-model="noOfOvers" maxlength="3" class="form-control" name="overs" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="padding-top:30px;">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Who Won The Toss?</label>
+                            <div class="col-md-5">
+                                <select class="form-control" name="size" ng-model="team" ng-change="wonTossTeam = team">
+                                    <option value="{{teama}}">{{teama}}</option>
+                                    <option value="{{teamb}}">{{teamb}}</option>                                   
+                                </select>                               
+                            </div>
+                        </div>                      
+                    </div>
+                    <div class="row" style="padding-top:30px;"> 
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Batting First</label>
+                            <div class="col-md-5">
+                                <select class="form-control" name="size" ng-model="battingFirst" ng-change="battingFirstTeam = battingFirst">
+                                    <option value="{{teama}}">{{teama}}</option>
+                                    <option value="{{teamb}}">{{teamb}}</option>                                   
+                                </select>                               
+                            </div>
+                        </div>         
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="startScore = true">Start Playing</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--End Toss Winner Modal -->
+
+    <!--Choose Player Modal -->
+    <div id="playerModal" class="modal fade" role="dialog"  ng-controller="loadPlayersCtrl">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">{{teama}} vs {{teamb}}</h4>
+                </div>
+                <div class="modal-body bg-success">
+                    <div class="row" style="padding-top:12px;">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Batsman-1 (Striker)</label>
+                            <div class="col-md-5">
+                                <div custom-select="t as t.name for t in batsmanList | filter: { name: $searchTerm }" ng-model="$parent.bmStriker">
+                                    <div class="pull-left" style="width: 40px;">
+                                        <img ng-src="{{t.playerImageUrl}}" style="width: 40px;height:40px;" />                   
+                                    </div>
+                                    <div class="pull-left" style='padding-left: 10px;'>
+                                        <strong>{{ t.name}}</strong><br />
+                                        <span>{{ t.role}}</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>
+                                <div ng-show="false">
+                                    {{$parent.bmStriker| json}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" style="padding-top:30px;">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Batsman-2 (Non-Striker)</label>
+                            <div class="col-md-5">
+                                <div custom-select="t as t.name for t in batsmanList | filter: { name: $searchTerm }" ng-model="$parent.bmNonStriker">
+                                    <div class="pull-left" style="width: 40px">
+                                        <img ng-src="{{t.playerImageUrl}}" style="width: 30px" />                   
+                                    </div>
+                                    <div class="pull-left">
+                                        <strong>{{ t.name}}</strong><br />
+                                        <span>{{ t.role}}</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div>  
+                                <div class='col-md-12 bg-danger text-danger' style="margin-top:5px;" ng-show='$parent.bmNonStriker["id"] == $parent.bmStriker["id"]'>
+                                    You Should Choose Different player                                   
+                                </div>
+                                <div ng-show="false">
+                                    {{$parent.bmNonStriker| json}}
+                                </div>
+                            </div>
+                        </div>                      
+                    </div>
+                    <div class="row" style="padding-top:30px;">
+                        <div class="form-group">
+                            <label class="col-md-4 control-label">Choose Bowler</label>
+                            <div class="col-md-5">
+                                <div custom-select="t as t.name for t in bowlerList | filter: { name: $searchTerm }" ng-model="$parent.currentBowler">
+                                    <div class="pull-left" style="width: 40px">
+                                        <img ng-src="{{t.playerImageUrl}}" style="width: 30px" />                   
+                                    </div>
+                                    <div class="pull-left">
+                                        <strong>{{ t.name}}</strong><br />
+                                        <span>{{ t.role}}</span>
+                                    </div>
+                                    <div class="clearfix"></div>
+                                </div> 
+                                <div ng-show="false">
+                                    {{$parent.bowlerFirst| json}}
+                                </div>
+                            </div>                           
+                        </div>                      
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-success" data-dismiss="modal" ng-disabled='$parent.bmNonStriker["id"] == $parent.bmStriker["id"]'  ng-click="$parent.startPlay = true">Start Playing</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <!--End Choose Player Modal -->
+
+    <!--Batsman Modal -->
+    <modal title="Batsman List" visible="batsmanModal">
+        <div class="row">
+            <div class="col-md-6" style="margin-top:5px;" ng-repeat="bl in batsmanList">                              
+                <div class="col-md-4">                                  
+                    <img src="{{bl.playerImageUrl}}" class="img img-thumbnail"  style="height:80px;" alt=""/>                               
+                </div>
+                <div class="col-md-8">
+                    <table class="table">
+                        <tr>
+                            <td>Name:</td>
+                            <td>{{bl.name}}</td>
+                        </tr>
+                        <tr>
+                            <td>Role:</td>
+                            <td>{{bl.role}}</td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <button class="btn btn-xs btn-success" ng-disabled="isPreventChoose" data-dismiss="modal" data-target="#batsmanModal" ng-click="isPreventChoose = true;addCurrentBatsman($index, bl.id);">Add as Striker</button>
+                            </td>                                        
+                        </tr>
+                    </table>
+                </div>                          
+            </div>                      
+        </div>                    
+</div>
+</modal>
+<!--End BatsMan Modal -->
+<!--Bowler Modal -->
+<div id="bowlerModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Bowler List</h4>
+            </div>
+            <div class="modal-body"  style="max-height: calc(100vh - 210px);overflow-y: auto;">                    
+                <div class="row">
+                    <div class="col-md-6" style="margin-top:5px;" ng-repeat="bowl in bowlerList">                              
+                        <div class="col-md-6">                                  
+                            <img src="{{bowl.playerImageUrl}}" class="img img-thumbnail"  style="height:80px;" alt=""/>                               
+                        </div>
+                        <div class="col-md-6">
+                            <table>
+                                <tr>
+                                    <td>Name:</td>
+                                    <td>{{bowl.name}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Role:</td>
+                                    <td>{{bowl.role}}</td>
+                                </tr>
+                                <tr ng-show="false">
+                                    <td colspan="2">{{bowl| json}}</td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <button type="button" class="btn btn-xs btn-success" data-dismiss="modal"  ng-click="addCurrentBowler($index, bowl.id);">Add Current Bowler</button>                                            
+                                    </td>                                        
+                                </tr>
+                            </table>
+                        </div>                          
+                    </div>                      
+                </div>                    
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+<!--End Bowler Modal -->
+<!--Run Out Modal -->
+<modal title="Runout form" visible="runOutModal">
+    <div class="row">
+        <div class="col-md-12" style="margin-top:5px;">                              
+            <form class="form-horizontal" role="form">
+                <div class="form-group">
+                    <label  class="col-sm-5 control-label"
+                            for="inputEmail3">Enter The Run</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control" ng-model="roRun" 
+                               id="inputEmail3" placeholder="run"/>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                        <button type="submit" class="btn btn-success" data-dismiss="modal" ng-click="addRunToScoreBox(roRun)">Update Run</button>
+                    </div>
+                </div>
+            </form>           
+        </div>                      
+    </div>                    
+</modal>       
+<!--End Run Out Modal-->    
+</div>
+<script>
+    $(document).ready(function () {
+        $('#tossModal').modal('show');
+    });
+</script>
+
+

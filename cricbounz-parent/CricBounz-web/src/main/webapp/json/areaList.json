@@ -1,0 +1,27 @@
+[
+    {
+        "cityId": "1",
+        "areaId": "1",
+        "area": "saidapet"
+    },
+    {
+        "cityId": "1",
+        "areaId": "2",
+        "area": "Medavakkam"
+    },
+    {
+        "cityId": "1",
+        "areaId": "3",
+        "area": "T.Nagar"
+    },
+    {
+        "cityId": "2",
+        "areaId": "4",
+        "area": "Thirumangalam"
+    },
+    {
+        "cityId": "2",
+        "areaId": "5",
+        "area": "mattuthvani"
+    }
+]

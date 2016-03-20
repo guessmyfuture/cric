@@ -1,0 +1,129 @@
+<div class='col-md-6' ng-controller="ballTypeCtrl">
+    <form class="form-horizontal" name="touranamentForm" ng-controller="CreateNewTourmentCtrl" novalidate>
+        <fieldset>
+            <legend> Create Tournament</legend>
+
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textinput">Name of Tournament</label>  
+                <div class="col-md-4">
+                    <input id="textinput" name="tournament" ng-model="tournament" placeholder="Name of Tournament" class="form-control input-md" required="" type="text">
+                    <span style="color:red" ng-show="touranamentForm.tournament.$invalid && submitted">
+                        <span ng-show="touranamentForm.tournament.$error.required && submitted">Tournament Is Required.</span>                                
+                    </span>   
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textinput">City</label>  
+                <div class="col-md-4">
+                    <input id="textinput" name="City" ng-model="city" placeholder="City" class="form-control input-md" required="" type="text">
+                    <span style="color:red" ng-show="touranamentForm.City.$invalid && submitted">
+                        <span ng-show="touranamentForm.City.$error.required && submitted">City Is Required.</span>                                
+                    </span>   
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textinput">Area</label>  
+                <div class="col-md-4">
+                    <input id="textinput" name="area" ng-model="area" placeholder="Area" class="form-control input-md" required="" type="text">
+                    <span style="color:red" ng-show="touranamentForm.area.$invalid && submitted">
+                        <span ng-show="touranamentForm.area.$error.required && submitted">Area Is Required.</span>                                
+                    </span>   
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textinput">Contact Details 1</label>  
+                <div class="col-md-4">
+                    <input id="Contact1" name="contact1" valid-number maxlength="12" ng-model="contact1" placeholder="Contact Details 1" class="form-control input-md" required="" type="text">
+                    <span style="color:red" ng-show="touranamentForm.contact1.$invalid && submitted">
+                        <span ng-show="touranamentForm.contact1.$error.required && submitted">Contact1 Is Required.</span>                                
+                    </span> 
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" ng-model="contact2" for="textinput">Contact Details 2</label>  
+                <div class="col-md-4">
+                    <input id="textinput" name="contact2" maxlength="12" valid-number ng-model="contact2" placeholder="Contact Details 2" class="form-control input-md" required="" type="text">
+                    <span style="color:red" ng-show="touranamentForm.contact2.$invalid && submitted">
+                        <span ng-show="touranamentForm.contact2.$error.required && submitted">Contact2 Is Required.</span>                                
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="radios">Ball Type</label>
+                <div class="col-md-4"> 
+                    <select name="selectBallId" ng-model="selectBallId"
+                            data-ng-options="a.ballId as a.ballType  for a in ballTypes" class="form-control"> 
+                        <option value="" ng-selected="selected">Select Ball Type</option> 
+                    </select>
+                    <span ng-show="touranamentForm.selectBallId.$error.required">Select Ball Type</span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="regStartDate">Registration Start Date</label> 
+                <div class="col-md-4">                    
+                    <div class="input-group date" data-date-format="mm-dd-yyyy" date-picker>
+                        <input class="form-control" type="text" value="" readonly id="regStartDate" name="regStartDate" ng-model="regStartDate" required=""/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>                   
+                    <span style="color:red" ng-show="touranamentForm.regStartDate.$invalid && submitted">
+                        <span ng-show="touranamentForm.regStartDate.$error.required && submitted">Start Date Is Required.</span>                                
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="regEndDate">Registration End  Date</label>  
+                <div class="col-md-4">                    
+                    <div class="input-group date" data-date-format="mm-dd-yyyy" date-picker>
+                        <input class="form-control" type="text" value="" readonly id="regEndDate" name="regEndDate" ng-model="regEndDate" required=""/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>  
+                    <span style="color:red" ng-show="touranamentForm.regEndDate.$invalid && submitted">
+                        <span ng-show="touranamentForm.regEndDate.$error.required && submitted">End Date Is Required.</span>                                
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="trmStartDate">Tournament Start Date</label>  
+                <div class="col-md-4">                    
+                    <div class="input-group date" data-date-format="mm-dd-yyyy" date-picker>
+                        <input class="form-control" type="text" value="" readonly id="trmStartDate" name="trmStartDate" ng-model="trmStartDate" required=""/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>  
+                    <span style="color:red" ng-show="touranamentForm.trmStartDate.$invalid && submitted">
+                        <span ng-show="touranamentForm.trmStartDate.$error.required && submitted">Start Date Is Required.</span>                                
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="trmEndDate">Tournament End Date</label>  
+                <div class="col-md-4">                    
+                    <div class="input-group date" data-date-format="mm-dd-yyyy" date-picker>
+                        <input class="form-control" type="text" value="" readonly id="trmEndDate" name="trmEndDate" ng-model="trmEndDate" required=""/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>  
+                    <span style="color:red" ng-show="touranamentForm.trmEndDate.$invalid && submitted">
+                        <span ng-show="touranamentForm.trmEndDate.$error.required && submitted">End Date Is Required.</span>                                
+                    </span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textarea" >Winner Prize Details</label>
+                <div class="col-md-5">                     
+                    <textarea class="form-control" id="winPrizeDetails"  name="winPrizeDetails" ng-model="winPrizeDetails"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="textarea">Runner Prize Details</label>
+                <div class="col-md-5">                     
+                    <textarea class="form-control" id="runPrizeDetails"  name="runPrizeDetails" ng-model="runPrizeDetails"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-4 control-label" for="singlebutton"></label>
+                <div class="col-md-4">
+                    <button  type="submit" name="singlebutton" class="btn btn-primary" ng-click="postNewTournament();submitted = true">Create Tournament</button>
+                </div>
+            </div>
+        </fieldset>
+    </form>
+</div>

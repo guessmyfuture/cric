@@ -1,0 +1,116 @@
+<div class='col-md-6' ng-controller="ballTypeCtrl">
+    <form class="form-horizontal" name="groundForm" novalidate="" ng-controller="BookGroundCtrl">   
+        <fieldset>
+            <legend>Book a Ground</legend>
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-md-1 control-label" for="textinput">City</label>  
+                    <div class="col-md-4" ng-controller="loadCity">
+                        <input name="city" autocomplete="off" list="cityList" ng-model="city" ng-blur="loadArea(city)" placeholder="City" class="form-control input-md" required="" type="text">
+                        <datalist id="cityList"> 
+                            <option ng-repeat="cl in cityList" value="{{cl.cityName}}">{{cl.cityName}}</option>
+                        </datalist>
+                        <span style="color:red" ng-show="groundForm.city.$invalid && !groundForm.city.$pristine">
+                            <span ng-show="groundForm.city.$error.required">City is required.</span>                                
+                        </span>    
+
+                    </div>
+                    <label class="col-md-1 control-label" for="textinput">Area</label>  
+                    <div class="col-md-4" ng-controller="loadArea">
+                        <input name="area" ng-model="area" list="areaList" placeholder="Area" autocomplete="off" class="form-control input-md" required="" type="text">
+                        <datalist id="areaList"> 
+                            <option ng-repeat="cl in areaList" value="{{cl.area}}">                           
+                        </datalist>
+                        <span style="color:red" ng-show="groundForm.area.$invalid && !groundForm.area.$pristine">
+                            <span ng-show="groundForm.area.$error.required">Area is required.</span>                                
+                        </span>   
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-md-1 control-label" for="textinput">Ground</label>  
+                    <div class="col-md-4" ng-controller="loadGrounds">
+                        <input name="ground" ng-model="ground" list='grounds' placeholder="Ground" class="form-control input-md" required="" type="text">
+                        <datalist id="grounds"> 
+                            <option ng-repeat="ground in grounds" value="{{ground.groundName}}">                           
+                        </datalist>
+                        <span style="color:red" ng-show="groundForm.ground.$invalid && !groundForm.ground.$pristine">
+                            <span ng-show="groundForm.ground.$error.required">Ground is required.</span>                                
+                        </span>   
+                    </div>
+                    <label class="col-md-1 control-label" for="textinput">Date</label>  
+                    <div class="col-md-4">
+                        <div class="input-group date" data-date-format="mm-dd-yyyy" date-picker>
+                            <input class="form-control" type="text" readonly name="date" ng-model="date"/>
+                            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                        </div>  
+                        <span style="color:red" ng-show="groundForm.date.$invalid && !groundForm.date.$pristine">
+                            <span ng-show="groundForm.date.$error.required">Date is required.</span>                                
+                        </span>   
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group">
+                    <label class="col-md-3 control-label" for="textinput">Select Ball Type</label>  
+                    <div class="col-md-6">
+                        <div class="col-md-12 center-block">
+                            <select name='selectBallId' ng-model="selectBallId"
+                                    data-ng-options="a.ballId as a.ballType  for a in ballTypes" class="form-control">                
+                                <option value="" ng-selected="selected">Select Ball Type</option> 
+                            </select>
+                            <span ng-show="groundForm.selectBallId.$error.required">Select Ball Type</span>
+                        </div>                             
+                    </div>
+                    <div class="form-group" ng-show="selectBallId == 1 || selectBallId == 2">                     
+                        <label class="col-md-4 control-label" for="radios">Pitch Type</label>
+                        <div class="col-md-4"> 
+                            <label class="radio-inline" for="radios-0">
+                                <input name="radios" id="radios-0" value="1" checked="checked" type="radio">
+                                Turf
+                            </label> 
+                            <label class="radio-inline" for="radios-1">
+                                <input name="radios" id="radios-1" value="2" type="radio">
+                                Mat
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+        <div class="row">
+            <fieldset>
+                <legend>Slot Availability</legend>
+                <div class="row">
+                    <div class="col-md-3 time">
+                        <img src="images/2.png" width="100" height="100" border="0" alt=""/>
+                        Time <a href="">6 to 9</a>
+                    </div>
+                    <div class="col-md-3 time">
+                        <img src="images/3.png" width="100" height="100" border="0" alt="">
+                        Time <a href="">9.30 to 12.30</a>
+                    </div>
+                    <div class="col-md-3 time">
+                        <img src="images/2.png" width="100" height="100" border="0" alt="">
+                        Time <a href="">1 to 4</a>
+                    </div>
+                    <div class="col-md-3 time">
+                        <img src="images/3.png" width="100" height="100" border="0" alt="">
+                        Time <a href="">4 to 7</a>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="row" style="padding-top:15px;">
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="singlebutton"></label>
+                    <div class="col-md-4 center-block">
+                        <button id="singlebutton" name="singlebutton" class="btn btn-primary center-block" ng-click="postBookGround();">
+                            Book Ground
+                        </button>
+                    </div>  
+                </div>
+            </div>
+    </form>
+</div>

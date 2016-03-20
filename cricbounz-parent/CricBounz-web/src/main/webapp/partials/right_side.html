@@ -1,0 +1,18 @@
+ <div class="col-md-3" id="content"> 
+     <aside class="col-md-12">
+            <div class="panel panel-default" style="background-color: #e9eaed;">
+                    <div class="panel-heading">Trending On Cricbounz</div>
+                    <div class="panel-body">
+                    Trending Lists
+                    </div>
+            </div>
+            <div class="panel panel-default" style="background-color: #e9eaed;">
+                    <div class="panel-heading" >Last 10 Activity Notifications</div>
+                    <div ng-controller="TodoCtrl" style="padding: 10px;">
+                        <div ng-repeat='activity in activities' style="padding-top: 15px;">
+                            <a href="#">{{activity.activitytext}}</a>
+                        </div>
+                    </div> 
+            </div>
+      </aside>  
+</div>

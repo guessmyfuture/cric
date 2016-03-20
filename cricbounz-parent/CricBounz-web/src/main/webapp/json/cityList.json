@@ -1,0 +1,22 @@
+[
+    {
+        "cityId": "1",
+        "cityName": "Chennai"
+    },
+    {
+        "cityId": "2",
+        "cityName": "Madurai"
+    },
+    {
+        "cityId": "3",
+        "cityName": "Coimbatore"
+    },
+    {
+        "cityId": "4",
+        "cityName": "bangalore"
+    },
+    {
+        "cityId": "5",
+        "cityName": "Tiruchi"
+    }
+]

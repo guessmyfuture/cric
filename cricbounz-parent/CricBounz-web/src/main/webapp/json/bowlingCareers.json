@@ -1,0 +1,67 @@
+[
+{
+"ballType":"Red Cricket Ball",
+"matches":"20",
+"innings":"20",
+"balls":"55",
+"runs":"388",
+"wickets":"22",
+"bf":"230",
+"average":"55",
+"economy":"77",
+"strikeRate":"79",
+"wickets":"6"
+},
+{
+"ballType":"White Cricket Ball",
+"matches":"20",
+"innings":"20",
+"balls":"55",
+"runs":"388",
+"wickets":"22",
+"bf":"230",
+"average":"55",
+"economy":"77",
+"strikeRate":"79",
+"wickets":"6"
+},
+{
+"ballType":"Red Cosco Ball",
+"matches":"20",
+"innings":"20",
+"balls":"55",
+"runs":"388",
+"wickets":"22",
+"bf":"230",
+"average":"55",
+"economy":"77",
+"strikeRate":"79",
+"wickets":"6"
+},
+{
+"ballType":"Yellow Cosco Ball",
+"matches":"20",
+"innings":"20",
+"balls":"55",
+"runs":"388",
+"wickets":"22",
+"bf":"230",
+"average":"55",
+"economy":"77",
+"strikeRate":"79",
+"wickets":"6"
+},
+{
+"ballType":"Rubber Ball",
+"matches":"20",
+"innings":"20",
+"balls":"55",
+"runs":"388",
+"wickets":"22",
+"bf":"230",
+"average":"55",
+"economy":"77",
+"strikeRate":"79",
+"wickets":"6"
+}
+]

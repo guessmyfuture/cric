@@ -1,0 +1,115 @@
+    {
+        "teamId": "2000",
+        "teamName": "RPS Team",
+        "teamImageUrl":"images/1.jpg",
+        "role": "All Rounder",
+        "average": "55",
+        "strikeRate": "97",
+        "teamMembers":
+                [
+                    {
+                        "userId": "1000",
+                        "name": "Senthil kumar",
+                        "userImageUrl":"images/1.jpg",
+                        "role": "All Rounder",
+                        "average": "55",
+                        "strikeRate": "97"
+                    },
+                    {
+                        "userId": "2000",
+                        "name": "Rajesh Kumar",
+                        "userImageUrl":"images/1.jpg",
+                        "role": "Batsman",
+                        "average": "53",
+                        "strikeRate": "98.2"
+                    },
+                    {
+                        "userId": "3000",
+                        "name": "Anand Babu",
+                        "userImageUrl":"images/1.jpg",
+                        "role": "Batsman",
+                        "average": "56",
+                        "strikeRate": "97"
+                    },
+                    {
+                        "userId": "1003",
+                        "name": "Ram kumar",
+                        "userImageUrl":"images/1.jpg",
+                        "role": "Batsman ",
+                        "average": "55",
+                        "strikeRate": "97"
+                    },
+                    {
+                        "userId": "1004",
+                        "name": "MariMuthu",
+                        "userImageUrl":"images/1.jpg",
+                        "role": "All Rounder",
+                        "average": "55",
+                        "strikeRate": "97"
+                    },
+                    {
+                        "userId": "1005",
+                        "name": "Kaviraj",
+                        "userImageUrl":"images/1.jpg",
+                        "role": "Batsman",
+                        "average": "55",
+                        "strikeRate": "97"
+                    },
+                    {
+                        "userId": "1006",
+                        "name": "Murugan",
+                        "userImageUrl":"images/1.jpg",
+                        "role": "All Rounder",
+                        "average": "55",
+                        "strikeRate": "97"
+                    },
+                    {
+                        "userId": "1007",
+                        "name": "Jai",
+                        "userImageUrl":"images/1.jpg",
+                        "role": "Bowler",
+                        "average": "20",
+                        "strikeRate": "21"
+                    },
+                    {
+                        "userId": "1008",
+                        "name": "Vijay",
+                        "userImageUrl":"images/1.jpg",
+                        "role": "Batsman",
+                        "average": "55",
+                        "strikeRate": "97"
+                    },
+                    {
+                        "userId": "1009",
+                        "name": "Raghu",
+                        "userImageUrl":"images/1.jpg",
+                        "role": "Batsman",
+                        "average": "45",
+                        "strikeRate": "80"
+                    },
+                    {
+                        "userId": "1010",
+                        "name": "KalaiRajan",
+                        "userImageUrl":"images/1.jpg",
+                        "role": "Bowler",
+                        "average": "19",
+                        "strikeRate": "21"
+                    },
+                    {
+                        "userId": "1011",
+                        "name": "Ragavan",
+                        "userImageUrl":"images/1.jpg",
+                        "role": "Batsman",
+                        "average": "55",
+                        "strikeRate": "97"
+                    },
+                    {
+                        "userId": "1013",
+                        "name": "Mathi",
+                        "userImageUrl":"images/1.jpg",
+                        "role": "Bowler",
+                        "average": "18",
+                        "strikeRate": "16"
+                    }
+                ]
+    }

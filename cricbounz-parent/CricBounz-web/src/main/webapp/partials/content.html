@@ -1,0 +1,143 @@
+<!--Column middle-->
+<div class="col-md-6" id="content" style='border:0px solid green;'>
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <div class="panel panel-login">
+                <div class="panel-heading">
+                    <div class="row" >
+                        <div class="col-xs-6">
+                            <a href="#" class="active" id="box1-link">Upload Status</a>
+                        </div>
+                        <div class="col-xs-6">
+                            <a href="#" id="box2-link">Upload Photo</a>
+                        </div>
+                    </div>						
+                </div>
+                <div class="panel-body1">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div id="box1" style="display: block;padding:0px;">
+                                <div class="row">
+                                    <div class='col-md-12' style='border-top:0px solid red;'>
+                                        <textarea class="form-control noresize responsive-input"  style='resize:none;border-top:1px solid blue;' rows='2' placeholder="What's On Your Mind?"></textarea>            
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class='col-md-12' style="padding:10px;padding-right:30px;">
+                                        <input type='button' class="pull-right btn btn-success" value='Post'/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="box2" style="display: none;"> 
+                                <div>
+                                    <input type="file">
+                                </div>                                      
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+    <div class="row" ng-controller="LazyLoadController">                 
+        <div  infinite-scroll="loadItems()" infinite-scroll-distance="10">                 
+            <div  ng-repeat="post in postedData">
+                <div class="col-md-12" style="background-color: #d6e9c6;margin-top: 10px;padding: 0px;">   
+                    <div class="row" style="margin-top: 10px;">
+                        <div class="col-md-2">
+                            <img src='{{post.postedPicture}}' class="img-responsive" style='height:40px;width:40px;padding: 5px;'>
+                        </div>
+                        <div class="col-md-10">
+                            <div class="row" style="color:blue;font-size:12px;">
+                                <div class="col-md-12">
+                                    Posted By:{{post.name}}
+                                </div>
+                                <div class="col-md-12">
+                                    {{post.timestamp}}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 0px;">    
+                        <div  ng-repeat="myUrl in post.imageUrl">
+                            <div ng-if="post.imageUrl.length == 1" class="col-md-12">                                                                           
+                                <img src='{{myUrl}}' class="img-responsive">                                  
+                            </div>
+                            <div class="col-md-6" ng-if="post.imageUrl.length == 2">
+                                <img src='{{myUrl}}' class="img-responsive">
+                            </div>
+                            <div ng-if="post.imageUrl.length == 3" class="col-md-4">
+                                <img src='{{myUrl}}' class="img-responsive">
+                            </div>  
+                            <div ng-if="post.imageUrl.length > 3" class="col-md-3">
+                                <img src='{{myUrl}}' class="img-responsive">
+                            </div>   
+                        </div>
+                    </div>
+                    <div class="row" style="margin-top: 0px;">  
+                        <div class="col-md-12" style="padding: 25px;">
+                            <div class="detailBox">
+                                <div class="titleBox">
+                                    <label>Comments</label>
+                                    <button type="button" class="close" aria-hidden="true">&times;</button>
+                                </div>
+                                <div class="commentBox">
+
+                                    <p class="taskDescription">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
+                                </div>
+                                <div class="actionBox">
+                                    <ul class="commentList">
+                                        <li>
+                                            <div class="commenterImage">
+                                                <img src="http://lorempixel.com/50/50/people/6" />
+                                            </div>
+                                            <div class="commentText">
+                                                <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
+
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="commenterImage">
+                                                <img src="http://lorempixel.com/50/50/people/7" />
+                                            </div>
+                                            <div class="commentText">
+                                                <p class="">Hello this is a test comment and this comment is particularly very long and it goes on and on and on.</p> <span class="date sub-text">on March 5th, 2014</span>
+
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="commenterImage">
+                                                <img src="http://lorempixel.com/50/50/people/9" />
+                                            </div>
+                                            <div class="commentText">
+                                                <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
+
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <form class="form-inline" role="form">                                       
+                                        <div class="form-group">
+                                            <img src="images/member.jpg" style="height: 40px;width:40px;">
+                                        </div>
+                                         <div class="form-group">
+                                             <textarea class="form-control"  placeholder="Your comments" ></textarea>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>               
+                <div class="" ng-hide="more_items">
+                    There are no more items to load! 
+                </div>
+            </div>
+        </div>
+    </div> 
+    <!--Column middle End-->
+</div>

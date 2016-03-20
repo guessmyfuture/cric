@@ -1,0 +1,22 @@
+[
+    {
+        "areaId": "1",
+        "groundId": "1",
+        "groundName": "Ground Name-1"
+    },
+    {
+        "areaId": "1",
+        "groundId": "2",
+        "groundName": "Ground Name-2"
+    },
+    {
+        "areaId": "1",
+        "groundId": "3",
+        "groundName": "Ground Name-1"
+    },
+    {
+        "areaId": "1",
+        "groundId": "4",
+        "groundName": "Ground Name-1"
+    }
+]

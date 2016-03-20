@@ -1,0 +1,169 @@
+<!--<div class="col-md-6" ng-app="postApp" ng-controller="CreateTeamController">-->
+<div class="col-md-6"  ng-controller="ballTypeCtrl">
+    <form class="form-horizontal" name="userForm" ng-controller="CreateTeamController" novalidate>
+        <div class="row">
+            <div class="col-sm-12">
+                <fieldset>
+                    <!-- Form Name -->
+                    <legend>Create Team</legend>
+                    <!-- Text input-->
+                    <div ng-show="userForm.$invalid && submitted" class="bg-danger text-danger" style="padding:10px;">                        
+                        <ul>
+                            <li ng-repeat="(key, errors) in userForm.$error track by $index"> <strong>{{ key}}</strong> errors
+                                <ul>
+                                    <li ng-repeat="e in errors">{{ e.$name}} has an error: <strong>{{ key}}</strong>.</li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="textinput">Team Name</label>  
+                        <div class="col-md-4">
+                            <input ng-model="teamName" ng-model-options="{updateOn: 'blur'}" name="teamName" placeholder="Team Name" class="form-control input-md" ng-unique required type="text">
+                            <span style="color:red" ng-show="userForm.teamName.$invalid && !submitted">                               
+                                <span ng-show="userForm.teamName.$error.unique">Team Name already exists.</span>
+                            </span>                            
+                            <span style="color:red" ng-show="userForm.teamName.$invalid && submitted">
+                                <span ng-show="userForm.teamName.$error.required && submitted">Team Name is required.</span>
+                                <span ng-show="userForm.teamName.$error.unique && submitted">Team Name already exists.</span>
+                            </span>
+                        </div>
+                    </div>
+
+                    <!-- Text input-->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="textinput">Captain Name</label>  
+                        <div class="col-md-4">
+                            <input ng-model="captainName" name="captainName"  placeholder="Captain Name" class="form-control input-md" required="" type="text">
+                            <span style="color:red" ng-show="userForm.captainName.$invalid && submitted">
+                                <span ng-show="userForm.captainName.$error.required && submitted">Captain Name is required.</span>                                
+                            </span>                            
+                        </div>
+                    </div>
+
+                    <!-- Select Basic -->
+                    <div class="form-group">
+                        <label class="col-md-4 control-label" for="checkboxes">Ball Type</label>
+                        <div class="col-md-6">
+                            <div class="row"  style="padding: 2px;">
+                                <div class="col-md-6" ng-repeat='bt in ballTypes'>
+                                    <label class="checkbox-inline" for="checkboxes-0">
+                                        <!--<input type="checkbox" value="{{bt.ballId}}" ng-model="balTypes[bt.ballId]">-->
+                                        <input type="checkbox" ng-change="sync(bool, bt)" ng-model="bool">
+                                        {{bt.ballType}}
+                                    </label>
+                                </div>                                                             
+                            </div>
+                        </div>
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="textinput">Area</label>  
+                            <div class="col-md-4">
+                                <input  name="area" ng-model="area" placeholder="Area" class="form-control input-md" required="" type="text">
+                                <span style="color:red" ng-show="userForm.area.$invalid && submitted">
+                                    <span ng-show="userForm.area.$error.required && submitted">Area is required.</span>                                
+                                </span>   
+                            </div>
+                        </div>
+
+                        <!-- Text input-->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="textinput">City</label>  
+                            <div class="col-md-4">
+                                <input name="city" ng-model="city" placeholder="City" class="form-control input-md" required="" type="text">
+                                <span style="color:red" ng-show="userForm.city.$invalid && submitted">
+                                    <span ng-show="userForm.city.$error.required && submitted">Area is required.</span>                                
+                                </span>   
+                            </div>
+                        </div>
+                        <!-- File Button --> 
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="filebutton">Team Photo</label>
+                            <div class="col-md-4">
+                                <input name="imageUrl" type="file" name="imageUrl" ng-model="imageUrl" onchange="readImageURL(this);" >
+                                <img id="teamImg" style="display: none;" src="#" alt="Team Image" />
+                            </div>
+                        </div>
+
+                        <!-- Textarea -->
+                        <div class="form-group">
+                            <label class="col-md-4 control-label" for="textarea">Team Description</label>
+                            <div class="col-md-6">                     
+                                <textarea class="form-control" name="description" ng-model="description"></textarea>
+                            </div>
+                        </div>
+                </fieldset>
+            </div>
+        </div>
+        <div class="row" ng-controller="playerAutoCompleteCtrl">
+            <fieldset>
+                <!-- Form Name -->
+                <legend></legend>
+                <!-- Search input-->
+                <div class="form-group">
+                    <label class="col-md-4 control-label" for="searchinput">Player Name</label>
+                    <div class="col-md-8" > 
+                        <div class="search">
+                            <input type="text" ng-model="searchText" ng-keyup='loadMe()'  placeholder="Search peoples, players" class="form-control">
+                            <span class="fa fa-search"><a ng-click="" href="#"></a></span>
+                        </div>
+
+                        <div class="col-md-12" style="font-size: 20px;color:royalblue;border:1px solid red;" ng-show="userList.length == 1000">
+                            Record Not Found
+                        </div>
+
+                        <div class="col-md-12"  style="position: absolute;top:34px;overflow: scroll;height:{{(userList.length>2)?'300':userList.length*110;}}px;border:1px solid #000000;z-index: 6;" ng-show="userList.length > 0">
+                            <div ng-repeat="ul in userList"  style="padding: 0px;">
+                                <div class='row slide' style="padding: 10px;border-bottom: 1px solid red;background-color: {{ul.addedStatus ? 'green' : 'orange'}};" ng-show="!ul.addedStatus">
+                                    <div class="col-sm-4">
+                                        <img src="images/2.jpg" class="img img-responsive" alt="Sachin Tendulkar" width="80" height="100">					
+                                    </div>
+                                    <div class="col-sm-8">
+                                        Name:<a href="">{{ul.firstName}} {{ul.lastName}}</a><br>
+                                        <span class="uneditable-input">Role: Batsman</span><br>   
+                                        <button type="button" class="btn btn-info" ng-click="addList($index, ul.userId);" ng-disabled="ul.addedStatus">
+                                            <span class="glyphicon glyphicon-plus"></span> {{ul.addedStatus?'Added':'Add'}}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>                                                         
+                    </div>
+                </div>
+            </fieldset>
+            <div class="row" ng-show="addedUserList.length > 0">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-md-12" style="color:red;font-size: 20px;background-color: skyblue;" ng-show="addedUserList.length >= 0">Added User List - {{addedUserList.length}}</div>
+                    </div>
+                    <div class='row slide' style="overflow: scroll;background-color:lightblue;height: 400px;">
+                        <div class="col-md-6"  style="padding: 10px;border: 1px solid green;" ng-repeat="aul in addedUserList"> 
+                            <div class="col-sm-4">
+                                <img src="images/2.jpg" class="img img-responsive" alt="Sachin Tendulkar" width="80" height="100">					
+                            </div>
+                            <div class="col-sm-8">                            
+                                Name:<a href="">{{aul.firstName}} {{aul.lastName}}</a><br>
+                                <span class="uneditable-input">Role: Batsman</span><br>  
+                                <!--<input type='hidden' ng-model="userDataList['userId']=aul.userId" /> -->
+                                <button type="button" class="btn btn-info" ng-click="removeList($index, aul.userId);">
+                                    <span class="glyphicon glyphicon-eject"></span> Remove
+                                </button>
+                            </div>                            
+                        </div>
+                    </div>
+                    <div class="row">     
+                        {{userDataList| json}}
+                    </div>
+                </div>
+            </div>           
+        </div>
+        <div class="row">
+            <div class="container col-sm-12 center-block" style="padding: 20px;">
+                <button type="submit" id="singlebutton" name="singlebutton" class="btn btn-primary center-block" ng-click="postCreateTeamData(); submitted = true">
+                    Create Team
+                </button>
+            </div>
+        </div>
+
+    </form>    
+</div>

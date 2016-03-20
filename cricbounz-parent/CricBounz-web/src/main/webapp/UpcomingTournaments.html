@@ -1,0 +1,67 @@
+<div class="col-md-6">
+    <fieldset>
+        <legend>Upcoming Tournaments</legend>
+
+        <div class="col-md-12">
+
+            <div class="row">
+
+                <!-- <div class="col-sm-10">
+                        <button type="button" class="btn btn-primary btn-sm" style="float:right;">Update</button>
+                </div> -->
+            </div>
+            <div class="table-responsive">          
+                <table class="table">
+                    <thead>
+                        <tr style='background-color:#dfdfdf;'>
+                            <td align='center'>
+                                Tournament Name
+                            </td>
+                            <td align='center'>
+                                City
+                            </td>
+                            <td align='center'>
+                                Start Date
+                            </td >
+                            <td align='center'>
+                                End Date
+                            </td >
+                            <td align='center'>
+                                Ball Type
+                            </td>
+                            <td align='center'>
+                                Participant
+                            </td>
+
+                        </tr>
+                    </thead>
+                    <tbody ng-controller="upcomingTournamentCtrl">
+                        <tr ng-repeat="ut in upcomingTournaments">
+                            <td align='center'>
+                                <a href="#" ng-click="changeContentPage('TournamentDetails.html')">{{ut.tournamentNameId}}</a>
+                            </td>
+                            <td align='center'>
+                                {{ut.city}}
+                            </td>
+                            <td align='center'>
+                                {{ut.startDate}}
+                            </td>
+                            <td align='center'>
+                                {{ut.EndDate}}
+                            </td>
+                            <td align='center'>
+                                {{ut.ballType}}
+                            </td>
+                            <td align='center'>
+
+                                <button type="button" class="btn btn-md btn-primary" >Participate</button>
+                            </td>
+
+                        </tr>                       
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </fieldset>		
+</div>

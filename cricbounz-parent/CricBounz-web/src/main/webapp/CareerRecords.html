@@ -1,0 +1,186 @@
+<div class="col-md-6">
+    <fieldset>
+        <h2>Career Records</h2>
+        <div class="row">		
+            <h4>Batting careers</h4>		
+            <div class="col-sm-10">
+                <button type="button" class="btn btn-primary btn-sm" style="float:right;">Update</button>
+            </div>
+        </div>
+        <div class="table-responsive">          
+            <table class="table">
+                <thead>
+                    <tr>
+                        <td align='center'>
+                            Ball Type
+                        </td>
+                        <td align='center'>
+                            Matches
+                        </td>
+                        <td align='center'>
+                            Innings
+                        </td >
+                        <td align='center'>
+                            Not Out
+                        </td >
+                        <td align='center'>
+                            Runs
+                        </td>
+                        <td align='center'>
+                            BF
+                        </td>
+                        <td align='center'>
+                            Average
+                        </td>
+                        <td align='center'>
+                            Strike Rate
+                        </td>
+                        <td align='center'>
+                            100's
+                        </td>
+                        <td align='center'>
+                            50's
+                        </td>
+                        <td align='center'>
+                            6's
+                        </td>
+                        <td align='center'>
+                            4's
+                        </td>
+                        <td align='center'>
+                            HS
+                        </td>
+                    </tr>
+                </thead>      
+                <tbody ng-controller="battingCareerCtrl">
+                    <tr ng-repeat="bc in battingCareers">
+                        <td align='center'>
+                          {{bc.ballType}}
+                        </td>
+                        <td align='center'>
+                            {{bc.matches}}
+                        </td>
+                        <td align='center'>
+                            {{bc.innings}}
+                        </td>
+                        <td align='center'>
+                            {{bc.notOut}}
+                        </td>
+                        <td align='center'>
+                             {{bc.runs}}
+                        </td>
+                        <td align='center'>
+                            {{bc.bf}}
+                        </td>
+                        <td align='center'>
+                           {{bc.average}}
+                        </td>
+                        <td align='center'>
+                            {{bc.strikeRate}}
+                        </td>
+                        <td align='center'>
+                           {{bc.s100}}
+                        </td>
+                        <td align='center'>
+                           {{bc.s50}}
+                        </td>
+                        <td align='center'>
+                           {{bc.s6}}
+                        </td>
+                        <td align='center'>
+                           {{bc.s4}}
+                        </td>
+                        <td align='center'>
+                          {{bc.hs}}
+                        </td>
+                    </tr>
+              </tbody>
+            </table>
+        </div>
+    </fieldset> 
+
+    <div class="row">
+
+        <h4>Bowling careers</h4>
+
+        <div class="col-sm-10">
+            <button type="button" class="btn btn-primary btn-sm" style="float:right;">Update</button>
+        </div>
+
+    </div>       
+    <div class="table-responsive">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th align='center'>
+                        Ball Type
+                    </th>
+                    <th align='center'>
+                        Matches
+                    </th>
+                    <th align='center'>
+                        Innings
+                    </th >
+                    <th align='center'>
+                        Balls
+                    </th>
+                    <th align='center'>
+                        Runs
+                    </th>
+                    <th align='center'>
+                        Wickets
+                    </th>
+                    <th align='center'>
+                        Average
+                    </th>
+                    <th align='center'>
+                        Economy
+                    </th>
+                    <th align='center'>
+                        Strike Rate
+                    </th>
+                    <th align='center'>
+                        Wickets
+                    </th>
+                </tr>
+            </thead>
+            <tbody ng-controller="bowlingCareerCtrl">
+                <tr ng-repeat="bc in bowlingCareers">
+                    <td align='center'>
+                        {{bc.ballType}}
+                    </td>
+                    <td align='center'>
+                        {{bc.matches}}
+                    </td>
+                    <td align='center'>
+                       {{bc.innings}}
+                    </td>
+                    <td align='center'>
+                        {{bc.balls}}
+                    </td>
+                    <td align='center'>
+                       {{bc.runs}}
+                    </td>
+                    <td align='center'>
+                       {{bc.wickets}}
+                    </td>
+                    <td align='center'>
+                        {{bc.bf}}
+                    </td>
+                    <td align='center'>
+                       {{bc.average}}
+                    </td>
+                    <td align='center'>
+                       {{bc.economy}}
+                    </td>
+                    <td align='center'>
+                       {{bc.strikeRate}}
+                    </td>
+                     <td align='center'>
+                       {{bc.wickets}}
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
