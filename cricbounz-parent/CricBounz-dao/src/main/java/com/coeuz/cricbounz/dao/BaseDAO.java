@@ -62,7 +62,7 @@ public class BaseDAO<T, PK extends Serializable> implements IBaseDAO<T, PK> {
         this.sessionFactory = sessionFactory;
     }
 
-    /**
+    /**0.
      * {@inheritDoc}
      */
     public List<T> getAll() {
@@ -73,10 +73,13 @@ public class BaseDAO<T, PK extends Serializable> implements IBaseDAO<T, PK> {
         return list;
     }
 
+    
+    
     /**
      * {@inheritDoc}
      */
-    public T get(PK id) {
+    /*
+    public T get(long id) {
     	session = sessionFactory.openSession();
         T entity = (T) session.load(this.persistentClass, id);
         if (entity == null) {
@@ -85,11 +88,26 @@ public class BaseDAO<T, PK extends Serializable> implements IBaseDAO<T, PK> {
         session.close();
         return entity;
     }
+    */
+    
+    /**
+     * {@inheritDoc}
+     */
+    public T get(long id) {
+    	session = sessionFactory.openSession();
+        T entity = (T) session.get(this.persistentClass, id);
+        if (entity == null) {
+            throw new ObjectRetrievalFailureException(this.persistentClass, id);
+        }
+        session.close();
+        return entity;
+    }
+
 
     /**
      * {@inheritDoc}
      */
-    public boolean exists(PK id) {
+    public boolean exists(long id) {
     	session = sessionFactory.openSession();
         T entity = (T) session.get(this.persistentClass, id);
         session.close();

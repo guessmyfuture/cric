@@ -32,14 +32,14 @@ public interface IBaseDAO <T, PK extends Serializable> {
      * @return a populated object
      * @see org.springframework.orm.ObjectRetrievalFailureException
      */
-    T get(PK id);
+    T get(long id);
 
     /**
      * Checks for existence of an object of type T using the id arg.
      * @param id the id of the entity
      * @return - true if it exists, false if it doesn't
      */
-    boolean exists(PK id);
+    boolean exists(long id);
 
     /**
      * Generic method to save an object - handles both update and insert.
