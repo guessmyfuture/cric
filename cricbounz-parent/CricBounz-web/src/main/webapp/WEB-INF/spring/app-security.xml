@@ -23,12 +23,12 @@
 				error-if-maximum-exceeded="false" />
 		</session-management>
 	</http>
-	<authentication-manager>
-			<authentication-provider>
-				<user-service>
-					<user name="anand" password="password" authorities="ROLE_USER, ROLE_GROUND" />
-					<user name="babu" password="password" authorities="ROLE_USER" />
-				</user-service>
-			</authentication-provider>
-		</authentication-manager>
+	 <authentication-manager>
+    <authentication-provider user-service-ref='myUserDetailsService'/>
+  </authentication-manager>
+
+  <beans:bean id="myUserDetailsService"
+      class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
+    <beans:property name="dataSource" ref="hiberDataSource"/>
+  </beans:bean>
 </beans:beans>
