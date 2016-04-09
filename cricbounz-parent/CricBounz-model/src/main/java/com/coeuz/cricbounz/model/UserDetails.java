@@ -23,6 +23,7 @@ public class UserDetails {
 	private String gender;
 	private String phoneNo;
 	private String address;
+	@Column(unique=true)
 	private String email;
 	private String mobile;
 	private String state;
@@ -31,8 +32,8 @@ public class UserDetails {
 	private String bowling;
 	private String batting;
 	private String friends;
-	private PostDetails postDetails;
-	private CommentDetails commentDetails;
+	//private PostDetails postDetails;
+	//private CommentDetails commentDetails;
 	
 	
 	public long getId() {

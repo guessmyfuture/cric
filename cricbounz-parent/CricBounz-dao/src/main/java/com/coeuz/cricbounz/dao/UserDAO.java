@@ -38,5 +38,8 @@ public class UserDAO extends BaseDAO <UserDetails, Integer> {
 		return userDetails;
 	}
 		
+	public void addUser(UserDetails userDetails){
+		save(userDetails);
+	}
 	
 }

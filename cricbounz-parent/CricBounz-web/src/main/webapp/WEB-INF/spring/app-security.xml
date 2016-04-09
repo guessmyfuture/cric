@@ -14,6 +14,7 @@
 
 		<intercept-url pattern="/css/main.css" access="IS_AUTHENTICATED_ANONYMOUSLY" />
 		<intercept-url pattern="/**" access="hasRole('USER')" />
+		<form-login/>
 		<!-- <form-login login-page="/login.html" login-processing-url="/loginProcess" 
 			default-target-url="/index.jsp" always-use-default-target='true' authentication-failure-url="/login.html?login_error=1" 
 			/> -->

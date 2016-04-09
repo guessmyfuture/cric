@@ -142,7 +142,7 @@ public class BaseDAO<T, PK extends Serializable> implements IBaseDAO<T, PK> {
     /**
      * {@inheritDoc}
      */
-    public void delete(PK id) {
+    public void delete(Long id) {
     	session = sessionFactory.openSession();
         session.beginTransaction();
         T entity = (T) session.get(this.persistentClass, id);

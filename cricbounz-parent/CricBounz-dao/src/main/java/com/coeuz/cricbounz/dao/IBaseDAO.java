@@ -59,7 +59,7 @@ public interface IBaseDAO <T, PK extends Serializable> {
      * Generic method to delete an object based on class and id
      * @param id the identifier (primary key) of the object to remove
      */
-    void delete(PK id);
+    void delete(Long id);
 
     /**
      * Generic method to get an object based on class and identifier. An
