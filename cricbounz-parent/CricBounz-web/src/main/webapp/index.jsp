@@ -9,9 +9,8 @@
 <title>Welcome to Cricbounz</title>
 <!-- // -->
 <link rel="stylesheet" href="css/bootstrap.min.css">
-<link rel="stylesheet" href="css/font-awesome.css">
+<link rel="stylesheet" href="css/font-awesome.min.css">
 <link rel="stylesheet" href="css/home.css">
-<link rel="stylesheet" href="css/style1.css">
 <link rel="stylesheet" href="css/terms.css">
 <script src="js/jquery.js"></script>
 <script src="js/jquery.min.js"></script>
@@ -71,18 +70,18 @@
 								<div class="panel-body">
 									<div class="row">
 										<div class="col-lg-10 col-lg-offset-1">
-											<form id="login-form" action="#" method="post" role="form"
+											<form id="login-form" action="j_spring_security_check" method="post" role="form"
 												style="display: block;">
 												<div class="form-group">
 													<input required='' type='text'
 														data-error="Bruh, that email address is invalid" required>
-													<label alt='Email' placeholder='Email'></label> <span
+													<label alt='Email' placeholder='Email' name="j_username"></label> <span
 														class="help-block"></span>
 												</div>
 												<div class="form-group">
 													<input required='' type='password'> <label
 														alt='Password' placeholder='Password'></label> <span
-														class="help-block"></span>
+														class="help-block" name="j_password"></span>
 												</div>
 												<div class="form-group">
 													<div class="row">
@@ -103,6 +102,7 @@
 														</div>
 													</div>
 												</div>
+												 
 											</form>
 											<form id="register-form" action="#" method="post" role="form"
 												style="display: none;" ng-controller="homeCtrl">

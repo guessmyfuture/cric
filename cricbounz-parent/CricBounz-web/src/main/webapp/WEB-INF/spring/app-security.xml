@@ -6,14 +6,23 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
-	<http pattern="/css/**" security="none" />
+	<http pattern="/css/*" security="none" />
 	<!-- <http pattern="/login.jsp*" security="none"/> -->
 	<http auto-config="true">
-		<intercept-url pattern="/index.jsp*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
-		<intercept-url pattern="/logoutSuccess*" access="IS_AUTHENTICATED_ANONYMOUSLY" />
+	<csrf disabled="true"/>
+	<headers>
+        <frame-options policy="SAMEORIGIN"/>
+        <xss-protection block="false"/>
+    </headers>
+		<intercept-url pattern="/index.jsp*" access="isAnonymous()" />
+		<intercept-url pattern="/logoutSuccess*" access="isAnonymous()" />
+		<intercept-url pattern ="/css/*.css" access="isAnonymous()" />
+		<intercept-url pattern ="/images/**" access="isAnonymous()" />
+		<intercept-url pattern ="/fonts/**" access="isAnonymous()" />
+		<intercept-url pattern ="/js/**" access="isAnonymous()" />
 		<intercept-url pattern="/**" access="hasRole('USER')" />
-		<form-login login-page="/index.jsp" default-target-url="/UserHome.html" always-use-default-target='true' authentication-failure-url="/index.jsp?login_error=1" 
-			/>
+		<form-login default-target-url="/UserHome.html" always-use-default-target='true' 
+		authentication-failure-url="/index.jsp?login_error=1" />
 		<logout />
 		<session-management>
 			<concurrency-control max-sessions="10"
