@@ -6,7 +6,10 @@
 		http://www.springframework.org/schema/security
 		http://www.springframework.org/schema/security/spring-security.xsd">
 
-	<http pattern="/css/*" security="none" />
+	<http pattern="/css/**" security="none" />
+	<http pattern="/js/**" security="none" />
+	<http pattern="/images/**" security="none" />
+	<http pattern="/fonts/**" security="none" />
 	<!-- <http pattern="/login.jsp*" security="none"/> -->
 	<http auto-config="true">
 	<csrf disabled="true"/>
