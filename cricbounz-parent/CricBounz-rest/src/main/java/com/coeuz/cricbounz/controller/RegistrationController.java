@@ -2,6 +2,7 @@ package com.coeuz.cricbounz.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,23 +23,15 @@ public class RegistrationController {
 	
 	
 	@RequestMapping(value = "/signUp", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus registerUser(@RequestParam("email") String username, 
-			@RequestParam("password") String password, @RequestParam("mobile") String mobile) {
+	public @ResponseBody ResponseStatus registerUser(@RequestBody UserRegistration usr) {
 		
 		ResponseStatus responseStatus = new ResponseStatus();
-		String user = username;
-		String pwd = password;
-		String contactNo = mobile;
-		UserRegistration regUser = new UserRegistration();
 		UserDetails userDetails = new UserDetails();
-		userDetails.setEmail(username);
-		userDetails.setMobile(mobile);
-		regUser.setUsername(user);
-		regUser.setPassword(pwd);
-		regUser.setEnabled(1);
-		regDAO.registerUser(regUser, userDetails);
+		userDetails.setEmail(usr.getUsername());
+		userDetails.setMobile(usr.getMobileNumber());
+		usr.setEnabled(1);
+		regDAO.registerUser(usr, userDetails);
 		responseStatus.setResponseStatus("Success");
-
 		return responseStatus;
 	}
 	

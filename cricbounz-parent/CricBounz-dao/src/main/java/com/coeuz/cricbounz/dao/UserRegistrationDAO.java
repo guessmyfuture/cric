@@ -1,10 +1,13 @@
 package com.coeuz.cricbounz.dao;
 
 
+import javax.sql.DataSource;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.coeuz.cricbounz.model.UserDetails;
@@ -13,24 +16,27 @@ import com.coeuz.cricbounz.model.UserRegistration;
 public class UserRegistrationDAO  {
 
 	@Autowired
-	  private SessionFactory sessionFactory;
-	@Autowired
 	UserDAO userDAO;
-		
+	
+	private JdbcTemplate jdbcTemplate;
+	
+	@Autowired
+	public void setDataSource(DataSource hiberDataSource)
+	{
+		this.jdbcTemplate = new JdbcTemplate(hiberDataSource);
+	}
+			
 	public void registerUser(UserRegistration reg, UserDetails useDtl){
 	
 		userDAO.save(useDtl);
-		Session session = sessionFactory.openSession();
-		String sqlquery = "INSERT INTO users(username, password, enabled)";
-		Query query = session.createQuery(sqlquery);
-		query.setParameter("username", reg.getUsername());
-		query.setParameter("password", reg.getPassword());
-		query.setParameter("enabled", 1);
-        session.beginTransaction();
-       query.executeUpdate();
-       session.flush();
-       session.getTransaction().commit();
-		 
+		String query = "INSERT INTO USERS (username, password, enabled) VALUES(?,?,?)";
+		jdbcTemplate.update(query, new Object[]{
+			reg.getUsername(), reg.getPassword(), reg.getEnabled()
+		});
+		String authorityQuery = "INSERT INTO authorities (username, authority) VALUES(?,?)";
+		jdbcTemplate.update(authorityQuery, new Object[]{
+				reg.getUsername(), "ROLE_USER"
+			});
 	}
 	
 

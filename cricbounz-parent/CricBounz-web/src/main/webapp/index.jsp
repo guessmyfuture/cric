@@ -19,7 +19,7 @@
 <script src="js/scr.js"></script>
 <script src="js/angular.min.js" type="text/javascript"></script>
 </head>
-<body>
+<body  ng-controller="homeCtrl">
 	<div class="container">
 		<div class="row">
 			<img class="img-responsive displayed" src="images/home/ban2.png"
@@ -70,18 +70,18 @@
 								<div class="panel-body">
 									<div class="row">
 										<div class="col-lg-10 col-lg-offset-1">
-											<form id="login-form" action="j_spring_security_check" method="post" role="form"
+											<form id="login-form" action="login" method="post" role="form"
 												style="display: block;">
 												<div class="form-group">
 													<input required='' type='text'
-														data-error="Bruh, that email address is invalid" required>
-													<label alt='Email' placeholder='Email' name="j_username"></label> <span
+														data-error="Bruh, that email address is invalid" required  name="username">
+													<label alt='Email' placeholder='Email'></label> <span
 														class="help-block"></span>
 												</div>
 												<div class="form-group">
-													<input required='' type='password'> <label
+													<input required='' type='password' name="password"> <label
 														alt='Password' placeholder='Password'></label> <span
-														class="help-block" name="j_password"></span>
+														class="help-block" ></span>
 												</div>
 												<div class="form-group">
 													<div class="row">
@@ -101,19 +101,19 @@
 															</div>
 														</div>
 													</div>
-												</div>
-												 
+												</div>												 
 											</form>
-											<form id="register-form" action="#" method="post" role="form"
-												style="display: none;" ng-controller="homeCtrl">
+								
+											<form id="register-form" action="" method="post" role="form"
+												style="display: none;">
 												<div class="form-group">
-													<input required='' type='text' ng-model="register.email">
+													<input required='' type='text' ng-model="register.username">
 													<label alt='Email' placeholder='Email'></label> <span
 														class="help-block"></span>
 												</div>
 												<div class="form-group">
 													<input required='' type='text' name="mobileNo"
-														id="quantity" ng-model="register.mobileNo" /> <label
+														id="quantity" ng-model="register.mobileNumber" /> <label
 														alt='Mobile No' placeholder='Mobile No'><span
 														id="errmsg"></span></label>
 												</div>
@@ -130,8 +130,7 @@
 													<span class="help-block"></span>
 												</div>
 												<div class="form-group">
-													<input type='text' id="captcha"
-														ng-model="register.captchaText">
+													<input type='text' id="captcha">
 												</div>
 												<div class="form-group">
 													<div class="row">
@@ -465,8 +464,9 @@
 	</script>
 	<script>
 		var mod = angular.module("module", []);
-		mod.controller("homeCtrl", function($scope, $http) {
+		mod.controller("homeCtrl", function($scope, $http,transformRequestAsFormPost) {
 			$scope.register = {};
+			
 			$scope.postRegister = function() {
 				alert(angular.toJson($scope.register));
 				var config = {
@@ -474,8 +474,8 @@
 						'Content-Type' : 'application/json'
 					}
 				}
-
-				$http.post('rest/register/', $scope.register, config).success(
+              
+				$http.post('service/reg/user/signUp', $scope.register, config).success(
 						function(data, status, headers, config) {
 							$scope.PostDataResponse = data;
 
@@ -487,7 +487,89 @@
 									+ "<hr />config: " + config;
 						});
 			}
+			
+			
+			$scope.loginForm = function() {
+				//alert("You Posted Me"+$scope.username+"  "+$scope.password);
+				  // I hold the data-dump of the FORM scope from the server-side.
+                $scope.cfdump = "";
+                // By default, the $http service will transform the outgoing request by
+                // serializing the data as JSON and then posting it with the content-
+                // type, "application/json". When we want to post the value as a FORM
+                // post, we need to change the serialization algorithm and post the data
+                // with the content-type, "application/x-www-form-urlencoded".
+                var request = $http({
+                    method: "post",
+                    url: "logout",
+                    transformRequest: transformRequestAsFormPost,
+                    data: {                      
+                        username: $scope.username,
+                        password: $scope.password
+                    }
+                });               
+                // Store the data-dump of the FORM scope.
+                request.success(
+                    function(html) {
+                        $scope.cfdump = html;                      
+                    }
+                );
+            }
 		});
+		
+				  
+		mod.factory("transformRequestAsFormPost",function() {
+		                // I prepare the request data for the form post.
+		                function transformRequest( data, getHeaders ) {
+		                    var headers = getHeaders();
+		                    headers[ "Content-type" ] = "application/x-www-form-urlencoded; charset=utf-8";
+		                    return(serializeData(data));
+		                }
+		                // Return the factory value.
+		                return( transformRequest);
+		                // ---
+		                // PRVIATE METHODS.
+		                // ---
+		                // I serialize the given Object into a key-value pair string. This
+		                // method expects an object and will default to the toString() method.
+		                // --
+		                // NOTE: This is an atered version of the jQuery.param() method which
+		                // will serialize a data collection for Form posting.
+		                // --
+		                // https://github.com/jquery/jquery/blob/master/src/serialize.js#L45
+		                function serializeData(data) {
+		                    // If this is not an object, defer to native stringification.
+		                    if ( ! angular.isObject( data ) ) {
+		                        return( ( data == null ) ? "" : data.toString() );
+		                    }
+		                    var buffer = [];
+		                    // Serialize each key in the object.
+		                    for ( var name in data ) {
+		                        if ( ! data.hasOwnProperty( name ) ) {
+		                            continue;
+		                        }
+		                        var value = data[name];
+		                        buffer.push(
+		                            encodeURIComponent( name ) +
+		                            "=" +
+		                            encodeURIComponent( ( value == null ) ? "" : value )
+		                        );
+		                    }
+		                    // Serialize the buffer and clean it up for transportation.
+		                    var source = buffer
+		                        .join( "&" )
+		                        .replace( /%20/g, "+" )
+		                    ;
+		                    return( source );
+		                }
+		            });
+		     
+		        mod.value(
+		            "$sanitize",
+		            function( html ) {
+		                return(html );
+		            }
+		        );
+
 	</script>
 </body>
 </html>
