@@ -18,12 +18,12 @@
         <frame-options policy="SAMEORIGIN"/>
         <xss-protection block="false"/>
     </headers>
-		<intercept-url pattern="/index.jsp*" access="isAnonymous()" />
-		<intercept-url pattern="/logoutSuccess*" access="isAnonymous()" />
-		<intercept-url pattern ="/css/*.css" access="isAnonymous()" />
-		<intercept-url pattern ="/images/**" access="isAnonymous()" />
-		<intercept-url pattern ="/fonts/**" access="isAnonymous()" />
-		<intercept-url pattern ="/js/**" access="isAnonymous()" />
+		<intercept-url pattern="/index.jsp*" access="permitAll" />
+		<intercept-url pattern="/logoutSuccess*" access="permitAll" />
+		<intercept-url pattern ="/css/*.css" access="permitAll" />
+		<intercept-url pattern ="/images/**" access="permitAll" />
+		<intercept-url pattern ="/fonts/**" access="permitAll" />
+		<intercept-url pattern ="/js/**" access="permitAll" />
 		<intercept-url pattern="/**" access="hasRole('USER')" />
 		<form-login login-page="/index.jsp" default-target-url="/UserHome.html" always-use-default-target='true' 
 		authentication-failure-url="/index.jsp?login_error=1" 
