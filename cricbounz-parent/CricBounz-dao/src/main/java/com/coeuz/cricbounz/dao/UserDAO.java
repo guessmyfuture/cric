@@ -1,19 +1,17 @@
 package com.coeuz.cricbounz.dao;
 
+import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
-import com.coeuz.cricbounz.model.CommentDetails;
-import com.coeuz.cricbounz.model.PostDetails;
 import com.coeuz.cricbounz.model.UserDetails;
 @Repository
 public class UserDAO extends BaseDAO <UserDetails, Integer> {
-	@Autowired
-	private PostDAO postDAO;
+
+	private Session session;
+	private SessionFactory sessionFactory;
 	
-	@Autowired
-	private CommentDAO commentDAO;
 	
 	@Autowired
     public UserDAO(SessionFactory sessionFactory) {
@@ -27,19 +25,11 @@ public class UserDAO extends BaseDAO <UserDetails, Integer> {
 	
 	public UserDetails getUserDetails(long userId){
 		UserDetails userDetails = null;
-		PostDetails postDetails = null;
-		CommentDetails commentDetails= null;
 		userDetails=(UserDetails)get(userId);
-		if(userDetails!=null){
-		long retrivedUid = userDetails.getId();
-		
-		}
-		
 		return userDetails;
 	}
+
+	
 		
-	public void addUser(UserDetails userDetails){
-		save(userDetails);
-	}
 	
 }

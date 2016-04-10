@@ -17,9 +17,10 @@ public class UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="userId")
-	private long id;
+	private long userId;
 	private long authId;
 	private String name;
+	private String profileImageUrl;
 	private String gender;
 	private String phoneNo;
 	private String address;
@@ -32,15 +33,12 @@ public class UserDetails {
 	private String bowling;
 	private String batting;
 	private String friends;
-	//private PostDetails postDetails;
-	//private CommentDetails commentDetails;
 	
-	
-	public long getId() {
-		return id;
+	public long getUserId() {
+		return userId;
 	}
-	public void setId(long id) {
-		this.id = id;
+	public void setUserId(long userId) {
+		this.userId = userId;
 	}
 	public long getAuthId() {
 		return authId;
@@ -54,6 +52,14 @@ public class UserDetails {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	public String getProfileImageUrl() {
+		return profileImageUrl;
+	}
+	public void setProfileImageUrl(String profileImageUrl) {
+		this.profileImageUrl = profileImageUrl;
+	}
+		
 	public String getGender() {
 		return gender;
 	}
@@ -120,6 +126,9 @@ public class UserDetails {
 	public void setFriends(String friends) {
 		this.friends = friends;
 	}
+	
+	
+	
 	
 
 }

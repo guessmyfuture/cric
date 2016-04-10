@@ -3,6 +3,7 @@ package com.coeuz.cricbounz.dao;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
 import com.coeuz.cricbounz.model.CommentDetails;
 
 @Repository
@@ -13,9 +14,16 @@ public class CommentDAO extends BaseDAO <CommentDetails, Integer> {
         super.setSessionFactory(sessionFactory);
     }
 	
-	public void registerCommentDetails(CommentDetails commentDetails){
-		saveorUpdate(commentDetails);
+	public void saveCommentDetails(CommentDetails commentDetails){
+		saveorUpdate(commentDetails);	
 	}
+	
+	public CommentDetails getCommentDetails(long commentId){
+		CommentDetails commentDetails=null;
+		commentDetails=(CommentDetails)get(commentId);
+		return commentDetails; 
+	}
+	
 
 
 }
