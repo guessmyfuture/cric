@@ -1,5 +1,8 @@
 package com.coeuz.cricbounz.dao;
 
+import java.util.List;
+
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -9,10 +12,6 @@ import com.coeuz.cricbounz.model.UserDetails;
 @Repository
 public class UserDAO extends BaseDAO <UserDetails, Integer> {
 
-	private Session session;
-	private SessionFactory sessionFactory;
-	
-	
 	@Autowired
     public UserDAO(SessionFactory sessionFactory) {
         super(UserDetails.class);
@@ -29,7 +28,20 @@ public class UserDAO extends BaseDAO <UserDetails, Integer> {
 		return userDetails;
 	}
 
-	
+	public String getUserIdFromMail(String email)
+	{
+		String userId = "";
+		Session session = getSessionFactory().openSession();
+		Criteria cr = session.createCriteria(UserDetails.class);
+		List results = cr.list();
+		if(results.size() != 0)
+		{
+			UserDetails userDetails = (UserDetails)results.get(0);
+			Long l = userDetails.getUserId();
+			userId = l.toString();
+		}
+		return userId;
+	}
 		
 	
 }

@@ -26,7 +26,8 @@
 		<intercept-url pattern ="/js/**" access="isAnonymous()" />
 		<intercept-url pattern="/**" access="hasRole('USER')" />
 		<form-login login-page="/index.jsp" default-target-url="/UserHome.html" always-use-default-target='true' 
-		authentication-failure-url="/index.jsp?login_error=1" />
+		authentication-failure-url="/index.jsp?login_error=1" 
+		authentication-success-handler-ref="customAuthenticationSuccessHandler" />
 		<logout />
 		<session-management>
 			<concurrency-control max-sessions="10"
@@ -41,4 +42,5 @@
       class="org.springframework.security.core.userdetails.jdbc.JdbcDaoImpl">
     <beans:property name="dataSource" ref="hiberDataSource"/>
   </beans:bean>
+  <beans:bean id="customAuthenticationSuccessHandler" class="com.coeuz.cricbounz.filters.AppAuthenticationSuccessHandler" />
 </beans:beans>
