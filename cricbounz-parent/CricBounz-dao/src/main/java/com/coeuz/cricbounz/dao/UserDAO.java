@@ -6,6 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.coeuz.cricbounz.model.UserDetails;
@@ -33,6 +34,7 @@ public class UserDAO extends BaseDAO <UserDetails, Integer> {
 		String userId = "";
 		Session session = getSessionFactory().openSession();
 		Criteria cr = session.createCriteria(UserDetails.class);
+		cr.add(Restrictions.eq("email", email));
 		List results = cr.list();
 		if(results.size() != 0)
 		{
