@@ -52,7 +52,8 @@ public class GroundSlotDAO extends BaseDAO<GroundSlots, Integer> {
 				} else {
 					slotDetails.add(groundSlots);
 				}
-			}
+			} 
+			
 		}
 		return slotDetails;
 	}

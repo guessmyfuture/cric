@@ -24,8 +24,10 @@ public class UserDetails {
 	private String gender;
 	private String phoneNo;
 	private String address;
-	@Column(unique=true)
+	
+	@Column(name="email", unique=true)
 	private String email;
+	
 	private String mobile;
 	private String state;
 	private String city;
@@ -126,9 +128,4 @@ public class UserDetails {
 	public void setFriends(String friends) {
 		this.friends = friends;
 	}
-	
-	
-	
-	
-
 }

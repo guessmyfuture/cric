@@ -8,6 +8,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,20 +39,39 @@ public class PostDAO extends BaseDAO <PostDetails, Integer> {
     }
 
 	public void savePostDetails(PostDetails postDetails){
-		if(postDetails.getPostId()==0){
-			saveorUpdate(postDetails);	
-		}else if(postDetails.getPostId()!=0 && postDetails.getStatus().equals("D")){
-			CommentDetails commentDetails = new CommentDetails();
-			commentDetails.setPostId(postDetails.getPostId());
-			commentDetails.setStatus(postDetails.getStatus());
-			commentDAO.saveorUpdate(commentDetails);
-			ShareDetails shareDetails = new ShareDetails();
-			shareDetails.setPostId(postDetails.getPostId());
-			shareDetails.setStatus(postDetails.getStatus());
-			shareDAO.saveorUpdate(shareDetails);
-		}
-					
+		 saveorUpdate(postDetails);	
 	}
+	
+	public void deletePostDetails(PostDetails postDetails){
+		
+		session = getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		
+		String postHql="UPDATE PostDetails p SET p.status=:status WHERE p.postId=:postId";
+		Query postQuery = session.createQuery(postHql);
+		postQuery.setParameter("postId",postDetails.getPostId());
+		postQuery.setParameter("status",postDetails.getStatus());
+		postQuery.executeUpdate();
+		
+		String commentHql="UPDATE CommentDetails c SET c.status=:status WHERE c.postId=:postId";
+		Query commentQuery = session.createQuery(commentHql);
+		commentQuery.setParameter("postId",postDetails.getPostId());
+		commentQuery.setParameter("status",postDetails.getStatus());
+		commentQuery.executeUpdate();
+		
+		String sharedHql="UPDATE ShareDetails s SET s.status=:status WHERE s.postId=:postId";
+		Query sharedQuery = session.createQuery(sharedHql);
+		sharedQuery.setParameter("postId",postDetails.getPostId());
+		sharedQuery.setParameter("status",postDetails.getStatus());
+		sharedQuery.executeUpdate();
+		
+		session.flush();
+		transaction.commit();
+		session.close();
+		
+	}
+	
+	
 		
 	public List<PostDetails> getPostDetailsCriteria(long userId ){
 		List<PostDetails> postDetailsList= new ArrayList<PostDetails>();
@@ -122,7 +142,6 @@ public class PostDAO extends BaseDAO <PostDetails, Integer> {
 		session.beginTransaction();
 		List<PostDetails> usreNameAndLikedNamePopulatedList= new ArrayList<PostDetails>();
 		String delimit=",";
-		String likedUserDetails;
 		if(postList!=null && postList.size()>0){
 			for(PostDetails postDetails:postList){
 				String userHql="FROM UserDetails u WHERE u.userId="+postDetails.getPostedUserId();
@@ -141,38 +160,92 @@ public class PostDAO extends BaseDAO <PostDetails, Integer> {
 					Query likedUserQuery = session.createQuery(likedUserHql);
 					List<UserDetails> likedUsersList =(List<UserDetails>)likedUserQuery.list();
 					if(likedUsersList!=null && likedUsersList.size()>0){
-						UserDetails userDetails = userDetailsList.get(0);
-						likedUserDetails=userDetails.getName();
+						UserDetails likedUserDetailsObj=null;
+						String likedUserDetails= null;
+						likedUserDetailsObj = likedUsersList.get(0);
+						likedUserDetails=likedUserDetailsObj.getName();
 						likedUserDetails=likeduserId+":"+likedUserDetails;
 						likedUserDetailsList.add(likedUserDetails);
-						postDetails.setLikedUserDetails(likedUserDetailsList);
+												
 					}
 				 }
+				postDetails.setLikedUserDetails(likedUserDetailsList);
 				usreNameAndLikedNamePopulatedList.add(postDetails);
 			}
 		}
 		
 	    return usreNameAndLikedNamePopulatedList;	
 	}
-	
-	
-	public void likePost(PostDetails postDetails){
-		List<PostDetails> likedPostDetails = null;
-		String likedUserHql="FROM PostDetails p WHERE p.postId="+postDetails.getPostId();
-		Query likedUserQuery = session.createQuery(likedUserHql);
-		List<PostDetails> likedPostList =(List<PostDetails>)likedUserQuery.list();
-		if(likedPostList !=null && likedPostList.size()>0){
-			PostDetails retrievedPostDetails = likedPostList.get(0);
-			String likedUserIds=retrievedPostDetails.getLikedById();
-			likedUserIds=likedUserIds+","+postDetails.getLikedById();
-			
+		
+	public List<PostDetails> saveLikeAndUnlike(PostDetails postDetails){
+		session = getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		List<PostDetails> updatedPostPostList = null;
+		String delimit=",";
+		String existingPostHql="FROM PostDetails p WHERE p.postId="+postDetails.getPostId();
+		Query existingPostQuery = session.createQuery(existingPostHql);
+		List<PostDetails> existingPostList =(List<PostDetails>)existingPostQuery.list();
+		session.flush();
+		transaction.commit();
+		session.close();
+		if(existingPostList !=null && existingPostList.size()>0){
+			session = getSessionFactory().openSession();
+			transaction = session.beginTransaction();
+			PostDetails existingPostDetails = existingPostList.get(0);
+			if(postDetails.getLikedStatus().equals("L")){
+				String existingLikedUserIds=existingPostDetails.getLikedById();
+				if(existingLikedUserIds==null){
+					existingLikedUserIds=postDetails.getLikedById()+",";	
+				}else{
+					existingLikedUserIds=existingLikedUserIds+postDetails.getLikedById()+",";	
+				}
+				
+				String appendingLikedUserIdHql="UPDATE PostDetails p set p.likedById=:likedById where p.postId=:postId";
+				Query appendingLikedUserIdQuery = session.createQuery(appendingLikedUserIdHql);
+				appendingLikedUserIdQuery.setParameter("likedById",existingLikedUserIds);
+				appendingLikedUserIdQuery.setParameter("postId",postDetails.getPostId());
+				int updatStatus = appendingLikedUserIdQuery.executeUpdate();
+				session.flush();
+				transaction.commit();
+				session.close();
+			}else{
+				String reconstructedLikedIds=""; 
+				StringTokenizer existingLikedUsersIds = new StringTokenizer(existingPostDetails.getLikedById(),delimit);
+				while(existingLikedUsersIds.hasMoreElements()){
+					String existinglikedUserId=(String)existingLikedUsersIds.nextElement();
+					if(!existinglikedUserId.equals(postDetails.getLikedById())){
+						if(reconstructedLikedIds==null){
+							reconstructedLikedIds= existinglikedUserId+",";	
+						}else{
+							reconstructedLikedIds=reconstructedLikedIds+existinglikedUserId+",";	
+						}
+					}
+				}
+				session = getSessionFactory().openSession();
+				transaction = session.beginTransaction();
+				String appendingLikedUserIdHql="UPDATE PostDetails p set p.likedById=:likedById where p.postId=:postId";
+				Query unlikedUserIdRemoveQuery = session.createQuery(appendingLikedUserIdHql);
+				unlikedUserIdRemoveQuery.setParameter("likedById",reconstructedLikedIds);
+				unlikedUserIdRemoveQuery.setParameter("postId",postDetails.getPostId());
+				unlikedUserIdRemoveQuery.executeUpdate();
+				session.flush();
+				transaction.commit();
+				session.close();
+			}
+			session = getSessionFactory().openSession();
+			transaction = session.beginTransaction();	
+			String updatedPostHql="FROM PostDetails p WHERE p.postId="+postDetails.getPostId();
+			Query updatedPostQuery = session.createQuery(updatedPostHql);
+			updatedPostPostList =(List<PostDetails>)updatedPostQuery.list();
+			updatedPostPostList=populateUserNameAndLikeDetails(updatedPostPostList);
+			session.flush();
+			transaction.commit();
+			session.close();
+			 
 		}	
 			
-		
-		
+		return updatedPostPostList;
 	}
-	
-	
 	
 	
 }

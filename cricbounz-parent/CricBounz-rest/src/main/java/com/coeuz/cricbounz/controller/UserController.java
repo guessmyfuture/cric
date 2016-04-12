@@ -44,7 +44,6 @@ public class UserController {
 	ResponseStatus responseStatus;
 
 	@RequestMapping(value = "/registeruser", method = RequestMethod.POST)
-	
 	public @ResponseBody ResponseStatus registerUserdetails(@RequestBody UserDetails userDetails) {
 		logger.info("Start registerUserdetails details.");
 		ResponseStatus responseStatus = new ResponseStatus();
@@ -68,7 +67,7 @@ public class UserController {
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
 	}
-
+		
 	@RequestMapping(value = "/savecomment", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus saveComment(@RequestBody CommentDetails commentDetails) {
 		logger.info("Start saveComment");
@@ -94,6 +93,24 @@ public class UserController {
 		List<PostDetails> postdetailsList = postDAO.getPostDetails(userId);
 		responseStatus.setResponseStatus("Success");
 		return postdetailsList;
+	}
+	
+	@RequestMapping(value = "/deletepost", method = RequestMethod.POST)
+	public @ResponseBody ResponseStatus deletepostDetails(@RequestBody PostDetails postDetails) {
+		logger.info("Start deletepostDetails");
+		ResponseStatus responseStatus = new ResponseStatus();
+		postDAO.deletePostDetails(postDetails);
+		responseStatus.setResponseStatus("Success");
+		return responseStatus;
+	}
+		
+	@RequestMapping(value = "/likeandunlike", method = RequestMethod.POST)
+	public @ResponseBody List<PostDetails> saveLikeAndUnlike(@RequestBody PostDetails postDetails) {
+		logger.info("Start saveLikeAndUnlike");
+		ResponseStatus responseStatus = new ResponseStatus();
+		List<PostDetails> updatedPostdetailsList = postDAO.saveLikeAndUnlike(postDetails);
+		responseStatus.setResponseStatus("Success");
+		return updatedPostdetailsList;
 	}
 
 }

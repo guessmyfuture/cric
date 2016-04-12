@@ -16,11 +16,9 @@ import com.coeuz.cricbounz.model.UserRegistration;
 
 @Controller
 @RequestMapping(value = "/reg/user")
-public class RegistrationController {
-	
+public class RegistrationController {	
 	@Autowired
-	UserRegistrationDAO regDAO;
-	
+	UserRegistrationDAO regDAO;	
 	
 	@RequestMapping(value = "/signUp", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus registerUser(@RequestBody UserRegistration usr) {
@@ -33,7 +31,6 @@ public class RegistrationController {
 		regDAO.registerUser(usr, userDetails);
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
-	}
-	
+	}	
 	
 }
