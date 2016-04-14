@@ -35,7 +35,8 @@ public class UserDetails {
 	private String bowling;
 	private String batting;
 	private String friends;
-	
+	private String status;
+		
 	public long getUserId() {
 		return userId;
 	}
@@ -128,4 +129,18 @@ public class UserDetails {
 	public void setFriends(String friends) {
 		this.friends = friends;
 	}
+	
+	/**
+	 * @return the status
+	 */
+	public String getStatus() {
+		return status;
+	}
+	/**
+	 * @param status the status to set
+	 */
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
 }

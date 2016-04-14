@@ -2,6 +2,9 @@ package com.coeuz.cricbounz.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,12 +56,12 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/getuser", method = RequestMethod.GET)
-	public @ResponseBody UserDetails getUserdetails(@RequestParam("userId") long userId) {
+	public @ResponseBody UserDetails getUserdetails(@RequestParam("userid") long userId) {
 		logger.info("Start getUserdetails user details.");
 		UserDetails userDetails = userDAO.getUserDetails(userId);
 		return userDetails;
 	}
-
+	
 	@RequestMapping(value = "/savepost", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus savePost(@RequestBody PostDetails postDetails) {
 		logger.info("Start savepost.");
@@ -67,7 +70,29 @@ public class UserController {
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
 	}
-		
+	
+	@RequestMapping(value = "/getPostDetails", method = RequestMethod.GET)
+	public @ResponseBody List<PostDetails> getPostDetails(HttpServletRequest request) {
+		logger.info("Start getPostDetails");
+		ResponseStatus responseStatus = new ResponseStatus();
+		Long userId = (Long)request.getSession().getAttribute("userId");
+		List<PostDetails> postdetailsList = postDAO.getPostDetails(userId);
+		responseStatus.setResponseStatus("Success");
+		return postdetailsList;
+	}
+	
+	@RequestMapping(value = "/deletepost", method = RequestMethod.POST)
+	public @ResponseBody ResponseStatus deletepostDetails(HttpServletRequest request,@RequestBody PostDetails postDetails) {
+		logger.info("Start deletepostDetails");
+		ResponseStatus responseStatus = new ResponseStatus();
+		Long userId = (Long)request.getSession().getAttribute("userId");
+		postDetails.setPostedUserId(userId);
+		postDetails.setStatus("D");
+		postDAO.deletePostDetails(postDetails);
+		responseStatus.setResponseStatus("Success");
+		return responseStatus;
+	}
+	
 	@RequestMapping(value = "/savecomment", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus saveComment(@RequestBody CommentDetails commentDetails) {
 		logger.info("Start saveComment");
@@ -77,6 +102,20 @@ public class UserController {
 		return responseStatus;
 	}
 	
+	
+	@RequestMapping(value = "/deletecomment", method = RequestMethod.POST)
+	public @ResponseBody ResponseStatus deleteComment(HttpServletRequest request, @RequestBody CommentDetails commentDetails) {
+		logger.info("Start deletecomment");
+		ResponseStatus responseStatus = new ResponseStatus();
+		Long userId = (Long)request.getSession().getAttribute("userId");
+		commentDetails.setCommentedById(userId);
+		commentDetails.setStatus("D");
+		commentDAO.saveCommentDetails(commentDetails);
+		responseStatus.setResponseStatus("Success");
+		return responseStatus;
+	}
+	
+	
 	@RequestMapping(value = "/savesharedetail", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus saveSharedetail(@RequestBody ShareDetails shareDetails) {
 		logger.info("Start saveSharedetails");
@@ -85,32 +124,27 @@ public class UserController {
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
 	}
-
-	@RequestMapping(value = "/getPostDetails", method = RequestMethod.GET)
-	public @ResponseBody List<PostDetails> getPostDetails(@RequestParam("userId") long userId) {
-		logger.info("Start getPostDetails");
-		ResponseStatus responseStatus = new ResponseStatus();
-		List<PostDetails> postdetailsList = postDAO.getPostDetails(userId);
-		responseStatus.setResponseStatus("Success");
-		return postdetailsList;
-	}
 	
-	@RequestMapping(value = "/deletepost", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus deletepostDetails(@RequestBody PostDetails postDetails) {
-		logger.info("Start deletepostDetails");
+	@RequestMapping(value = "/deletesharedetail", method = RequestMethod.POST)
+	public @ResponseBody ResponseStatus delteSharedetail(HttpServletRequest request,@RequestBody ShareDetails shareDetails) {
+		logger.info("Start deletesharedetail");
 		ResponseStatus responseStatus = new ResponseStatus();
-		postDAO.deletePostDetails(postDetails);
+		Long userId = (Long)request.getSession().getAttribute("userId");
+		shareDetails.setSharedById(userId);
+		shareDetails.setStatus("D");
+		shareDAO.saveShareDetails(shareDetails);
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
 	}
-		
+	
+	
 	@RequestMapping(value = "/likeandunlike", method = RequestMethod.POST)
-	public @ResponseBody List<PostDetails> saveLikeAndUnlike(@RequestBody PostDetails postDetails) {
+	public @ResponseBody ResponseStatus saveLikeAndUnlike(@RequestBody PostDetails postDetails) {
 		logger.info("Start saveLikeAndUnlike");
 		ResponseStatus responseStatus = new ResponseStatus();
-		List<PostDetails> updatedPostdetailsList = postDAO.saveLikeAndUnlike(postDetails);
-		responseStatus.setResponseStatus("Success");
-		return updatedPostdetailsList;
+		String status = postDAO.saveLikeAndUnlike(postDetails);
+		responseStatus.setResponseStatus(status);
+		return responseStatus;
 	}
 
 }

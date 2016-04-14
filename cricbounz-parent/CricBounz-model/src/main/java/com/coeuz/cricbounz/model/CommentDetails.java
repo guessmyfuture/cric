@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 @Entity
@@ -21,11 +22,11 @@ public class CommentDetails {
 	private long commentId;
 	private long postId;
 	private long commentedById;
-	private String commentedByImage;
 	private String content;
 	private Date  timestamp;
 	private String status;
-
+	@Transient
+	private String commentedByImage;
 	public long getCommentId() {
 		return commentId;
 	}
@@ -71,5 +72,6 @@ public class CommentDetails {
 	public void setStatus(String status) {
 		this.status = status;
 	}
+	
 		
 }

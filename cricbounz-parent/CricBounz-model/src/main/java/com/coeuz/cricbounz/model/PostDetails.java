@@ -38,7 +38,7 @@ public class PostDetails {
 	@Transient
 	private String likedStatus;
 	@Transient
-	private List<String> likedUserDetails;
+	private List<LikedUserDetails> likedUserDetails;
 		
 	public long getPostId() {
 		return postId;
@@ -120,33 +120,47 @@ public class PostDetails {
 		this.likedStatus = likedStatus;
 	}
 	
-	public List<String> getLikedUserDetails() {
+	public List<LikedUserDetails> getLikedUserDetails() {
 		return likedUserDetails;
 	}
-	public void setLikedUserDetails(List<String> likedUserDetails) {
+	public void setLikedUserDetails(List<LikedUserDetails> likedUserDetails) {
 		this.likedUserDetails = likedUserDetails;
 	}
 		
 	@OneToMany
     @JoinColumn(name="postId")
-    private Set<CommentDetails> commentDetailsList;
+    private List<CommentDetails> commentDetailsList;
 		
-	public Set<CommentDetails> getCommentDetailsList() {
+	/**
+	 * @return the commentDetailsList
+	 */
+	public List<CommentDetails> getCommentDetailsList() {
 		return commentDetailsList;
 	}
-	public void setCommentDetailsList(Set<CommentDetails> commentDetailsList) {
+	/**
+	 * @param commentDetailsList the commentDetailsList to set
+	 */
+	public void setCommentDetailsList(List<CommentDetails> commentDetailsList) {
 		this.commentDetailsList = commentDetailsList;
 	}
 	
 	@OneToMany
     @JoinColumn(name="postId")
-	private Set<ShareDetails> shareDetails;
-
-	public Set<ShareDetails> getShareDetails() {
-		return shareDetails;
+	private List<ShareDetails> shareDetailsList;
+	
+	/**
+	 * @return the shareDetailsList
+	 */
+	public List<ShareDetails> getShareDetailsList() {
+		return shareDetailsList;
 	}
-	public void setShareDetails(Set<ShareDetails> shareDetails) {
-		this.shareDetails = shareDetails;
+	/**
+	 * @param shareDetailsList the shareDetailsList to set
+	 */
+	public void setShareDetailsList(List<ShareDetails> shareDetailsList) {
+		this.shareDetailsList = shareDetailsList;
 	}
+	
 
+	
 }

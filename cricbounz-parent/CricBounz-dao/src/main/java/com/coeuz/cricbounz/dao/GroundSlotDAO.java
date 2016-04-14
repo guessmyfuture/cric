@@ -4,13 +4,11 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.coeuz.cricbounz.model.GroundBookingDetails;
 import com.coeuz.cricbounz.model.GroundSlots;
 
@@ -42,7 +40,7 @@ public class GroundSlotDAO extends BaseDAO<GroundSlots, Integer> {
 		SimpleDateFormat df2 = new SimpleDateFormat("dd/MM/yyyy");
 		String dateText = df2.format(new Date(inputdate));
 		String slotsHql = "From GroundSlots g where g.groundId=" + groundId
-				+ " and  g.status= 0 and g.status= 1 and  g.bookedDate ='"+dateText+"'";
+				+ " and  g.status= 0 and g.status= 1 and  g.bookedDate ='" + dateText + "'";
 		Query slotsQuery = session.createQuery(slotsHql);
 		List<GroundSlots> groundSlotsList = (List<GroundSlots>) slotsQuery.list();
 		if (groundSlotsList != null && groundSlotsList.size() > 0) {
@@ -52,8 +50,8 @@ public class GroundSlotDAO extends BaseDAO<GroundSlots, Integer> {
 				} else {
 					slotDetails.add(groundSlots);
 				}
-			} 
-			
+			}
+
 		}
 		return slotDetails;
 	}

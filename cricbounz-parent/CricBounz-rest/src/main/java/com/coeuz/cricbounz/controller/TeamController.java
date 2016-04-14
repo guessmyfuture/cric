@@ -21,7 +21,7 @@ public class TeamController {
 	@Autowired
 	private TeamDAO teamDAO;
 		
-	@RequestMapping(value = "/teamdetails", method = RequestMethod.POST)
+	@RequestMapping(value = "/createteam", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus registerTeamDetails(@RequestBody TeamDetails teamDetails) {
 		logger.info("Start registerTeamDetails method");
 		ResponseStatus responseStatus = new ResponseStatus();

@@ -24,6 +24,8 @@ public class CommentDAO extends BaseDAO <CommentDetails, Integer> {
 		return commentDetails; 
 	}
 	
+	
+	
 
 
 }

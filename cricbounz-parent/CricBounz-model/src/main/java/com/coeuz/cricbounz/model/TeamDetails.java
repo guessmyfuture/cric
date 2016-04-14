@@ -17,9 +17,9 @@ public class TeamDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="Id")
+	@Column(name="teamID")
 
-	private long id;
+	private long teamID;
 	private String name;
 	private String city;
 	private String area;
@@ -34,12 +34,6 @@ public class TeamDetails {
 	private String status;
 	
 	
-	public long getId() {
-		return id;
-	}
-	public void setId(long id) {
-		this.id = id;
-	}
 	public String getName() {
 		return name;
 	}
@@ -111,6 +105,19 @@ public class TeamDetails {
 	}
 	public void setStatus(String status) {
 		this.status = status;
+	}
+	
+	/**
+	 * @return the teamID
+	 */
+	public long getTeamID() {
+		return teamID;
+	}
+	/**
+	 * @param teamID the teamID to set
+	 */
+	public void setTeamID(long teamID) {
+		this.teamID = teamID;
 	}
 	
 

@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
@@ -25,8 +26,10 @@ public class ShareDetails {
     private String sharedType;
     private String sharedConetnt;
     private Date  timestamp;
-    private String status;  
-    
+    private String status;
+    @Transient
+    private String sharedUserImage;
+    	
 	public long getShareId() {
 		return shareId;
 	}
@@ -69,7 +72,12 @@ public class ShareDetails {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
+	public String getSharedUserImage() {
+		return sharedUserImage;
+	}
+	public void setSharedUserImage(String sharedUserImage) {
+		this.sharedUserImage = sharedUserImage;
+	}
     
     
 }
