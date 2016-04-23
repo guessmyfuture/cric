@@ -20,15 +20,7 @@ userApp.controller("viewUserProfileCtrl", function ($scope,$rootScope,$routePara
 
 
 
-userApp.controller("userCtrl", function ($scope,$rootScope,$http) {
-	
-	$scope.$on('$locationChangeStart', function(event) {
-	    var answer = confirm("Are you sure you want to leave this page?")
-	    if (!answer) {
-	        event.preventDefault();
-	    }
-	});
-	
+userApp.controller("userCtrl", function ($scope,$rootScope,$http) {	
 	
     $scope.RH = {
         "id": "1",
