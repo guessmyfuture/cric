@@ -44,6 +44,36 @@ groundApp.controller("CreateNewTourmentCtrl", function ($scope, $http) {
     };
 });
 
+
+angular.module('myApp', ['ngAnimate', 'ui.bootstrap']);
+angular.module('myApp').controller('dateController', function ($scope) {
+    $scope.today = function () {
+        $scope.dt = new Date();
+    };
+    $scope.mindate = new Date();
+    $scope.dateformat="MM/dd/yyyy";
+    $scope.today();
+    $scope.showcalendar = function ($event) {
+        $scope.showdp = true;
+    };
+    $scope.showdp = false;
+});
+
+angular.module('myApp', ['ngAnimate', 'ui.bootstrap']);
+angular.module('myApp').controller('myCntrl', function ($scope) {
+    $scope.today = function () {
+        $scope.dt = new Date();
+    };
+    $scope.mindate = new Date();
+    $scope.dateformat="MM/dd/yyyy";
+    $scope.today();
+    $scope.showcalendar = function ($event) {
+        $scope.showdp = true;
+    };
+    $scope.showdp = false;
+});
+
+/*
 groundApp.controller("BookGroundCtrl", function ($scope, $http) {   
     $scope.postBookGround = function () {        
         alert('Posted '+$scope.selectBallId);
@@ -73,4 +103,4 @@ groundApp.controller("BookGroundCtrl", function ($scope, $http) {
                             "<hr />config: " + config;
                 });
     };
-});
+});*/

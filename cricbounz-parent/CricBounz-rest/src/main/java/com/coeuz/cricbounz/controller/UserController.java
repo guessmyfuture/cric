@@ -1,10 +1,9 @@
 package com.coeuz.cricbounz.controller;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.coeuz.cricbounz.dao.CommentDAO;
 import com.coeuz.cricbounz.dao.PostDAO;
 import com.coeuz.cricbounz.dao.ShareDAO;
@@ -56,27 +54,52 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/getuser", method = RequestMethod.GET)
-	public @ResponseBody UserDetails getUserdetails(@RequestParam("userid") long userId) {
-		logger.info("Start getUserdetails user details.");
+	public @ResponseBody UserDetails getUserdetailsByUserID(@RequestParam("userid") long userId) {
+		logger.info("Start getUserdetailsByUserID user details.");
+		UserDetails userDetails = userDAO.getUserDetails(userId);
+		return userDetails;
+	}	
+	
+	@RequestMapping(value = "/getcurrentuser", method = RequestMethod.GET)
+	public @ResponseBody UserDetails getCurrentUserdetailsByUserID(HttpServletRequest request) {
+		logger.info("Start getCurrentUserdetailsByUserID user details.");		
+		System.out.println("Session Current User id :"+request.getSession().getAttribute("userId"));
+		String id=(String)request.getSession(false).getAttribute("userId");
+		id=id.trim();		
+		Long userId = Long.parseLong(id);
 		UserDetails userDetails = userDAO.getUserDetails(userId);
 		return userDetails;
 	}
 	
 	@RequestMapping(value = "/savepost", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus savePost(@RequestBody PostDetails postDetails) {
+	public @ResponseBody PostDetails savePost(HttpServletRequest request,@RequestBody PostDetails postDetails) {
 		logger.info("Start savepost.");
+		String id=(String)request.getSession(false).getAttribute("userId");
+		id=id.trim();		
+		Long userId = Long.parseLong(id);
+		postDetails.setPostedUserId(userId);
+		postDetails.setTimestamp(new Date());
+		postDetails.setStatus("A");
+		
+		
 		ResponseStatus responseStatus = new ResponseStatus();
 		postDAO.savePostDetails(postDetails);
 		responseStatus.setResponseStatus("Success");
-		return responseStatus;
+		//return responseStatus;
+		return postDetails;
 	}
 	
 	@RequestMapping(value = "/getPostDetails", method = RequestMethod.GET)
-	public @ResponseBody List<PostDetails> getPostDetails(HttpServletRequest request) {
+	public @ResponseBody List<PostDetails> getPostDetails(HttpServletRequest request,@RequestParam("limit")int limit,@RequestParam("offset")int offset) {
+		
+		System.out.println("Lazy Loading-- Limit="+limit+" Offset="+offset);
+		
 		logger.info("Start getPostDetails");
-		ResponseStatus responseStatus = new ResponseStatus();
-		Long userId = (Long)request.getSession().getAttribute("userId");
-		List<PostDetails> postdetailsList = postDAO.getPostDetails(userId);
+		ResponseStatus responseStatus = new ResponseStatus();				
+		String id=(String)request.getSession(false).getAttribute("userId");
+		id=id.trim();		
+		Long userId = Long.parseLong(id);		
+		List<PostDetails> postdetailsList = postDAO.getPostDetails(userId,limit,offset);
 		responseStatus.setResponseStatus("Success");
 		return postdetailsList;
 	}
@@ -93,58 +116,56 @@ public class UserController {
 		return responseStatus;
 	}
 	
-	@RequestMapping(value = "/savecomment", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus saveComment(@RequestBody CommentDetails commentDetails) {
+	/*@RequestMapping(value = "/savecomment", method = RequestMethod.POST)
+	public @ResponseBody ResponseStatus saveComment(HttpServletRequest request,@RequestBody CommentDetails commentDetails) {
 		logger.info("Start saveComment");
-		ResponseStatus responseStatus = new ResponseStatus();
-		commentDAO.saveCommentDetails(commentDetails);
-		responseStatus.setResponseStatus("Success");
-		return responseStatus;
-	}
-	
-	
-	@RequestMapping(value = "/deletecomment", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus deleteComment(HttpServletRequest request, @RequestBody CommentDetails commentDetails) {
-		logger.info("Start deletecomment");
 		ResponseStatus responseStatus = new ResponseStatus();
 		Long userId = (Long)request.getSession().getAttribute("userId");
 		commentDetails.setCommentedById(userId);
-		commentDetails.setStatus("D");
 		commentDAO.saveCommentDetails(commentDetails);
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
+	}*/
+	
+	@RequestMapping(value = "/savecomment", method = RequestMethod.POST)
+	public @ResponseBody CommentDetails saveComment(HttpServletRequest request,@RequestBody CommentDetails commentDetails) {
+		logger.info("Start saveComment");
+		ResponseStatus responseStatus = new ResponseStatus();
+		commentDetails.setTimestamp(new Date());		
+		Long userId = (long)Long.parseLong(request.getSession().getAttribute("userId")+"".trim());
+		commentDetails.setCommentedById(userId);
+		commentDAO.saveCommentDetails(commentDetails);
+		responseStatus.setResponseStatus("Success");
+		return commentDetails;
 	}
-	
-	
+		
 	@RequestMapping(value = "/savesharedetail", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus saveSharedetail(@RequestBody ShareDetails shareDetails) {
+	public @ResponseBody ResponseStatus saveSharedetail(HttpServletRequest request,@RequestBody ShareDetails shareDetails) {
 		logger.info("Start saveSharedetails");
 		ResponseStatus responseStatus = new ResponseStatus();
-		shareDAO.saveShareDetails(shareDetails);
-		responseStatus.setResponseStatus("Success");
-		return responseStatus;
-	}
-	
-	@RequestMapping(value = "/deletesharedetail", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus delteSharedetail(HttpServletRequest request,@RequestBody ShareDetails shareDetails) {
-		logger.info("Start deletesharedetail");
-		ResponseStatus responseStatus = new ResponseStatus();
-		Long userId = (Long)request.getSession().getAttribute("userId");
+		Long userId = Long.parseLong((request.getSession().getAttribute("userId")+"").trim());		
 		shareDetails.setSharedById(userId);
-		shareDetails.setStatus("D");
 		shareDAO.saveShareDetails(shareDetails);
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
 	}
-	
-	
+		
 	@RequestMapping(value = "/likeandunlike", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus saveLikeAndUnlike(@RequestBody PostDetails postDetails) {
+	public @ResponseBody Boolean saveLikeAndUnlike(HttpServletRequest request,@RequestBody PostDetails postDetails) {
 		logger.info("Start saveLikeAndUnlike");
+		postDetails.setLikedById((String)request.getSession().getAttribute("userId"));
+		Boolean status = postDAO.saveLikeAndUnlike(postDetails);
+		return status;
+	}
+	
+	@RequestMapping(value = "/getUserListsByName", method = RequestMethod.GET)
+	public @ResponseBody List<UserDetails> getUsersbyName(HttpServletRequest request,@RequestParam("searchText")String searchText) {
+		logger.info("Start Users List");
 		ResponseStatus responseStatus = new ResponseStatus();
-		String status = postDAO.saveLikeAndUnlike(postDetails);
-		responseStatus.setResponseStatus(status);
-		return responseStatus;
+		List<UserDetails> userList = userDAO.getUsersByName(searchText);
+		responseStatus.setResponseStatus("Success");
+		return userList; 
 	}
 
 }
+

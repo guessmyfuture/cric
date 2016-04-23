@@ -33,7 +33,7 @@ public class GroundSlotDAO extends BaseDAO<GroundSlots, Integer> {
 		return groundSlots;
 	}
 
-	public List<GroundSlots> getAvailableGroundSlots(long groundId, long inputdate) {
+	public List<GroundSlots> getAvailableGroundSlots(long groundId, String inputdate) {
 		List<GroundSlots> slotDetails = new ArrayList<GroundSlots>();
 		session = getSessionFactory().openSession();
 		session.beginTransaction();
@@ -66,8 +66,6 @@ public class GroundSlotDAO extends BaseDAO<GroundSlots, Integer> {
 		if (groundBookingList != null && groundBookingList.size() > 0) {
 			GroundBookingDetails bookingDetails = groundBookingList.get(0);
 			slots.setSlotId(slotId);
-			slots.setBookedBy(bookingDetails.getBookedBy());
-			slots.setTeamAId(bookingDetails.getTeamAId());
 			availableSlotDetails.add(slots);
 		}
 		return availableSlotDetails;

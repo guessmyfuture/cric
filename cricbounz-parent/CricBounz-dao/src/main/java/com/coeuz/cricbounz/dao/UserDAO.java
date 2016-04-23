@@ -6,6 +6,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
@@ -44,6 +45,17 @@ public class UserDAO extends BaseDAO <UserDetails, Integer> {
 		}
 		return userId;
 	}
-		
+	
+	/*jai*/
+	public List<UserDetails> getUsersByName(String text)
+	{		
+		Session session = getSessionFactory().openSession();
+		Criteria cr = session.createCriteria(UserDetails.class);		
+		cr.add(Restrictions.or(Restrictions.ilike("name", text, MatchMode.ANYWHERE),
+				Restrictions.or((Restrictions.ilike("profileName", text, MatchMode.ANYWHERE)),
+						(Restrictions.ilike("email", text, MatchMode.ANYWHERE)))));
+	List<UserDetails> userLists = cr.list();		
+		return userLists;
+	}		
 	
 }

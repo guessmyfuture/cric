@@ -5,6 +5,7 @@
  */
 
 var teamApp = angular.module('teamModule', []);
+
 teamApp.controller('ballTypeCtrl', function ($scope, $http) {
     $scope.addedBallTypes = [];
     var tempBallTypes = [];
@@ -37,11 +38,38 @@ teamApp.controller('ballTypeCtrl', function ($scope, $http) {
 });
 
 
-teamApp.controller('viewMyTeamCtrl', function ($scope, $http) {
-    $http.get("json/viewMyTeam.json")
+
+teamApp.controller('detailTeamViewCtrl', function ($scope, $routeParams, $http) {
+    //alert($routeParams.teamId);
+    $http.get('rest/viewdetailteam/' + $routeParams.teamId)
+            .then(function (res) {
+                $scope.myTeam = res.data;
+                //alert(angular.toJson($scope.myTeam));
+            });
+});
+
+
+teamApp.controller('viewTeamsCtrl', function ($scope, $http) {
+    $http.get('rest/allteams/')
+            .then(function (res) {
+                $scope.allTeams = res.data;
+            });
+});
+
+
+teamApp.controller('viewMyTeamCtrl', function ($scope, $routeParams, $http, $rootScope) {
+    /*$http.get("json/viewMyTeam.json")
+     .then(function (response) {
+     $scope.myTeam = response.data;
+     });*/
+    $http.get("rest/myteam/" + $rootScope.loggedInUserId)
             .then(function (response) {
                 $scope.myTeam = response.data;
-
+            });
+    $http.get("rest//getcurrentuser/" + $routeParams.userId)
+            .then(function (response) {
+                $scope.userDetail = response.data;
+                //alert(angular.toJson($scope.userDetail));
             });
 });
 
@@ -60,37 +88,46 @@ teamApp.controller('bowlingCareerCtrl', function ($scope, $http) {
             });
 });
 
-teamApp.controller("CreateTeamController", function ($scope, $http) {
+teamApp.controller("CreateTeamController", function ($scope, $http, $rootScope) {
     //  $scope.addedBallTypes = [];
     $scope.addedUserListIds = [];
     $scope.files = [];
     $scope.postCreateTeamData = function () {
 
-        if ($scope.addedUserListIds.length < 11)
+        /*if ($scope.addedUserListIds.length < 11)
         {
             console.warn('You Should Add Minimum 11 Players');
-        }
-
-        /*var data = {
-         teamName: $scope.teamName,
-         captainName: $scope.captainName,
-         ballTypes: $scope.addedBallTypes,
-         area: $scope.area,
-         city: $scope.city,
-         imageUrl: $scope.files,
-         description: $scope.description,
-         userList: $scope.addedUserListIds
-         };*/
-        /* i am neglecting image url now*/
-        var data = {
-            teamName: $scope.teamName,
-            captainName: $scope.captainName,
-            ballTypes: $scope.addedBallTypes,
-            area: $scope.area,
-            city: $scope.city,
-            description: $scope.description,
-            userList: $scope.addedUserListIds
-        }
+        }*/       
+    	var ballTypes="";
+    	angular.forEach($scope.ballTypes,function(value,key){    		
+    		if(key==0)
+    	    {
+    			ballTypes=value.ballType;
+    		}
+    		else
+    		{
+    			ballTypes=ballTypes+","+value.ballType;
+    		}
+    	});
+    	
+    	var data = {        	
+                name: $scope.name,            
+                city:$scope.city,            
+                area: $scope.area,
+                captain: $scope.captain,
+                contactNo:$scope.contactNo,
+                description:$scope.description,
+                ballType:ballTypes,
+                managers:$scope.managers,
+                pitchType:$scope.pitchType,
+                followersUid:$scope.followersUid,
+                pid:$scope.pid,
+                status:$scope.status        
+            }
+    	
+    	//alert(angular.toJson(data));
+    	
+    	
 
         console.warn("I am Sending to Rest Server: " + angular.toJson(data));
         var config = {
@@ -99,7 +136,8 @@ teamApp.controller("CreateTeamController", function ($scope, $http) {
             }
         }
 
-        $http.post('rest/postTeam/', data, config)
+
+        $http.post('service/rest/team/createteam', data, config)
                 .success(function (data, status, headers, config) {
                     $scope.PostDataResponse = data;
                 })
@@ -111,15 +149,6 @@ teamApp.controller("CreateTeamController", function ($scope, $http) {
                 });
     };
 });
-teamApp.controller('includeControl', ['$scope', function ($scope) {
-        $scope.activateTemplate = (getCookie("currentPage") == null ? 'partials/content.html' : getCookie("currentPage"));
-        //'partials/content.html'";
-        $scope.changeContentPage = function (pageUrl) {
-            $scope.activateTemplate = pageUrl;
-            document.cookie = "color=red";
-            document.cookie = "currentPage=" + $scope.activateTemplate;
-        }
-    }]);
 teamApp.directive('ngUnique', ['$http', function (async) {
         var self = this;
         self.user = {};
@@ -157,6 +186,8 @@ teamApp.controller('playerAutoCompleteCtrl', function ($scope, $http) {
     $scope.userList = {};
     //$scope.$parent.addedUserList = $scope.addedUserList;
     $scope.$parent.addedUserListIds = $scope.addedUserListIds;
+    
+    
     $scope.loadMe = function () {
         if ($scope.searchText == '')
         {
@@ -189,6 +220,45 @@ teamApp.controller('playerAutoCompleteCtrl', function ($scope, $http) {
             console.log('errror' + data + " Status:" + status);
         });
     };
+    
+    
+    $scope.loadUser = function (stext) {
+    	$scope.searchText=stext;    	
+        if ($scope.searchText == '')
+        {
+            $scope.userList = [];
+            return;
+        }
+        $http.get('rest/user/' + $scope.searchText).success(function (data, status, headers, config) {
+            console.log('success ' + data);
+            $scope.userList = data;
+            angular.forEach($scope.userList, function (obj) {
+                obj["addedStatus"] = false;
+                //obj.addedStatus = "";
+            });
+            for (i = 0; i < $scope.userList.length; i++)
+            {
+                var userList = $scope.userList[i]["userId"];
+                for (j = 0; j < $scope.addedUserList.length; j++)
+                {
+                    var addeduserList = $scope.addedUserList[j]["userId"];
+                    if (userList == addeduserList)
+                    {
+                        $scope.userList[i]["addedStatus"] = true;
+                        //$scope.userList.splice(i, 1);
+                        break;
+                    }
+                }
+            }
+        }).error(function (data, status, headers, config) {
+            //     $scope.message = 'Unexpected Error';
+            console.log('errror' + data + " Status:" + status);
+        });
+    };
+    
+    
+    
+    
     $scope.addList = function (index, userId) {
         var searchField = "userId";
         for (var i = 0; i < $scope.userList.length; i++)

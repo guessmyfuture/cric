@@ -108,18 +108,23 @@ public class PostDAO extends BaseDAO <PostDetails, Integer> {
 		return postDetailsList;
 	}
 	
-	public List<PostDetails> getPostDetails(long userId ){
+	public List<PostDetails> getPostDetails(long userId, int limit,int offset){
 		List<PostDetails> postDetailsList= new ArrayList<PostDetails>();
 		session = getSessionFactory().openSession();
 		session.beginTransaction();
 		
-		String publicShareHql="FROM PostDetails p WHERE p.postedUserId="+userId+" and p.postedType ='Public' and p.status='A' order by p.timestamp desc";
+		String publicShareHql="FROM PostDetails p WHERE p.postedUserId="+userId+" and p.postedType ='Public' or p.postedType ='Private' or p.postedType like '%"+userId+",%' and p.status='A' order by p.timestamp desc";
 		Query publicShareQuery = session.createQuery(publicShareHql);
+		publicShareQuery.setFirstResult(offset);
+		publicShareQuery.setMaxResults(limit);
+		
 		List<PostDetails> retrievedPostedToPublicList =(List<PostDetails>)publicShareQuery.list();
 		if(retrievedPostedToPublicList!=null && retrievedPostedToPublicList.size()>0){
 			List<PostDetails> publicPostDetailsList = populateUserNameAndImage(retrievedPostedToPublicList);
 			postDetailsList.addAll(publicPostDetailsList);	
 		}
+		
+		/*
 		String privateShareHql="FROM PostDetails p WHERE p.postedUserId="+userId+" and p.postedType ='Private' and p.status='A' order by p.timestamp desc";
 		Query privateShareQuery = session.createQuery(privateShareHql);
 		List<PostDetails> retrievedPostedToPrivateList =(List<PostDetails>)privateShareQuery.list();
@@ -134,7 +139,7 @@ public class PostDAO extends BaseDAO <PostDetails, Integer> {
 			List<PostDetails> friedndsPostDetailsList = populateUserNameAndImage(retrievedPostedToFriendsList);
 			postDetailsList.addAll(friedndsPostDetailsList);	
 		}
-			
+			*/
 		return postDetailsList;
 	}
 			
@@ -184,7 +189,7 @@ public class PostDAO extends BaseDAO <PostDetails, Integer> {
 					}
 				}
 				
-				if(postDetails.getLikedById()!=null){
+				if(postDetails.getLikedById().length()>0){
 					StringTokenizer likedUsersIds = new StringTokenizer(postDetails.getLikedById(),delimit);
 					List<LikedUserDetails> likedUserDetailsList = new ArrayList<LikedUserDetails>();
 					while(likedUsersIds.hasMoreElements()){
@@ -215,7 +220,7 @@ public class PostDAO extends BaseDAO <PostDetails, Integer> {
 	}
 	
 			
-	public String saveLikeAndUnlike(PostDetails postDetails){
+	public boolean saveLikeAndUnlike(PostDetails postDetails){
 		session = getSessionFactory().openSession();
 		Transaction transaction = session.beginTransaction();
 		List<PostDetails> updatedPostPostList = null;
@@ -224,14 +229,14 @@ public class PostDAO extends BaseDAO <PostDetails, Integer> {
 		String existingPostHql="FROM PostDetails p WHERE p.postId="+postDetails.getPostId();
 		Query existingPostQuery = session.createQuery(existingPostHql);
 		List<PostDetails> existingPostList =(List<PostDetails>)existingPostQuery.list();
-		session.flush();
-		transaction.commit();
-		session.close();
+		
+		boolean hasLikedbyUser = false;
+		
 		if(existingPostList !=null && existingPostList.size()>0){
-			session = getSessionFactory().openSession();
-			transaction = session.beginTransaction();
 			PostDetails existingPostDetails = existingPostList.get(0);
-			if(postDetails.getLikedStatus().equals("L")){
+			
+			/*
+				if(postDetails.getLikedStatus().equals("L")){
 				String existingLikedUserIds=existingPostDetails.getLikedById();
 				if(existingLikedUserIds==null){
 					existingLikedUserIds=postDetails.getLikedById()+",";	
@@ -245,43 +250,59 @@ public class PostDAO extends BaseDAO <PostDetails, Integer> {
 				appendingLikedUserIdQuery.setParameter("postId",postDetails.getPostId());
 				int updatStatus = appendingLikedUserIdQuery.executeUpdate();
 				if(updatStatus==1){
-					likedStatus="Like updated successfully";
+					likedStatus="L";
 			}
 				session.flush();
 				transaction.commit();
 				session.close();
 			}else{
-				String reconstructedLikedIds=""; 
-				StringTokenizer existingLikedUsersIds = new StringTokenizer(existingPostDetails.getLikedById(),delimit);
-				while(existingLikedUsersIds.hasMoreElements()){
-					String existinglikedUserId=(String)existingLikedUsersIds.nextElement();
-					if(!existinglikedUserId.equals(postDetails.getLikedById())){
-						if(reconstructedLikedIds==null){
-							reconstructedLikedIds= existinglikedUserId+",";	
-						}else{
-							reconstructedLikedIds=reconstructedLikedIds+existinglikedUserId+",";	
+			  */
+			String reconstructedLikedIds=""; 
+			boolean isUserIDExist = false;
+			
+			if(existingPostDetails.getLikedById().length()==0){
+				reconstructedLikedIds=reconstructedLikedIds+postDetails.getLikedById()+",";
+				hasLikedbyUser = true;
+			}else if(existingPostDetails.getLikedById().length()>=1){
+								
+				if(existingPostDetails.getLikedById().contains(postDetails.getLikedById())){
+					hasLikedbyUser = false;
+					StringTokenizer existingLikedUsersIds = new StringTokenizer(existingPostDetails.getLikedById(),delimit);
+					while(existingLikedUsersIds.hasMoreElements()){
+						String existinglikedUserId=(String)existingLikedUsersIds.nextElement();
+						if(!existinglikedUserId.equals(postDetails.getLikedById())){
+							if(reconstructedLikedIds==null){
+								reconstructedLikedIds= existinglikedUserId+",";	
+							}
+							else{
+								reconstructedLikedIds=reconstructedLikedIds+existinglikedUserId+",";	
+								
+							}
 						}
+											
 					}
+					
+					
+				}else{
+					
+					reconstructedLikedIds = existingPostDetails.getLikedById()+postDetails.getLikedById()+",";
+					hasLikedbyUser = true;
 				}
-				session = getSessionFactory().openSession();
-				transaction = session.beginTransaction();
-				String appendingLikedUserIdHql="UPDATE PostDetails p set p.likedById=:likedById where p.postId=:postId";
-				Query unlikedUserIdRemoveQuery = session.createQuery(appendingLikedUserIdHql);
-				unlikedUserIdRemoveQuery.setParameter("likedById",reconstructedLikedIds);
-				unlikedUserIdRemoveQuery.setParameter("postId",postDetails.getPostId());
-				int updateStatus = unlikedUserIdRemoveQuery.executeUpdate();
-				if(updateStatus==1){
-					likedStatus="UnLike updated successfully";
-				}
+					
+			}
+			
+			String likedUserIdHql="UPDATE PostDetails p set p.likedById=:likedById where p.postId=:postId";
+			Query likedUserIdQuery = session.createQuery(likedUserIdHql);
+			likedUserIdQuery.setParameter("likedById",reconstructedLikedIds);
+			likedUserIdQuery.setParameter("postId",postDetails.getPostId());
+			int updateStatus = likedUserIdQuery.executeUpdate();
+			
 				session.flush();
 				transaction.commit();
 				session.close();
-			}
-									 
-		}	
+			}				
 			
-		return likedStatus;
-	}
-	
+		return hasLikedbyUser;
+	}	
 	
 }

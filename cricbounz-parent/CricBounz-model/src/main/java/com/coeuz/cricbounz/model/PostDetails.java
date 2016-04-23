@@ -1,5 +1,6 @@
 package com.coeuz.cricbounz.model;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -38,7 +39,7 @@ public class PostDetails {
 	@Transient
 	private String likedStatus;
 	@Transient
-	private List<LikedUserDetails> likedUserDetails;
+	private List<LikedUserDetails> likedUserDetails=new ArrayList<LikedUserDetails>();
 		
 	public long getPostId() {
 		return postId;
@@ -129,7 +130,7 @@ public class PostDetails {
 		
 	@OneToMany
     @JoinColumn(name="postId")
-    private List<CommentDetails> commentDetailsList;
+    private List<CommentDetails> commentDetailsList=new ArrayList<CommentDetails>();
 		
 	/**
 	 * @return the commentDetailsList
@@ -146,7 +147,7 @@ public class PostDetails {
 	
 	@OneToMany
     @JoinColumn(name="postId")
-	private List<ShareDetails> shareDetailsList;
+	private List<ShareDetails> shareDetailsList=new ArrayList<ShareDetails>();;
 	
 	/**
 	 * @return the shareDetailsList

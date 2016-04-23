@@ -24,10 +24,8 @@ public class GroundBookingDetailsDAO extends BaseDAO <GroundBookingDetails, Inte
 	public void addGroundBookingDetails(GroundBookingDetails bookingDetails){
 		long slotId=bookingDetails.getSlotId();
 		GroundSlots slot = groundSlotDAO.getGroundSlotDetails(slotId);
-		int status=+1;
 		Date bookedDate = new Date();
-		slot.setStatus(status);
-		slot.setBookedDate(bookedDate);
+		slot.setStatus(0);
 		saveorUpdate(bookingDetails);
 		
 	}

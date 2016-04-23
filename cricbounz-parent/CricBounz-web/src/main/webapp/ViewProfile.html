@@ -1,23 +1,27 @@
-<div class="col-md-6">
+<div class="col-md-6" ng-controller="dashBoardCtrl">
 
     <fieldset><legend>Profile</legend>
         <table class="table table-borderless">
+            <tr ng-show="false">
+              <td colspan='2'>{{user | json}}</td>
+            </tr>
             <tr>
+            
                 <th>Name:</th>
-                <th>SenthiKumar</th></tr>
+                <th>{{user.name}}</th></tr>
             <tr>
                 <th>DOB</th>
-                <th>24-04-1985</th>
+                <th>{{user.dob}}</th>
             </tr>
             <tr>
                 <th>Team</th>
                 <th>UnPredictable Guys</th></tr>
             <tr>
                 <th>Batting Style</th>
-                <th>Right-handed</th></tr>
+                <th>{{user.battingStyle}}</th></tr>
             <tr>
                 <th>Bowling Style</th>
-                <th>Right-arm medium</th>
+                <th>{{user.bowlingStyle}} ({{user.bowlingType}})</th>
             </tr>
         </table>
     </fieldset>

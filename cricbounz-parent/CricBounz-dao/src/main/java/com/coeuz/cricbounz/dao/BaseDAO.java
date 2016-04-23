@@ -72,7 +72,6 @@ public class BaseDAO<T, PK extends Serializable> implements IBaseDAO<T, PK> {
         session.close();
         return list;
     }
-
     
     
     /**
@@ -103,6 +102,7 @@ public class BaseDAO<T, PK extends Serializable> implements IBaseDAO<T, PK> {
         return entity;
     }
 
+    
 
     /**
      * {@inheritDoc}

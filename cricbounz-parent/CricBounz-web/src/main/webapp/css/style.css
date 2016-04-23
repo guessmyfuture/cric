@@ -41,11 +41,11 @@ body{
     background-color: #334F8C;
 }
 .navbar-default .navbar-nav>li>a:focus, .navbar-default .navbar-nav>li>a:hover {
-   	color: #fff;
+    color: #fff;
     background-color: #334F8C;
 }
 .navbar-form .form-control{
-	width: 400px;
+    width: 400px;
 }
 .navbar-default .navbar-nav>.open>a, .navbar-default .navbar-nav>.open>a:focus, .navbar-default .navbar-nav>.open>a:hover {
     color: #060D48;
@@ -82,61 +82,98 @@ body{
 }
 /*#Navigation*/
 
+/*div box*/
+.box {
+    padding: 7px 7px;
+}
+.box .inner {
+    padding: 12px;
+    background: #fff none repeat scroll 0 0;
+    border: 2px solid #ddd;
+    border-radius: 6px;
+    box-shadow: 0 0 10px #ddd inset;
+    min-height: 110px;
+}
+
+
+
+.cls
+
+
+element.style {
+}
+.table > thead > tr > th, .table > tbody > tr > th, .table > tfoot > tr > th, .table > thead > tr > td, .table > tbody > tr > td, .table > tfoot > tr > td {
+    border: none;
+}
+.table-condensed>thead>tr>th, .table-condensed>tbody>tr>th, .table-condensed>tfoot>tr>th, .table-condensed>thead>tr>td, .table-condensed>tbody>tr>td, .table-condensed>tfoot>tr>td {
+    padding: 5px;
+}
+.table>thead>tr>th, .table>tbody>tr>th, .table>tfoot>tr>th, .table>thead>tr>td, .table>tbody>tr>td, .table>tfoot>tr>td {
+    padding: 8px;
+    line-height: 1.428571429;
+    vertical-align: top;
+    border-top: 1px solid #ddd;
+}
+.borderless td, .borderless th {
+    border: none;
+}
+
+
 /*Comments*/
 
 .thumbnail-post{
-	padding: 0
+    padding: 0
 }
 .title-post{
-	color: rgb(58, 87, 149);
-	font-weight: bold;
+    color: rgb(58, 87, 149);
+    font-weight: bold;
 }
 .links-post{
-	border-top: 1px solid #ddd;
+    border-top: 1px solid #ddd;
     padding: 9px;
     background: rgb(246, 247, 248);
 }
 .link-post, .link-post:hover {
-	font-weight: bold;
-	padding: 0 5px;
-	color: rgb(127, 127, 127);
+    font-weight: bold;
+    padding: 0 5px;
+    color: rgb(127, 127, 127);
 }
 .time-post:after{
-	font-family:'FontAwesome';
-	content: "\f017";
-	padding-left: 5px;
+    font-family:'FontAwesome';
+    content: "\f017";
+    padding-left: 5px;
 }
 .image-post{
-	display: block;
-	width: 50px;
-	height: 50px;
+    display: block;
+    width: 50px;
+    height: 50px;
 }
 .image-post-media{
-	display: block;
-	width: 100
+    display: block;
+    width: 100
 }
 .link-post.active{
-	color: #5890ff !important;
+    color: #5890ff !important;
 }
 .image-post-full{
-	width: 100% !important;
+    width: 100% !important;
     height: 200px;
     display: block;
     padding: 0;
     margin: 0;
 }
 .nav-grand-profile{
-	border-top: 1px solid #ddd;
+    border-top: 1px solid #ddd;
 }
 .nav-grand-profile li > a{
-	border-radius: 0;
-	color: #3b5998;
-	font-weight: bold;
-	border-right: 1px solid #e9eaed;
-	border-left: 1px solid #e9eaed;
+    border-radius: 0;
+    color: #3b5998;
+    font-weight: bold;
+    border-right: 1px solid #e9eaed;
+    border-left: 1px solid #e9eaed;
 }
 .nav-grand-profile li > a:hover{
-	background: #f6f7f8;
+    background: #f6f7f8;
     text-decoration: none
 }
 .nav-grand-profile >li+li {
@@ -147,14 +184,14 @@ body{
     background-color: transparent;
 }
 .thumbnail-grand-profile{
-	padding: 0
+    padding: 0
 }
 .caption-grand-profile{
-	position: absolute;
-	top: 0;
+    position: absolute;
+    top: 0;
 }
 .title-grand-profile{
-	color: #fff;
+    color: #fff;
     text-rendering: optimizelegibility;
     text-shadow: 0 0 3px rgba(0,0,0,.8);
 }
@@ -163,13 +200,13 @@ body{
 
 /*remove Padding no gutter*/
 .row.no-gutters {
-  margin-right: 0;
-  margin-left: 0;
+    margin-right: 0;
+    margin-left: 0;
 }
 .row.no-gutters > [class^="col-"],
 .row.no-gutters > [class*=" col-"] {
-  padding-right: 0;
-  padding-left: 0;
+    padding-right: 0;
+    padding-left: 0;
 }
 
 
@@ -184,9 +221,9 @@ body{
     padding:10px;
 }
 .titleBox label{
-  color:#444;
-  margin:0;
-  display:inline-block;
+    color:#444;
+    margin:0;
+    display:inline-block;
 }
 
 .commentBox {
@@ -248,8 +285,8 @@ body{
 
 .btn-group > .btn,
 .btn-group-vertical > .btn {
-  position: relative;
-  float: left;
+    position: relative;
+    float: left;
 }
 
 .dropdown {
@@ -267,21 +304,295 @@ body{
     color: #428bca;
 }
 .circle {
-	background: red;
-	border-radius:50%;
-	color: black;
-	display:table;
-	height: 200px;
-	font-weight: bold;
-	font-size: 1.2em;
-	width: auto;
-	margin:0 auto;
+    background: red;
+    border-radius:50%;
+    color: black;
+    display:table;
+    height: 200px;
+    font-weight: bold;
+    font-size: 1.2em;
+    width: auto;
+    margin:0 auto;
 }
 .circle span {
-	display:table-cell;
-	vertical-align:middle;
-	height:200px;
-	width:200px;
-	text-align:center;
-	padding: 0 15px;
+    display:table-cell;
+    vertical-align:middle;
+    height:200px;
+    width:200px;
+    text-align:center;
+    padding: 0 15px;
 }
+
+/*Image File Upload*/
+.container{
+    margin-top:20px;
+}
+.image-preview-input {
+    position: relative;
+    overflow: hidden;
+    margin: 0px;    
+    color: #333;
+    background-color: #fff;
+    border-color: #ccc;    
+}
+.image-preview-input input[type=file] {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+}
+.image-preview-input-title {
+    margin-left:2px;
+}
+
+
+/*Image Gallery with no Gutter*/
+.mbr-gallery .mbr-gallery-item {
+    position: relative;
+    /*display: inline-block;*/
+    padding-bottom: 30px;
+}
+.mbr-gallery .mbr-gallery-item > a {
+    position: relative;
+    display: block;
+    background: #fff;
+    outline: none;
+}
+.mbr-gallery .mbr-gallery-row {
+    margin-bottom: -30px;
+}
+.mbr-gallery .mbr-gallery-item img {
+    width: 100%;
+    opacity: 1;
+    -webkit-transition: .2s opacity ease-in-out;
+    transition: .2s opacity ease-in-out;
+}
+.mbr-gallery .mbr-gallery-item > a:hover img {
+    opacity: 0.9;
+}
+.mbr-gallery .mbr-gallery-item .icon {
+    position: absolute;
+    font-size: 30px;
+    top: 50%;
+    left: 50%;
+    color: #fff;
+    opacity: 0;
+    -webkit-transform: translateX(-50%) translateY(-50%);
+    transform: translateX(-50%) translateY(-50%);
+    -webkit-transition: .2s opacity ease-in-out;
+    transition: .2s opacity ease-in-out;
+}
+.mbr-gallery .mbr-gallery-item > a:hover .icon {
+    opacity: 1;
+}
+
+/* remove spacing */
+.mbr-gallery .mbr-gallery-row.no-gutter {
+    margin: 0;
+}
+.mbr-gallery .mbr-gallery-row.no-gutter .mbr-gallery-item {
+    padding: 0;
+}
+
+/* container */
+.mbr-gallery .container.mbr-gallery-layout-default {
+    padding: 93px 0;
+}
+
+/* fix horizontal scrollbar */
+.mbr-gallery .mbr-gallery-layout-default,
+.mbr-gallery .mbr-gallery-layout-article {
+    overflow: hidden;
+}
+
+/* article layout */
+.mbr-gallery .mbr-gallery-layout-article > div {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+
+/* lightbox */
+.mbr-gallery .modal {
+    position: fixed;
+    overflow: hidden;
+    padding-right: 0 !important;
+}
+.mbr-gallery .modal-body {
+    padding: 0;
+}
+.mbr-gallery .modal-body img {
+    width: 100%;
+}
+.mbr-gallery .modal .close {
+    position: absolute;
+    background-image: none;
+    font-size: 20px;
+    width: 54px;
+    height: 54px;
+    top: 20px;
+    right: 20px;
+    line-height: 54px;
+    opacity: 1;
+    color: #fff;
+    border: 2px solid #fff;
+    text-align: center;
+    text-shadow: none;
+    z-index: 5;
+    -webkit-transition: all 0.2s ease-in-out 0s;
+    -o-transition: all 0.2s ease-in-out 0s;
+    transition: all 0.2s ease-in-out 0s;
+}
+.mbr-gallery .modal .close:hover {
+    background: #fff;
+    color: #000;
+}
+
+/* modal back color opacity */
+.modal-backdrop.in {
+    opacity: 0.8;
+    filter: alpha(opacity=80);
+}
+
+@media (max-width: 768px) {
+    .mbr-gallery .modal-dialog {
+        margin: 10px auto;
+    }
+
+    .mbr-gallery .carousel-indicators,
+    .mbr-gallery .carousel-control,
+    .mbr-gallery .modal .close {
+        position: fixed;
+    }
+}
+
+/* fix fade in effect */
+.mbr-gallery .modal.fade .modal-dialog {
+    margin-top: -100px;
+    -webkit-transition: margin-top 0.3s ease-out;
+    -moz-transition: margin-top 0.3s ease-out;
+    -o-transition: margin-top 0.3s ease-out;
+    transition: margin-top 0.3s ease-out;
+}
+.mbr-gallery .modal.in .modal-dialog,
+.mbr-gallery .modal.fade .modal-dialog {
+    -webkit-transform: none;
+    -ms-transform: none;
+    -o-transform: none;
+    transform: none;
+}
+.mbr-gallery .modal.in .modal-dialog {
+    margin-top: 30px;
+}
+
+.less-padding {
+    padding: 2px !important;
+    margin: 0px !important;
+}
+.no-padding {
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+
+/*Like Icons Concepts*/
+
+.facebook-reaction { max-width: 100%; position: relative; margin-top:5px; }
+
+.like-btn { color: #777777; position: relative; cursor: pointer; padding: 20px 20px 0 0; }
+
+.like-btn:hover { color: #0db5e4; }
+
+.like-btn-default:before { font-family: FontAwesome; content: "\f087"; color: #FFFFFF; width: 22px; height: 22px; text-align: center; border-radius: 50%; font-weight: normal; line-height: 22px; background: #777777; }
+
+.like-btn-emo { display: inline-block; margin: 0 0px -3px 0; color: #FFFFFF; width: 22px; height: 22px; text-align: center; border-radius: 50%; font-weight: normal; line-height: 22px !important; background: #777777; }
+
+.reactions-box { height: 62px; width: auto; padding: 10px; position: absolute; top: -45px; left: 1px; box-shadow: 1px 1px 2px #cccccc, -1px 0px 2px #eeeeee; border-radius: 44px 44px; display: none; background: #ffffff; }
+
+.reaction { list-style-type: none; cursor: pointer; display: table-cell; position: relative; text-align: center; padding-left: 5px; padding-right: 5px; }
+
+.like-btn:hover .reactions-box { display: block; }
+
+.reaction-like::after { font-family: FontAwesome; content: "\f087"; font-size: 2em; color: rgb(100,160,240);}
+
+.reaction-love::after { font-family: FontAwesome; content: "\f004"; font-size: 2em; color: rgb(242, 82, 104);}
+
+.reaction-haha::after { font-family: FontAwesome; content: "\f118"; font-size: 2em; color: rgb(240, 186, 21);}
+
+.reaction-wow::after { font-family: FontAwesome; content: "\f005"; font-size: 2em; color: rgb(240, 186, 21);}
+
+.reaction-sad::after { font-family: FontAwesome; content: "\f119"; font-size: 2em; color: rgb(240, 186, 21);}
+
+.reaction-angry::after { font-family: FontAwesome; content: "\f11a"; font-size: 2em; color: rgb(247, 113, 75);}
+
+.like-btn:hover .reaction { opacity: 1; }
+
+.reaction:hover { transform: scale(1.3, 1.3); top: 2px }
+
+.reaction::before { display: inline-block; color: #ffffff; text-align: center; min-width: 80%; line-height: 17px; font-size: .6em; height: 17px; margin-left: auto; margin-right: auto; padding-left: 5px; padding-right: 5px; background-color: rgba(0, 0, 0, 1); border-radius: 20px; position: absolute; top: -20px; opacity: 0; transition: opacity .2s ease-in-out 0s; }
+
+.reaction:hover::before { opacity: 1 }
+
+.reaction-like::before { content: 'Like' }
+
+.reaction-love::before { content: 'Love' }
+
+.reaction-haha::before { content: 'Haha' }
+
+.reaction-wow::before { content: 'Wow' }
+
+.reaction-sad::before { content: 'Sad' }
+
+.reaction-angry::before { content: 'Angry' }
+
+.like-stat { margin-top: 10px; }
+
+.like-btn-like { background: rgb(100,160,240); color: #ffffff; }
+
+.like-btn-like:before { font-family: FontAwesome; content: "\f087"; }
+
+.like-btn-love { background: rgb(242, 82, 104); color: #ffffff; }
+
+.like-btn-love:before { font-family: FontAwesome; content: "\f004"; }
+
+.like-btn-haha { background: rgb(240, 186, 21); color: #ffffff; }
+
+.like-btn-haha:before { font-family: FontAwesome; content: "\f118"; }
+
+.like-btn-wow { background: rgb(240, 186, 21); color: #ffffff; }
+
+.like-btn-wow:before { font-family: FontAwesome; content: "\f005"; }
+
+.like-btn-sad { background: rgb(240, 186, 21); color: #ffffff; }
+
+.like-btn-sad:before { font-family: FontAwesome; content: "\f119"; }
+
+.like-btn-angry { background: rgb(247, 113, 75); color: #ffffff; }
+
+.like-btn-angry:before { font-family: FontAwesome; content: "\f11a"; }
+
+.like-btn-text-like { color: rgb(88, 144, 255); }
+
+.like-btn-text-wow, .like-btn-text-haha, .like-btn-text-sad { color: rgb(240, 186, 21) }
+
+.like-btn-text-love { color: rgb(242, 82, 104) }
+
+.like-btn-text-angry { color: rgb(247, 113, 75); }
+
+.like-emo > span { display: inline-block; margin: 0 -3px -3px 0px; width: 22px; height: 22px; border: 1px solid #EEE; border-radius: 50%; text-align: center; }
+
+.like-details { margin-left: 10px; color: #9197a3; font-size: 12px; }
+
+/*more Content*/
+.morecontent span {
+    display: none;
+}
+.morelink {
+    display: block;
+}
+

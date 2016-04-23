@@ -70,7 +70,7 @@
     </div>
     <div class="row">
         <div class="col-md-12">
-            <button class="btn btn-info btn-lg btn-success" data-toggle="modal" data-target="#playerModal"  ng-click="" ng-disabled="!startScore">Start Scoring</button>
+            <button class="btn btn-info btn-lg btn-success" data-toggle="modal" data-target="#playerModal"  ng-click="playerbModal = true;loadBatsmanList();loadBowlerList();" ng-disabled="!startScore">Start Scoring</button>
         </div>
     </div>
 
@@ -78,14 +78,14 @@
         <div class="panel with-nav-tabs panel-primary" style='margin-top:15px;'>
             <div class="panel-heading" style='border-color:#337ab7;background-color:#ffffff;'>
                 <ul class="nav nav-tabs navmen">
-                    <li class="active"><a href="#tab1primary" data-toggle="tab">Summary</a></li>
-                    <li><a href="#tab2primary" data-toggle="tab">First Innings</a></li>
-                    <li><a href="#tab3primary" data-toggle="tab">Second Innings</a></li>
+                    <li class="active"><a data-target="#summary_tab" data-toggle="tab">Summary</a></li>
+                    <li><a data-target="#innings1tab" data-toggle="tab">First Innings</a></li>
+                    <li><a data-target="#innings2tab" data-toggle="tab">Second Innings</a></li>
                 </ul>
             </div>
             <div class="panel-body">
                 <div class="tab-content" id="team">
-                    <div class="tab-pane fade in active" id="tab1primary">
+                    <div class="tab-pane fade in active" id="summary_tab">
                         <div class="row">
                             <span class="uneditable-input">United Arab Emirates</span>
                             <span class="uneditable-input" style='font-weight:bold'>81/9 (20/20 ov)</span><br>
@@ -126,35 +126,34 @@
                                     </tr>
                                 </table>
                                 <table class="table">
-                                    <thead style='font-weight:bold;'>
-                                    <td colspan="6">
-                                        <input ng-show="true" type="button" class="btn btn-lg btn-info pull-right"  data-toggle="modal" data-target="#bowlerModal" ng-click="loadBowlerList();" value="Add Bowler">
-                                    </td>
-                                    <tr>
-                                        <td>Bowler</td>
-                                        <td>Overs</td>
-                                        <td>Maiden</td>
-                                        <td>Runs</td>
-                                        <td>Wickets</td>
-                                        <td>Economy</td>
-                                    </tr>
+                                    <thead style='font-weight:bold;'>                                   
+                                        <tr>
+                                            <td>Bowler</td>
+                                            <td>Overs</td>
+                                            <td>Maiden</td>
+                                            <td>Runs</td>
+                                            <td>Wickets</td>
+                                            <td>Economy</td>
+                                        </tr>
                                     </thead>
-                                    <tr  style="background-color: #009688;color:#ffffff" title="Current Bowler">
-                                        <td style="color:#11C1F3;font-weight: bold;">{{currentBowler.name}}</td>
-                                        <td>{{currentBowler.over}}</td>
-                                        <td>{{currentBowler.maiden}}</td>
-                                        <td>{{currentBowler.runs}}</td>
-                                        <td>{{currentBowler.wickets}}</td>
-                                        <td>{{currentBowler.economy}}</td>                                       
-                                    </tr> 
-                                    <tr class="bg-info" ng-show="nextBowler.name">
-                                        <td>{{nextBowler.name}}</td>
-                                        <td>{{nextBowler.over}}</td>
-                                        <td>{{nextBowler.maiden}}</td>
-                                        <td>{{nextBowler.runs}}</td>
-                                        <td>{{nextBowler.wickets}}</td>
-                                        <td>{{nextBowler.economy}}</td>                                       
-                                    </tr>   
+                                    <tbody>
+                                        <tr  style="background-color: #009688;color:#ffffff" title="Current Bowler">
+                                            <td style="color:#11C1F3;font-weight: bold;">{{currentBowler.name}}</td>
+                                            <td>{{currentBowler.over}}</td>
+                                            <td>{{currentBowler.maiden}}</td>
+                                            <td>{{currentBowler.runs}}</td>
+                                            <td>{{currentBowler.wickets}}</td>
+                                            <td>{{currentBowler.economy}}</td>                                       
+                                        </tr> 
+                                        <tr class="bg-info" ng-show="nextBowler.name">
+                                            <td>{{nextBowler.name}}</td>
+                                            <td>{{nextBowler.over}}</td>
+                                            <td>{{nextBowler.maiden}}</td>
+                                            <td>{{nextBowler.runs}}</td>
+                                            <td>{{nextBowler.wickets}}</td>
+                                            <td>{{nextBowler.economy}}</td>                                       
+                                        </tr>  
+                                    </tbody>
                                 </table>
                             </div>
                         </div>
@@ -171,6 +170,7 @@
                                                      <span ng-show="sb.nbFlag" class="col-md-12" style='background-color:green;color:#FFFFFF;font-size:15px;border-radius: 50%;'>NB</span> -->
                                                     <img src="images/umpire_signs/wide.png" ng-show="sb.wideFlag" class="img-circle" alt="Wide" title="Wide"/>
                                                     <img src="images/umpire_signs/no_ball.png" ng-show="sb.nbFlag" class="img-circle" alt="NB" title="No Ball"/>
+                                                    <img src="images/umpire_signs/out.png" ng-show="sb.outFlag" class="img-circle" alt="OUT" title="OUT"/>
                                                 </div>                                               
                                             </div>
                                         </div>
@@ -187,7 +187,7 @@
                                             <input type="text" ng-show="false" ng-model="sb.wicket" ng-init="sb.wicket = false">
                                             <input type="text" ng-show="false" ng-model="sb.wicketType" ng-init="sb.wicketType = false">
                                             <input type="text" ng-show="false" ng-model="sb.run" ng-init="sb.run = ''">
-                                            <input type="text" size="2" class="form-control" maxlength="1" valid-number ng-model="sb.run" ng-focus="$parent.currentIndex = $index">                             
+                                            <input type="text" size="2" class="form-control" maxlength="1" valid-number ng-model="sb.run" ng-focus="currentIndex = $index">                             
                                         </div>
                                     </div>
                                 </div>
@@ -245,7 +245,7 @@
                                     <div class="col-md-4">
                                         <fieldset>
                                             <div class="col-md-12" style="padding:20px;padding-top:6px;padding-bottom:0px;">      
-                                                <button type="button" class="btn btn-primary btn-md center-block btn-block" ng-disabled="isDotBall"  ng-click="disableAllAction();addRunToScoreBox(0);">Dot Ball</button> 
+                                                <button type="button" class="btn btn-primary btn-md center-block btn-block" ng-disabled="isDotBall"  ng-click="disableAllAction();actionType = 'BYES';addRunToScoreBox(0);">Dot Ball</button> 
                                             </div>
                                             <div class="col-md-12" style="padding:20px;padding-top:6px;padding-bottom:0px;">                                          
                                                 <button type="button" ng-disabled="isScoredbyBatsman" class="btn btn-primary btn-md btn-block center-block" ng-click="disableAllAction();enableScoreButton('SBB');">Scored by Batsman</button>
@@ -282,27 +282,10 @@
                                                                 <option value="4">Retired out</option>
                                                             </select>
                                                         </div>
-                                                    </div>
-                                                    <div class="row" ng-show="wicketType==3">
-                                                        <div class="col-md-12">
-                                                            <form class="form-horizontal" role="form">
-                                                                <div class="form-group">                                                                    
-                                                                    <div class="col-sm-12" style="margin-top: 5px;">
-                                                                        <input type="text" class="form-control" ng-model="roRun" 
-                                                                               id="inputEmail3" placeholder="Enter The Run"/>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="form-group">
-                                                                    <div class="col-sm-offset-2 col-sm-10">
-                                                                        <button type="submit" class="btn btn-success" data-dismiss="modal" ng-click="addRunToScoreBox(roRun)">Update Run</button>
-                                                                    </div>
-                                                                </div>
-                                                            </form>          
-                                                        </div>
-                                                    </div>
+                                                    </div>                                                 
                                                     <div class="row">
                                                         <div class="col-md-12">
-                                                            <button type="button" data-toggle="modal"  class="btn btn-danger btn-lg center-block" style='margin-top:15px;' ng-click="currentBatsmanOut();"><i>OUT</i></button>
+                                                            <button type="button" data-toggle="modal"  class="btn btn-danger btn-lg center-block" style='margin-top:15px;' ng-click="isBatsManOut = true;currentBatsmanOut();"><i>OUT</i></button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -312,7 +295,7 @@
                             </fieldset>
                         </div>
                     </div>
-                    <div class="tab-pane fade" id="tab2primary">
+                    <div class="tab-pane fade" id="innings1tab">
                         <div class="row">
                             <div class="table-responsive">          
                                 <table class="table">
@@ -321,9 +304,9 @@
                                             <td align='center'>
                                                 Unpredictable Guy's(innings)
                                             </td>                                          
-                                            <!--<td align='center'>
-                                                Matches
-                                            </td >-->
+                                            <td align='center'>
+                                                Status
+                                            </td>
                                             <td align='center'>
                                                 Runs
                                             </td >
@@ -343,13 +326,32 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr class=""  ng-repeat="obm in innings1BatsManList">
-                                            <td align='center'>{{obm.name}}</td>
-                                            <td align='center'>{{obm.runs}}</td>
-                                            <td align='center'>{{obm.balls}}</td>
-                                            <td align='center'>{{obm.four}}</td>
-                                            <td align='center'>{{obm.six}}</td>
-                                            <td align='center'>{{obm.strikeRate}}</td>
+                                        <tr class="" style="background-color: #009688;color:#ffffff" title="current batsman" ng-hide="bmStrikerInnings1 | isEmpty">
+                                            <td style="color:#11C1F3;font-weight: bold;"><span class="icon-bat"></span>{{bmStrikerInnings1.name}}</td>
+                                            <td>Not Out</td>
+                                            <td>{{bmStrikerInnings1.runs}}</td>
+                                            <td>{{bmStrikerInnings1.balls}}</td>
+                                            <td>{{bmStrikerInnings1.four}}</td>
+                                            <td>{{bmStrikerInnings1.six}}</td>
+                                            <td>{{bmStrikerInnings1.strikeRate}}</td>
+                                        </tr> 
+                                        <tr class="bg-info" ng-hide="bmNonStrikerInnings1 | isEmpty">
+                                            <td>{{bmNonStrikerInnings1.name}}</td>
+                                            <td>Not Out</td>
+                                            <td>{{bmNonStrikerInnings1.runs}}</td>
+                                            <td>{{bmNonStrikerInnings1.balls}}</td>
+                                            <td>{{bmNonStrikerInnings1.four}}</td>
+                                            <td>{{bmNonStrikerInnings1.six}}</td>
+                                            <td>{{bmNonStrikerInnings1.strikeRate}}</td>
+                                        </tr> 
+                                        <tr class="bg-info"  ng-repeat="obm in innings1BatsManList">
+                                            <td>{{obm.name}}</td>
+                                            <td>Out</td>
+                                            <td>{{obm.runs}}</td>
+                                            <td>{{obm.balls}}</td>
+                                            <td>{{obm.four}}</td>
+                                            <td>{{obm.six}}</td>
+                                            <td>{{obm.strikeRate}}</td>
                                         </tr> 
                                     </tbody>
                                 </table>
@@ -360,11 +362,7 @@
                                         <tr style='font-weight:bold;background-color:#02a2df'>
                                             <td align='center'>
                                                 Bowlers
-                                            </td>
-                                            <td align='center'>
-
-                                            </td>
-
+                                            </td>                                            
                                             <td align='center'>
                                                 Overs
                                             </td >
@@ -393,194 +391,39 @@
 
                                             </td>
                                         </tr>
-                                    </thead>
+                                    </thead>                                    
                                     <tbody>
-
-                                    <td align='center'>
-                                        <a href="#">Abhishek</a>
-                                    </td>
-                                    <td align='center'>
-
-                                    </td>
-                                    <td align='center'>
-                                        <b>10</b>
-                                    </td>
-                                    <td align='center'>
-                                        0
-                                    </td>
-                                    <td align='center'>
-                                        65
-                                    </td>
-                                    <td align='center'>
-                                        2
-                                    </td>
-                                    <td align='center'>
-                                        19.6
-                                    </td>
-                                    <td align='center'>
-                                        9
-                                    </td>
-                                    <td align='center'>
-                                        6
-                                    </td>
-                                    <td align='center'>
-                                        2
-                                    </td>
-                                    <td align='center'>
-                                        (1w)
-                                    </td>
-                                    </tr>
-
-                                    <tr>
-
-                                        <td align='center'>
-                                            <a href="#">Mari Muthu</a>
-                                        </td>
-                                        <td align='center'>
-
-                                        </td>
-                                        <td align='center'>
-                                            <b>10   </b>
-                                        </td>
-                                        <td align='center'>
-                                            2
-                                        </td>
-                                        <td align='center'>
-                                            39
-                                        </td>
-                                        <td align='center'>
-                                            3
-                                        </td>
-                                        <td align='center'>
-                                            16.5
-                                        </td>
-                                        <td align='center'>
-                                            9
-                                        </td>
-                                        <td align='center'>
-                                            2
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td align='center'>
-                                            <a href="#"> MuthuKumar</a>
-                                        </td>
-                                        <td align='center'>
-
-                                        </td>
-                                        <td align='center'>
-                                            <b>5</b>
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            30
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            25
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            3
-                                        </td>
-                                        <td align='center'>
-                                            1
-                                        </td>
-                                        <td align='center'>
-                                            (2w)
-                                        </td>
-                                    </tr>
-                                    <tr>
-
-                                        <td align='center'>
-                                            <a href="#">AbhiRock</a>
-                                        </td>
-                                        <td align='center'>
-
-                                        </td>
-                                        <td align='center'>
-                                            <b>2</b>
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            15
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            21.25
-                                        </td>
-                                        <td align='center'>
-                                            3
-                                        </td>
-                                        <td align='center'>
-                                            22
-                                        </td>
-                                        <td align='center'>
-                                            1
-                                        </td>
-                                        <td align='center'>
-                                            (1w)
-                                        </td>
-                                    </tr>
-                                    <tr style="border-bottom:3px solid #D1EDFF;">
-
-                                        <td align='center'>
-                                            <a href="#">shek Gaur</a>
-                                        </td>
-                                        <td align='center'>
-
-                                        </td>
-                                        <td align='center'>
-                                            <b>1    </b>
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            5
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            29.59
-                                        </td>
-                                        <td align='center'>
-                                            1
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                        </td>
-                                    </tr>
+                                        <tr class="bg-info" ng-hide="currentBowlerInnings1 | isEmpty">                                            
+                                            <td>{{currentBowlerInnings1.name}}</td>
+                                            <td>{{currentBowlerInnings1.over}}</td>
+                                            <td>{{currentBowlerInnings1.maiden}}</td>
+                                            <td>{{currentBowlerInnings1.runs}}</td>
+                                            <td>{{currentBowlerInnings1.wickets}}</td>
+                                            <td>{{currentBowlerInnings1.economy}}</td>
+                                        </tr> 
+                                        <tr class="bg-info" ng-hide="nextBowlerInnings1 | isEmpty">                                            
+                                            <td>{{nextBowlerInnings1.name}}</td>
+                                            <td>{{nextBowlerInnings1.over}}</td>
+                                            <td>{{nextBowlerInnings1.maiden}}</td>
+                                            <td>{{nextBowlerInnings1.runs}}</td>
+                                            <td>{{nextBowlerInnings1.wickets}}</td>
+                                            <td>{{nextBowlerInnings1.economy}}</td>
+                                        </tr>   
+                                        <tr class="bg-info"  ng-repeat="obm in innings1BowlersList">                                            
+                                            <td> {{obm.name}}</td>
+                                            <td>{{obm.over}}</td>
+                                            <td>{{obm.maiden}}</td>
+                                            <td>{{obm.runs}}</td>
+                                            <td>{{obm.wickets}}</td>
+                                            <td>{{obm.economy}}</td>
+                                        </tr>                                     
                                     </tbody>
                                 </table>
                             </div>
                         </div>
                     </div>
 
-                    <div class="tab-pane fade" id="tab3primary">
+                    <div class="tab-pane fade" id="innings2tab">
                         <div class="row">
                             <div class="table-responsive">          
                                 <table class="table">
@@ -612,304 +455,38 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td align='center'>
-                                                <a href="#">ChandruRam</a>
-                                            </td>
-                                            <td align='center'>
-                                                c †Dhoni b Nehra
-                                            </td>
-                                            <td align='center'>
-                                                <b>100</b>
-                                            </td>
-                                            <td align='center'>
-                                                5
-                                            </td>
-                                            <td align='center'>
-                                                35
-                                            </td>
-                                            <td align='center'>
-                                                4
-                                            </td>
-                                            <td align='center'>
-                                                0
-                                            </td>
-                                            <td align='center'>
-                                                85
-                                            </td>
-
-                                        </tr>
-                                        <tr>
-                                            <td align='center'>
-                                                <a href="#">BalaKumaran</a>
-                                            </td>
-                                            <td align='center'>
-                                                c Ashwin b Pandya
-                                            </td>
-                                            <td align='center'>
-                                                <b>150</b>
-                                            </td>
-                                            <td align='center'>
-                                                6
-                                            </td>
-                                            <td align='center'>
-                                                225
-                                            </td>
-                                            <td align='center'>
-                                                5
-                                            </td>
-                                            <td align='center'>
-                                                1
-                                            </td>
-                                            <td align='center'>
-                                                78
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align='center'>
-                                                <a href="#">Alfred David</a>
-                                            </td>
-                                            <td align='center'>
-                                                c Pandya b Bumrah
-                                            </td>
-                                            <td align='center'>
-                                                <b>250</b>
-                                            </td>
-                                            <td align='center'>
-                                                5
-                                            </td>
-                                            <td align='center'>
-                                                250
-                                            </td>
-                                            <td align='center'>
-                                                10
-                                            </td>
-                                            <td align='center'>
-                                                3
-                                            </td>
-                                            <td align='center'>
-                                                100
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align='center'>
-                                                <a href="#"> Syed Gaur</a>
-                                            </td>
-                                            <td align='center'>
-                                                c Pandya b Bumrah
-                                            </td>
-                                            <td align='center'>
-                                                <b>100</b>
-                                            </td>
-                                            <td align='center'>
-                                                10
-                                            </td>
-                                            <td align='center'>
-                                                200
-                                            </td>
-                                            <td align='center'>
-                                                1
-                                            </td>
-                                            <td align='center'>
-                                                0
-                                            </td>
-                                            <td align='center'>
-                                                25
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align='center'>
-                                                <a href="#">Abhishek</a>
-                                            </td>
-                                            <td align='center'>
-                                                c Pandya b Bumrah
-                                            </td>
-                                            <td align='center'>
-                                                <b>  500</b>
-                                            </td>
-                                            <td align='center'>
-                                                15
-                                            </td>
-                                            <td align='center'>
-                                                750
-                                            </td>
-                                            <td align='center'>
-                                                10
-                                            </td>
-                                            <td align='center'>
-                                                4
-                                            </td>
-                                            <td align='center'>
-                                                75.54
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align='center'>
-                                                <a href="#">Mari Muthu</a>
-                                            </td>
-                                            <td align='center'>
-                                                c Pandya b Bumrah
-                                            </td>
-                                            <td align='center'>
-                                                <b>200  </b>
-                                            </td>
-                                            <td align='center'>
-                                                18
-                                            </td>
-                                            <td align='center'>
-                                                300
-                                            </td>
-                                            <td align='center'>
-                                                2
-                                            </td>
-                                            <td align='center'>
-                                                0
-                                            </td>
-                                            <td align='center'>
-                                                19.43
-                                            </td>
-                                        </tr>
-
-                                        <tr>
-
-                                            <td align='center'>
-                                                <a href="#"> MuthuKumar</a>
-                                            </td>
-                                            <td align='center'>
-                                                c Pandya b Bumrah
-                                            </td>
-                                            <td align='center'>
-                                                <b>1500</b>
-                                            </td>
-                                            <td align='center'>
-                                                510
-                                            </td>
-                                            <td align='center'>
-                                                3000
-                                            </td>
-                                            <td align='center'>
-                                                43
-                                            </td>
-                                            <td align='center'>
-                                                13
-                                            </td>
-                                            <td align='center'>
-                                                67.89
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align='center'>
-                                                <a href="#">AbhiRock</a>
-                                            </td>
-                                            <td align='center'>
-                                                run out (Kohli/†Dhoni)
-                                            </td>
-                                            <td align='center'>
-                                                <b>2500</b>
-                                            </td>
-                                            <td align='center'>
-                                                89
-                                            </td>
-                                            <td align='center'>
-                                                4500
-                                            </td>
-                                            <td align='center'>
-                                                33
-                                            </td>
-                                            <td align='center'>
-                                                5
-                                            </td>
-                                            <td align='center'>
-                                                45.67
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align='center'>
-                                                <a href="#">shek Gaur</a>
-                                            </td>
-                                            <td align='center'>
-                                                not out
-                                            </td>
-                                            <td align='center'>
-                                                <b>500  </b>
-                                            </td>
-                                            <td align='center'>
-                                                40
-                                            </td>
-                                            <td align='center'>
-                                                650
-                                            </td>
-                                            <td align='center'>
-                                                22
-                                            </td>
-                                            <td align='center'>
-                                                2
-                                            </td>
-                                            <td align='center'>
-                                                43.0
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td align='center'>
-                                                Extras
-                                            </td>
-                                            <td align='center'>
-                                                (lb 5, w 4, nb 1)
-                                            </td>
-                                            <td align='center'>
-                                                <b>10   </b>
-                                            </td>
-                                            <td align='center'>
-
-                                            </td>
-                                            <td align='center'>
-
-                                            </td>
-                                            <td align='center'>
-
-                                            </td>
-                                            <td align='center'>
-
-                                            </td>
-                                            <td align='center'>
-
-                                            </td>
-                                        </tr>
-                                        <tr style="border-bottom:3px solid #D1EDFF;">
-
-                                            <td align='center'>
-                                                <b>Total</b>
-                                            </td>
-                                            <td align='center'>
-                                                (9 wickets; 20 overs; 92 mins)
-                                            </td>
-                                            <td align='center'>
-                                                <b>134</b>
-                                            </td>
-                                            <td align='center'>
-                                                (6.90 runs per over)
-                                            </td>
-                                            <td align='center'>
-
-                                            </td>
-                                            <td align='center'></td>
-
-                                            <td align='center'>
-
-                                            </td>
-                                            <td align='center'>
-                                            </td>
-                                        </tr>
+                                        <tr class="" style="background-color: #009688;color:#ffffff" title="current batsman" ng-hide="bmStrikerInnings2 | isEmpty">
+                                            <td style="color:#11C1F3;font-weight: bold;"><span class="icon-bat"></span>{{bmStrikerInnings2.name}}</td>
+                                            <td>Not Out</td>
+                                            <td>{{bmStrikerInnings2.runs}}</td>                                            
+                                            <td>{{bmStrikerInnings2.balls}}</td>
+                                            <td>{{bmStrikerInnings2.four}}</td>
+                                            <td>{{bmStrikerInnings2.six}}</td>
+                                            <td>{{bmStrikerInnings2.strikeRate}}</td>
+                                        </tr> 
+                                        <tr class="bg-info" ng-hide="bmNonStrikerInnings2 | isEmpty">
+                                            <td>{{bmNonStrikerInnings2.name}}</td>
+                                            <td>Not Out</td>
+                                            <td>{{bmNonStrikerInnings2.runs}}</td>
+                                            <td>{{bmNonStrikerInnings2.balls}}</td>
+                                            <td>{{bmNonStrikerInnings2.four}}</td>
+                                            <td>{{bmNonStrikerInnings2.six}}</td>
+                                            <td>{{bmNonStrikerInnings2.strikeRate}}</td>
+                                        </tr> 
+                                        <tr class="bg-info"  ng-repeat="obm in innings2BatsManList">
+                                            <td align='center'>{{obm.name}}</td>
+                                            <td>Out</td>
+                                            <td>{{obm.runs}}</td>
+                                            <td>{{obm.balls}}</td>
+                                            <td>{{obm.four}}</td>
+                                            <td>{{obm.six}}</td>
+                                            <td>{{obm.strikeRate}}</td>
+                                        </tr> 
                                     </tbody>
-
                                 </table>
                             </div>
-
-
-
                             <div class="table-responsive">          
                                 <table class="table">
-
                                     <thead>
                                         <tr style='font-weight:bold;background-color:#02a2df;'>
                                             <td align='center'>
@@ -949,186 +526,31 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
-                                    <td align='center'>
-                                        <a href="#">Abhishek</a>
-                                    </td>
-                                    <td align='center'>
-
-                                    </td>
-                                    <td align='center'>
-                                        <b>10</b>
-                                    </td>
-                                    <td align='center'>
-                                        0
-                                    </td>
-                                    <td align='center'>
-                                        65
-                                    </td>
-                                    <td align='center'>
-                                        2
-                                    </td>
-                                    <td align='center'>
-                                        19.6
-                                    </td>
-                                    <td align='center'>
-                                        9
-                                    </td>
-                                    <td align='center'>
-                                        6
-                                    </td>
-                                    <td align='center'>
-                                        2
-                                    </td>
-                                    <td align='center'>
-                                        (1w)
-                                    </td>
-                                    </tr>
-
-                                    <tr>
-
-                                        <td align='center'>
-                                            <a href="#">Mari Muthu</a>
-                                        </td>
-                                        <td align='center'>
-
-                                        </td>
-                                        <td align='center'>
-                                            <b>10   </b>
-                                        </td>
-                                        <td align='center'>
-                                            2
-                                        </td>
-                                        <td align='center'>
-                                            39
-                                        </td>
-                                        <td align='center'>
-                                            3
-                                        </td>
-                                        <td align='center'>
-                                            16.5
-                                        </td>
-                                        <td align='center'>
-                                            9
-                                        </td>
-                                        <td align='center'>
-                                            2
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td align='center'>
-                                            <a href="#">MuthuKumar</a>
-                                        </td>
-                                        <td align='center'>
-
-                                        </td>
-                                        <td align='center'>
-                                            <b>5</b>
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            30
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            25
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            3
-                                        </td>
-                                        <td align='center'>
-                                            1
-                                        </td>
-                                        <td align='center'>
-                                            (2w)
-                                        </td>
-                                    </tr>
-                                    <tr>
-
-                                        <td align='center'>
-                                            <a href="#">AbhiRock</a>
-                                        </td>
-                                        <td align='center'>
-
-                                        </td>
-                                        <td align='center'>
-                                            <b>2</b>
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            15
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            21.25
-                                        </td>
-                                        <td align='center'>
-                                            3
-                                        </td>
-                                        <td align='center'>
-                                            22
-                                        </td>
-                                        <td align='center'>
-                                            1
-                                        </td>
-                                        <td align='center'>
-                                            (1w)
-                                        </td>
-                                    </tr>
-                                    <tr style="border-bottom:3px solid #D1EDFF;">
-
-                                        <td align='center'>
-                                            <a href="#">shek Gaur</a>
-                                        </td>
-                                        <td align='center'>
-
-                                        </td>
-                                        <td align='center'>
-                                            <b>1    </b>
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            5
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            29.59
-                                        </td>
-                                        <td align='center'>
-                                            1
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                            0
-                                        </td>
-                                        <td align='center'>
-                                        </td>
-                                    </tr>
+                                        <tr class="bg-info" ng-hide="currentBowlerInnings2 | isEmpty">                                            
+                                            <td align='center'>{{currentBowlerInnings2.name}}</td>
+                                            <td align='center'>{{currentBowlerInnings2.over}}</td>
+                                            <td align='center'>{{currentBowlerInnings2.maiden}}</td>
+                                            <td align='center'>{{currentBowlerInnings2.runs}}</td>
+                                            <td align='center'>{{currentBowlerInnings2.wickets}}</td>
+                                            <td align='center'>{{currentBowlerInnings2.economy}}</td>
+                                        </tr> 
+                                        <tr class="bg-info" ng-hide="nextBowlerInnings2 | isEmpty">                                            
+                                            <td align='center'>{{nextBowlerInnings2.name}}</td>
+                                            <td align='center'>{{nextBowlerInnings2.over}}</td>
+                                            <td align='center'>{{nextBowlerInnings2.maiden}}</td>
+                                            <td align='center'>{{nextBowlerInnings2.runs}}</td>
+                                            <td align='center'>{{nextBowlerInnings2.wickets}}</td>
+                                            <td align='center'>{{nextBowlerInnings2.economy}}</td>
+                                        </tr>   
+                                        <tr class="bg-info"  ng-repeat="obm in innings2BowlersList">                                            
+                                            <td align='center'> {{obm.name}}</td>
+                                            <td align='center'>{{obm.over}}</td>
+                                            <td align='center'>{{obm.maiden}}</td>
+                                            <td align='center'>{{obm.runs}}</td>
+                                            <td align='center'>{{obm.wickets}}</td>
+                                            <td align='center'>{{obm.economy}}</td>
+                                        </tr>      
                                     </tbody>
-
                                 </table>
                             </div>
                         </div> 
@@ -1179,16 +601,97 @@
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="startScore = true">Start Playing</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" ng-click="startScore = true;">Choose Players</button>
                 </div>
             </div>
-
         </div>
     </div>
     <!--End Toss Winner Modal -->
 
     <!--Choose Player Modal -->
-    <div id="playerModal" class="modal fade" role="dialog"  ng-controller="loadPlayersCtrl">
+    <!-- <div id="playerModal" class="modal fade" role="dialog">
+         <div class="modal-dialog">           
+             <div class="modal-content">
+                 <div class="modal-header">
+                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+                     <h4 class="modal-title">{{teama}} vs {{teamb}}</h4>
+                 </div>
+                 <div class="modal-body bg-success">
+                     <div class="row" style="padding-top:12px;">
+                         <div class="form-group">
+                             <label class="col-md-4 control-label">Batsman-1 (Striker)</label>
+                             <div class="col-md-5">
+                                 <div custom-select="t as t.name for t in batsmanList | filter: { name: $searchTerm }" ng-model="bmStriker">
+                                     <div class="pull-left" style="width: 40px;">
+                                         <img ng-src="{{t.playerImageUrl}}" style="width: 40px;height:40px;" />                   
+                                     </div>
+                                     <div class="pull-left" style='padding-left: 10px;'>
+                                         <strong>{{ t.name}}</strong><br />
+                                         <span>{{ t.role}}</span>
+                                     </div>
+                                     <div class="clearfix"></div>
+                                 </div>
+                                 <div ng-show="false">
+                                     {{bmStriker| json}}
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+ 
+                     <div class="row" style="padding-top:30px;">
+                         <div class="form-group">
+                             <label class="col-md-4 control-label">Batsman-2 (Non-Striker)</label>
+                             <div class="col-md-5">
+                                 <div custom-select="t as t.name for t in batsmanList | filter: { name: $searchTerm }" ng-model="bmNonStriker">
+                                     <div class="pull-left" style="width: 40px">
+                                         <img ng-src="{{t.playerImageUrl}}" style="width: 30px" />                   
+                                     </div>
+                                     <div class="pull-left">
+                                         <strong>{{ t.name}}</strong><br />
+                                         <span>{{ t.role}}</span>
+                                     </div>
+                                     <div class="clearfix"></div>
+                                 </div>  
+                                 <div class='col-md-12 bg-danger text-danger' style="margin-top:5px;" ng-show='bmNonStriker["id"] == bmStriker["id"]'>
+                                     You Should Choose Different player                                   
+                                 </div>
+                                 <div ng-show="false">
+                                     {{bmNonStriker| json}}
+                                 </div>
+                             </div>
+                         </div>                      
+                     </div>
+                     <div class="row" style="padding-top:30px;">
+                         <div class="form-group">
+                             <label class="col-md-4 control-label">Choose Bowler</label>
+                             <div class="col-md-5">
+                                 <div custom-select="t as t.name for t in bowlerList | filter: { name: $searchTerm }" ng-model="currentBowler">
+                                     <div class="pull-left" style="width: 40px">
+                                         <img ng-src="{{t.playerImageUrl}}" style="width: 30px" />                   
+                                     </div>
+                                     <div class="pull-left">
+                                         <strong>{{ t.name}}</strong><br />
+                                         <span>{{ t.role}}</span>
+                                     </div>
+                                     <div class="clearfix"></div>
+                                 </div> 
+                                 <div ng-show="false">
+                                     {{bowlerFirst| json}}
+                                 </div>
+                             </div>                           
+                         </div>                      
+                     </div>
+                 </div>
+                 <div class="modal-footer">
+                     <button type="button" class="btn btn-success" data-dismiss="modal" ng-disabled='bmNonStriker["id"] == bmStriker["id"]'  ng-click="startPlay = true">Start Playing</button>
+                 </div>
+             </div>
+ 
+         </div>
+     </div>-->
+    <!--End Choose Player Modal -->
+
+    <div id="myModal" modal-show modal-visible="playerbModal" class="modal fade" role="dialog">
         <div class="modal-dialog">
             <!-- Modal content-->
             <div class="modal-content">
@@ -1196,12 +699,12 @@
                     <button type="button" class="close" data-dismiss="modal">&times;</button>
                     <h4 class="modal-title">{{teama}} vs {{teamb}}</h4>
                 </div>
-                <div class="modal-body bg-success">
+                <div class="modal-body">
                     <div class="row" style="padding-top:12px;">
                         <div class="form-group">
                             <label class="col-md-4 control-label">Batsman-1 (Striker)</label>
                             <div class="col-md-5">
-                                <div custom-select="t as t.name for t in batsmanList | filter: { name: $searchTerm }" ng-model="$parent.bmStriker">
+                                <div custom-select="t as t.name for t in batsmanList | filter: { name: $searchTerm }" ng-model="bmStriker">
                                     <div class="pull-left" style="width: 40px;">
                                         <img ng-src="{{t.playerImageUrl}}" style="width: 40px;height:40px;" />                   
                                     </div>
@@ -1212,17 +715,16 @@
                                     <div class="clearfix"></div>
                                 </div>
                                 <div ng-show="false">
-                                    {{$parent.bmStriker| json}}
+                                    {{bmStriker| json}}
                                 </div>
                             </div>
                         </div>
                     </div>
-
                     <div class="row" style="padding-top:30px;">
                         <div class="form-group">
                             <label class="col-md-4 control-label">Batsman-2 (Non-Striker)</label>
                             <div class="col-md-5">
-                                <div custom-select="t as t.name for t in batsmanList | filter: { name: $searchTerm }" ng-model="$parent.bmNonStriker">
+                                <div custom-select="t as t.name for t in batsmanList | filter: { name: $searchTerm }" ng-model="bmNonStriker">
                                     <div class="pull-left" style="width: 40px">
                                         <img ng-src="{{t.playerImageUrl}}" style="width: 30px" />                   
                                     </div>
@@ -1232,11 +734,11 @@
                                     </div>
                                     <div class="clearfix"></div>
                                 </div>  
-                                <div class='col-md-12 bg-danger text-danger' style="margin-top:5px;" ng-show='$parent.bmNonStriker["id"] == $parent.bmStriker["id"]'>
+                                <div class='col-md-12 bg-danger text-danger' style="margin-top:5px;" ng-show='bmNonStriker["id"] == bmStriker["id"]'>
                                     You Should Choose Different player                                   
                                 </div>
                                 <div ng-show="false">
-                                    {{$parent.bmNonStriker| json}}
+                                    {{bmNonStriker| json}}
                                 </div>
                             </div>
                         </div>                      
@@ -1245,7 +747,7 @@
                         <div class="form-group">
                             <label class="col-md-4 control-label">Choose Bowler</label>
                             <div class="col-md-5">
-                                <div custom-select="t as t.name for t in bowlerList | filter: { name: $searchTerm }" ng-model="$parent.currentBowler">
+                                <div custom-select="t as t.name for t in bowlerList | filter: { name: $searchTerm }" ng-model="currentBowler">
                                     <div class="pull-left" style="width: 40px">
                                         <img ng-src="{{t.playerImageUrl}}" style="width: 30px" />                   
                                     </div>
@@ -1256,119 +758,248 @@
                                     <div class="clearfix"></div>
                                 </div> 
                                 <div ng-show="false">
-                                    {{$parent.bowlerFirst| json}}
+                                    {{bowlerFirst| json}}
                                 </div>
                             </div>                           
                         </div>                      
                     </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-success" data-dismiss="modal" ng-disabled='$parent.bmNonStriker["id"] == $parent.bmStriker["id"]'  ng-click="$parent.startPlay = true">Start Playing</button>
+                    <button type="button" class="btn btn-success" data-dismiss="modal" ng-disabled='bmNonStriker["id"] == bmStriker["id"]'  ng-click="startPlay = true;currentInningsSetPlayer();">Start Playing</button>
                 </div>
             </div>
-
         </div>
-    </div>
+    </div>   
+
+
+    <!--Choose Player Modal -->
+    <!--<modal title="{{teama}} vs {{teamb}}" visible="playerbModal">
+        <div>       
+            <div class="row" style="padding-top:12px;">
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Batsman-1 (Striker)</label>
+                    <div class="col-md-5">
+                        <div custom-select="t as t.name for t in batsmanList | filter: { name: $searchTerm }" ng-model="bmStriker1">
+                            <div class="pull-left" style="width: 40px;">
+                                <img ng-src="{{t.playerImageUrl}}" style="width: 40px;height:40px;" />                   
+                            </div>
+                            <div class="pull-left" style='padding-left: 10px;'>
+                                <strong>{{ t.name}}</strong><br />
+                                <span>{{ t.role}}</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>
+                        <div ng-show="true">
+                            {{bmStriker1| json}}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row" style="padding-top:30px;">
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Batsman-2 (Non-Striker)</label>
+                    <div class="col-md-5">
+                        <div custom-select="t as t.name for t in batsmanList | filter: { name: $searchTerm }" ng-model="bmNonStriker1">
+                            <div class="pull-left" style="width: 40px">
+                                <img ng-src="{{t.playerImageUrl}}" style="width: 30px" />                   
+                            </div>
+                            <div class="pull-left">
+                                <strong>{{ t.name}}</strong><br />
+                                <span>{{ t.role}}</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div>  
+                        <div class='col-md-12 bg-danger text-danger' style="margin-top:5px;" ng-show='bmNonStriker["id"] == bmStriker["id"]'>
+                            You Should Choose Different player                                   
+                        </div>
+                        <div ng-show="false">
+                            {{bmNonStriker| json}}
+                        </div>
+                    </div>
+                </div>                      
+            </div>
+            <div class="row" style="padding-top:30px;">
+                <div class="form-group">
+                    <label class="col-md-4 control-label">Choose Bowler</label>
+                    <div class="col-md-5">
+                        <div custom-select="t as t.name for t in bowlerList | filter: { name: $searchTerm }" ng-model="currentBowler">
+                            <div class="pull-left" style="width: 40px">
+                                <img ng-src="{{t.playerImageUrl}}" style="width: 30px" />                   
+                            </div>
+                            <div class="pull-left">
+                                <strong>{{ t.name}}</strong><br />
+                                <span>{{ t.role}}</span>
+                            </div>
+                            <div class="clearfix"></div>
+                        </div> 
+                        <div ng-show="false">
+                            {{bowlerFirst| json}}
+                        </div>
+                    </div>                           
+                </div>                      
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" data-dismiss="modal" ng-disabled='bmNonStriker["id"] == bmStriker["id"]'  ng-click="startPlay = true">Start Playing</button>
+            </div>          
+        </div>               
+    </modal>-->
     <!--End Choose Player Modal -->
 
     <!--Batsman Modal -->
     <modal title="Batsman List" visible="batsmanModal">
+        <div class="row">          
+            <div class="col-md-6 box" style="margin-top:5px;cursor: pointer;" ng-repeat="bl in batsmanList" ng-click="isPreventChoose = true;addCurrentBatsman($index, bl.id);">  
+                <div class="inner">
+                    <div class="col-xs-3 col-xs-offset-3 col-sm-3 col-sm-offset-0 col-lg-3 col-lg-offset-0">                                                 
+                        <img src="{{bl.playerImageUrl}}" class="img img-thumbnail"  style="height:80px;width:80px;" alt=""/> 
+                    </div>
+                    <div class="col-md-9">
+                        <table class="table table-hover table-responsive table-condensed borderless">
+                            <tr>
+                                <td>Name:</td>
+                                <td>{{bl.name}}</td>
+                            </tr>
+                            <tr>
+                                <td>Role:</td>
+                                <td>{{bl.role}}</td>
+                            </tr>
+                            <tr ng-show="false">
+                                <td colspan="2">
+                                    <button class="btn btn-xs btn-success" ng-disabled="isPreventChoose" data-dismiss="modal" data-target="#batsmanModal" ng-click="isPreventChoose = true;addCurrentBatsman($index, bl.id);">Add as Striker</button>
+                                </td>                                        
+                            </tr>
+                        </table>
+                    </div>                          
+                </div>  
+            </div>
+        </div>
+    </modal>
+    <!--End BatsMan Modal -->
+
+    <!--Bowler Modal Link To Bootstrap -->   
+    <modal title="Bowlers List..." visible="bowlerModal">                    
         <div class="row">
-            <div class="col-md-6" style="margin-top:5px;" ng-repeat="bl in batsmanList">                              
-                <div class="col-md-4">                                  
-                    <img src="{{bl.playerImageUrl}}" class="img img-thumbnail"  style="height:80px;" alt=""/>                               
+            <div class="col-md-6" style="margin-top:5px;" ng-repeat="bowl in bowlerList">                              
+                <div class="col-md-6">                                  
+                    <img src="{{bowl.playerImageUrl}}" class="img img-thumbnail"  style="height:80px;" alt=""/>                               
                 </div>
-                <div class="col-md-8">
-                    <table class="table">
+                <div class="col-md-6">
+                    <table>
                         <tr>
                             <td>Name:</td>
-                            <td>{{bl.name}}</td>
+                            <td>{{bowl.name}}</td>
                         </tr>
                         <tr>
                             <td>Role:</td>
-                            <td>{{bl.role}}</td>
+                            <td>{{bowl.role}}</td>
+                        </tr>
+                        <tr ng-show="false">
+                            <td colspan="2">{{bowl| json}}</td>
                         </tr>
                         <tr>
                             <td colspan="2">
-                                <button class="btn btn-xs btn-success" ng-disabled="isPreventChoose" data-dismiss="modal" data-target="#batsmanModal" ng-click="isPreventChoose = true;addCurrentBatsman($index, bl.id);">Add as Striker</button>
+                                <button type="button" class="btn btn-xs btn-success" data-dismiss="modal"  ng-click="addCurrentBowler($index, bowl.id);">Add Current Bowler</button>                                            
                             </td>                                        
                         </tr>
                     </table>
                 </div>                          
-            </div>                      
-        </div>                    
-</div>
-</modal>
-<!--End BatsMan Modal -->
-<!--Bowler Modal -->
-<div id="bowlerModal" class="modal fade" role="dialog">
-    <div class="modal-dialog">
-        <!-- Modal content-->
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                <h4 class="modal-title">Bowler List</h4>
-            </div>
-            <div class="modal-body"  style="max-height: calc(100vh - 210px);overflow-y: auto;">                    
-                <div class="row">
-                    <div class="col-md-6" style="margin-top:5px;" ng-repeat="bowl in bowlerList">                              
-                        <div class="col-md-6">                                  
-                            <img src="{{bowl.playerImageUrl}}" class="img img-thumbnail"  style="height:80px;" alt=""/>                               
-                        </div>
-                        <div class="col-md-6">
-                            <table>
-                                <tr>
-                                    <td>Name:</td>
-                                    <td>{{bowl.name}}</td>
-                                </tr>
-                                <tr>
-                                    <td>Role:</td>
-                                    <td>{{bowl.role}}</td>
-                                </tr>
-                                <tr ng-show="false">
-                                    <td colspan="2">{{bowl| json}}</td>
-                                </tr>
-                                <tr>
-                                    <td colspan="2">
-                                        <button type="button" class="btn btn-xs btn-success" data-dismiss="modal"  ng-click="addCurrentBowler($index, bowl.id);">Add Current Bowler</button>                                            
-                                    </td>                                        
-                                </tr>
-                            </table>
-                        </div>                          
-                    </div>                      
-                </div>                    
-            </div>
+            </div> 
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>     
+        </div>     
+    </modal>
+    <!-- End Bowler Modal Link To Bootstrap -->   
+
+
+    <!-- Bowler List Modal-->
+    <div id="bowlerModal" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Bowlers List</h4>
+                </div>
+                <div class="modal-body"  style="max-height: calc(100vh - 210px);overflow-y: auto;">                    
+                    <div class="row">
+                        <div class="col-md-6" style="margin-top:5px;" ng-repeat="bowl in bowlerList">                              
+                            <div class="col-md-6">                                  
+                                <img src="{{bowl.playerImageUrl}}" class="img img-thumbnail"  style="height:80px;" alt=""/>                               
+                            </div>
+                            <div class="col-md-6">
+                                <table>
+                                    <tr>
+                                        <td>Name:</td>
+                                        <td>{{bowl.name}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Role:</td>
+                                        <td>{{bowl.role}}</td>
+                                    </tr>
+                                    <tr ng-show="false">
+                                        <td colspan="2">{{bowl| json}}</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2">
+                                            <button type="button" class="btn btn-xs btn-success" data-dismiss="modal"  ng-click="addCurrentBowler($index, bowl.id);">Add Current Bowler</button>                                            
+                                        </td>                                        
+                                    </tr>
+                                </table>
+                            </div>                          
+                        </div>                      
+                    </div>                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
             </div>
         </div>
-
     </div>
-</div>
-<!--End Bowler Modal -->
-<!--Run Out Modal -->
-<modal title="Runout form" visible="runOutModal">
-    <div class="row">
-        <div class="col-md-12" style="margin-top:5px;">                              
-            <form class="form-horizontal" role="form">
-                <div class="form-group">
-                    <label  class="col-sm-5 control-label"
-                            for="inputEmail3">Enter The Run</label>
-                    <div class="col-sm-7">
-                        <input type="text" class="form-control" ng-model="roRun" 
-                               id="inputEmail3" placeholder="run"/>
+    <!--End Bowler Modal -->
+    <!--Run Out Modal -->
+    <modal title="Runout form" visible="runOutModal">
+        <div class="row">
+            <div class="col-md-12" style="margin-top:5px;">                              
+                <form class="form-horizontal" role="form">
+                    <div class="form-group">
+                        <label  class="col-sm-5 control-label"
+                                for="inputEmail3">Enter The Run</label>
+                        <div class="col-sm-7">
+                            <input type="text" class="form-control" ng-model="roRun" 
+                                   id="inputEmail3" placeholder="run"/>
+                        </div>
+                        <label  class="col-sm-5 control-label"
+                                for="inputEmail3">Who is out?</label>
+                        <div class="col-sm-7" style='margin-top: 15px;'>
+                            <label class="btn btn-default">
+                                <input type="radio" id="s1" name="str" value="1" /> {{bmStriker.name}}
+                            </label> 
+                            <label class="btn btn-default">
+                                <input type="radio" id="s2"  name="str" value="2" /> {{bmNonStriker.name}}
+                            </label> 
+                        </div>
+                        <label  class="col-sm-5 control-label"
+                                for="inputEmail3">Whether Batsman Switched the Ends?</label>
+                        <div class="col-sm-7" style='margin-top: 15px;'>
+                            <label class="btn btn-default">
+                                <input type="radio" id="s3" name="swi" value="1" />  Yes
+                            </label> 
+                            <label class="btn btn-default">
+                                <input type="radio" id="s4"  name="swi" value="2" /> No
+                            </label> 
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-sm-offset-2 col-sm-10">
-                        <button type="submit" class="btn btn-success" data-dismiss="modal" ng-click="addRunToScoreBox(roRun)">Update Run</button>
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <button type="submit" class="btn btn-success" data-dismiss="modal" ng-click="addRunToScoreBox(roRun)">Update Run</button>
+                        </div>
                     </div>
-                </div>
-            </form>           
-        </div>                      
-    </div>                    
-</modal>       
-<!--End Run Out Modal-->    
+                </form>           
+            </div>                      
+        </div>                    
+    </modal>       
+    <!--End Run Out Modal-->    
 </div>
 <script>
     $(document).ready(function () {

@@ -1,6 +1,4 @@
-
-
-<div class="col-md-3" id="left_side">     
+<div class="col-md-3" id="left_side" ng-controller="dashBoardCtrl">     
     <!--<aside class="col-sm-12">
         <div class="panel panel-default">
             <div class="panel-heading">About</div>
@@ -9,47 +7,47 @@
             </div>
         </div>
     </aside>-->
-    <div class="row profile">
+    <div class="row profile" >
         <div class="col-md-12">
             <div class="profile-sidebar">
                 <!-- SIDEBAR USERPIC -->
                 <div class="profile-userpic">
-                    <img src="images/user/sachin.jpg" class="img-responsive" alt="">
+                    <img check-image ng-src="{{userData.imageUrl}}" class="img-responsive" alt="">
                 </div>
                 <!-- END SIDEBAR USERPIC -->
                 <!-- SIDEBAR USER TITLE -->
                 <div class="profile-usertitle">
                     <div class="profile-usertitle-name">
-                        Sachin Tendulkar
+                        {{user.name}} 
                     </div>
                     <div class="profile-usertitle-job">
-                        All Rounder
+                        {{user.playerRole}}  
                     </div>
                 </div>
                 <!-- END SIDEBAR USER TITLE -->
                 <!-- SIDEBAR BUTTONS -->
-                <div class="profile-userbuttons">
+                <!--<div class="profile-userbuttons">
                     <button type="button" class="btn btn-success btn-sm">Follow</button>
                     <button type="button" class="btn btn-danger btn-sm">Message</button>
-                </div>
+                </div>-->
                 <!-- END SIDEBAR BUTTONS -->
                 <!-- SIDEBAR MENU -->
                 <div class="profile-usermenu">
                     <div class="row">
                         <div class="col-sm-12 col-md-12">
                             <div class="panel-group" id="accordion">
-                                <div class="panel panel-default">
+                               <!-- <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" ng-click="changeContentPage('partials/footer.html')"><span class="fa fa-hand-grab-o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne" ng-click="changeContentPage('partials/footer.html')"><span class="fa fa-hand-grab-o">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                 </span>My Teams</a>
                                         </h4>
                                     </div>                                         
-                                </div>
+                                </div>-->
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" ng-click="changeContentPage('partials/footer.html')">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#friends" ng-click="changeContentPage('partials/footer.html')">
                                                 <span class="fa fa-users">&nbsp;&nbsp;&nbsp;&nbsp;
                                                 </span>Friends </a>
                                         </h4>
@@ -58,7 +56,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" ng-click="changeContentPage('CareerRecords.html')"><span class="glyphicon glyphicon-folder-close">&nbsp;
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#career-records"><span class="glyphicon glyphicon-folder-close">&nbsp;
                                                 </span>My Career Record </a>
                                         </h4>
                                     </div>                                         
@@ -66,8 +64,11 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo"><span class="glyphicon glyphicon-th">&nbsp;
-                                                </span>Team</a>
+                                            <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
+                                                <span class="glyphicon glyphicon-th">&nbsp;
+                                                </span>
+                                                Team
+                                            </a>
                                         </h4>
                                     </div>
                                     <div id="collapseTwo" class="panel-collapse collapse">
@@ -75,17 +76,17 @@
                                             <table class="table">
                                                 <tr>
                                                     <td>
-                                                        <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;<a href="#" ng-click="changeContentPage('partials/footer.html');alert('aa')">My Teams</a> <span class="label label-success">$ 320</span>
+                                                        <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;<a href="#my_teams">My Teams</a> <span class="label label-success">$</span>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;<a href="#" ng-click="changeContentPage('CreateTeam.html')">Create Team</a>
+                                                        <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;<a href="#create-team">Create Team</a>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <span  class="fa fa-angellist"></span>&nbsp;&nbsp;<a href="#" ng-click="changeContentPage('ViewTeam.html')">View Team</a>
+                                                        <span  class="fa fa-angellist"></span>&nbsp;&nbsp;<a href="#view-team">View Team</a>
                                                     </td>
                                                 </tr>
 
@@ -96,7 +97,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree"><span class="glyphicon glyphicon-user">&nbsp;
+                                            <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseThree"><span class="glyphicon glyphicon-user">&nbsp;
                                                 </span>Tournament</a>
                                         </h4>
                                     </div>
@@ -105,12 +106,12 @@
                                             <table class="table">
                                                 <tr>
                                                     <td>
-                                                        <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;<a href="#" ng-click="changeContentPage('CreateTournament.html')">Create Tournament</a>
+                                                        <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;<a href="#create_tournament">Create Tournament</a>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <span class="glyphicon glyphicon-plane"></span>&nbsp;&nbsp;<a href="#" ng-click="changeContentPage('UpcomingTournaments.html')">Upcoming Tournament</a> <span class="label label-info">5</span>
+                                                        <span class="glyphicon glyphicon-plane"></span>&nbsp;&nbsp;<a href="#upcoming_tournaments">Upcoming Tournament</a> <span class="label label-info">5</span>
                                                     </td>
                                                 </tr>
                                                 <tr>
@@ -126,7 +127,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseFour"><span class="fa fa-user">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseFour"><span class="fa fa-user">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                                 </span>Profile</a>
                                         </h4>
                                     </div>
@@ -135,12 +136,12 @@
                                             <table class="table">
                                                 <tr>
                                                     <td>
-                                                        <span class="fa fa-male"></span>&nbsp;&nbsp;&nbsp;<a href="#" ng-click="changeContentPage('ViewProfile.html')">View Profile</a>
+                                                        <span class="fa fa-male"></span>&nbsp;&nbsp;&nbsp;<a href="#view_profile" ng-click="changeContentPage('ViewProfile.html')">View Profile</a>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <span class="fa fa-pencil-square-o"></span>&nbsp;&nbsp;<a href="#" ng-click="changeContentPage('EditProfile.html')">Edit Profile</a>
+                                                        <span class="fa fa-pencil-square-o"></span>&nbsp;&nbsp;<a href="#edit_profile">Edit Profile</a>
                                                     </td>
                                                 </tr>
 
@@ -151,7 +152,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseSeven"><span class="fa fa-circle-o">&nbsp;&nbsp;&nbsp;&nbsp;
+                                            <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseSeven"><span class="fa fa-circle-o">&nbsp;&nbsp;&nbsp;&nbsp;
                                                 </span>Ground</a>
                                         </h4>
                                     </div>
@@ -160,12 +161,17 @@
                                             <table class="table">
                                                 <tr>
                                                     <td>
-                                                        <span class="glyphicon glyphicon-xbt"></span>&nbsp;&nbsp;<a href="#" ng-click="changeContentPage('BookGround.html');alert('aa')">Book Ground</a> 
+                                                        <span class="glyphicon glyphicon-xbt"></span>&nbsp;&nbsp;<a href="#book_ground">Book Ground</a> 
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;<a href="#" ng-click="changeContentPage('AddNewGround.html')">Create a Ground</a>
+                                                        <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;<a href="#add_new_ground">Create a Ground</a>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td>
+                                                        <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;<a href="#view_bookings">View Bookings</a>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -175,7 +181,7 @@
                                 <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
-                                            <a data-toggle="collapse" data-parent="#accordion" href="#collapseSix"><span class="glyphicon glyphicon-file">&nbsp;
+                                            <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseSix"><span class="glyphicon glyphicon-file">&nbsp;
                                                 </span>Match</a>
                                         </h4>
                                     </div>
@@ -184,22 +190,22 @@
                                             <table class="table">
                                                 <tr>
                                                     <td>                                       
-                                                        <span class="glyphicon glyphicon-share-alt"></span>&nbsp;&nbsp;&nbsp;<a href="#" ng-click="changeContentPage('RequestMatch.html')">Request Match</a>
+                                                        <span class="glyphicon glyphicon-share-alt"></span>&nbsp;&nbsp;&nbsp;<a href="#request_match" ng-click="changeContentPage('RequestMatch.html')">Request Match</a>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;&nbsp;<a href="#" ng-click="changeContentPage('MatchDetails.html')">Match Details</a>
+                                                        <span class="glyphicon glyphicon-tasks"></span>&nbsp;&nbsp;&nbsp;<a href="#match_details" ng-click="changeContentPage('MatchDetails.html')">Match Details</a>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <span class="glyphicon glyphicon-tasks">&nbsp;</span><a href="#" >Completed Matches</a>
+                                                        <span class="glyphicon glyphicon-tasks">&nbsp;</span><a href="#completed_matches" >Completed Matches</a>
                                                     </td>
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <span class="fa fa-university">&nbsp;&nbsp;</span><a href="#" >Scheduled Matches</a>
+                                                        <span class="fa fa-university">&nbsp;&nbsp;</span><a href="#schelduled_matches" >Scheduled Matches</a>
                                                     </td>
                                                 </tr>
                                             </table>

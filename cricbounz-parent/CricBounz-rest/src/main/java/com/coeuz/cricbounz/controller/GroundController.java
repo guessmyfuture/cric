@@ -130,10 +130,16 @@ public class GroundController {
 
 	@RequestMapping(value = "/getavailableslots", method = RequestMethod.GET)
 	public @ResponseBody List<GroundSlots> getAvailableSlotDetails(@RequestParam("groundId") long groundId,
-			@RequestParam("date") long date) {
+			@RequestParam("date") String date) {
 		logger.info("Starting getAvailableSlotDetails");
 		List<GroundSlots> groundSlotDetails = groundSlotDAO.getAvailableGroundSlots(groundId, date);
 		return groundSlotDetails;
 	}
-
+	
+	@RequestMapping(value = "/getallgrounds", method = RequestMethod.GET)
+	public @ResponseBody List<Ground> getAllGrounds() {
+		logger.info("Starting getting All Grround Details");
+		List<Ground> allGround = groundDAO.getAllGroundDetails();
+		return allGround;
+	}
 }

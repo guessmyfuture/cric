@@ -1,137 +1,223 @@
 <div class='col-md-6' ng-controller="ballTypeCtrl">
-    <div class="row" ng-controller="slotAddCtrl">
-        <form class="form-horizontal" name="groundForm" ng-controller="CreateNewGroundCtrl" novalidate>
-            <fieldset>
-                <!-- Form Name -->
-                <legend>Add New Ground</legend>
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="textinput">City</label>  
-                    <div class="col-md-4">
-                        <input  name="city" ng-model="city" type="text" placeholder="City" class="form-control input-md" required="">
-                        <span style="color:red" ng-show="groundForm.city.$invalid && submitted">
-                            <span ng-show="groundForm.city.$error.required">City is required.</span>                      
-                        </span>
-                    </div>                    
-                </div>
+	<div class="row" ng-controller="slotAddCtrl">
+		<form class="form-horizontal" name="groundForm"
+			ng-controller="CreateNewGroundCtrl" novalidate>
+			<fieldset>
+				<!-- Form Name -->
+				<legend>Add New Ground</legend>
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="textinput">City</label>
+					<div class="col-md-4" ng-controller="loadCity">		
+						<script type="text/ng-template" id="customTemplateCity.html">
+                         <a>	
+                        <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+                        <!--<i>({{match.model.area}})</i>-->
+                        </a>
+	                     </script>
+					 <input
+							type="text" ng-model="$parent.city"
+							placeholder="Search City"
+							typeahead="c as c.cityName for c in cityList | filter:$viewValue | limitTo:10"
+							typeahead-min-length='1'
+							typeahead-on-select='onSelectPart($item, $model, $label);changeArea();'
+							typeahead-template-url="customTemplateCity.html" class="form-control"
+							style=""> 
+							<i class="icon-search nav-search-icon"></i>
+							<textarea ng-show="false">{{$parent.city}}</textarea>						
+					
+					</div>
+				</div>
 
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="textinput">Area</label>  
-                    <div class="col-md-4">
-                        <input  name="area" ng-model="area" type="text" placeholder="Area" class="form-control input-md" required="">
-                        <span style="color:red" ng-show="groundForm.area.$invalid && submitted">
-                            <span ng-show="groundForm.area.$error.required">Area is required.</span>                      
-                        </span>
-                    </div>
-                </div>
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="textinput">Area</label>
+					<div class="col-md-4">
+						<input name="area" ng-model="area" type="text"
+							ng-pattern="/^[a-zA-Z\s]*$/" placeholder="Area Name"
+							class="form-control input-md" required=""> <span
+							style="color: red"
+							ng-show="groundForm.area.$invalid && submitted"> <span
+							ng-show="groundForm.area.$error.required">Area
+								 is required.</span> <span
+							ng-show="groundForm.area.$error.pattern">Area
+								cannot contain numbers or special characters</span>
+						</span>
+					</div>
+				</div>
 
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="textinput">Ground Name</label>  
-                    <div class="col-md-4">
-                        <input  name="groundName" ng-model="groundName" type="text" placeholder="Ground Name" class="form-control input-md" required="">
-                        <span style="color:red" ng-show="groundForm.groundName.$invalid && submitted">
-                            <span ng-show="groundForm.groundName.$error.required">Ground Name is required.</span>                      
-                        </span>
-                    </div>
-                </div>
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="textinput">Ground
+						Name</label>
+					<div class="col-md-4">
+						<input name="groundName" ng-model="groundName" type="text"
+							ng-pattern="/^[a-zA-Z\s]*$/" placeholder="Ground Name"
+							class="form-control input-md" required=""> <span
+							style="color: red"
+							ng-show="groundForm.groundName.$invalid && submitted"> <span
+							ng-show="groundForm.groundName.$error.required">Ground
+								Name is required.</span> <span
+							ng-show="groundForm.groundName.$error.pattern">Ground Name
+								cannot contain numbers or special characters</span>
+						</span>
+					</div>
+				</div>
 
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="textinput">Ground Address</label>  
-                    <div class="col-md-4">
-                        <input  name="groundAddress" ng-model="groundAddress" type="text" placeholder="Ground Address" class="form-control input-md" required="">
-                        <span style="color:red" ng-show="groundForm.groundAddress.$invalid && submitted">
-                            <span ng-show="groundForm.groundAddress.$error.required">Ground Address is required.</span>                      
-                        </span>
-                    </div>
-                </div>
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="textinput">Ground
+						Address</label>
+					<div class="col-md-4">
+						<input name="groundAddress" ng-model="groundAddress" type="text"
+							placeholder="Ground Address" class="form-control input-md"
+							required=""> <span style="color: red"
+							ng-show="groundForm.groundAddress.$invalid && submitted">
+							<span ng-show="groundForm.groundAddress.$error.required">Ground
+								Address is required.</span>
+						</span>
+					</div>
+				</div>
 
-                <!-- Text input-->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="textinput">Ground Landmark</label>  
-                    <div class="col-md-4">
-                        <input  name="landMark" ng-model="landMark" type="text" placeholder="Ground Landmark" class="form-control input-md" required="">
-                        <span style="color:red" ng-show="groundForm.landMark.$invalid && submitted">
-                            <span ng-show="groundForm.landMark.$error.required && submitted">LandMark is required.</span>                      
-                        </span>
-                    </div>
-                </div>
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="textinput">Ground
+						Landmark</label>
+					<div class="col-md-4">
+						<input name="landMark" ng-model="landMark" type="text"
+							ng-pattern="/^[a-zA-Z\s]*$/" placeholder="Ground Landmark"
+							class="form-control input-md" required=""> <span
+							style="color: red"
+							ng-show="groundForm.landMark.$invalid && submitted"> <span
+							ng-show="groundForm.landMark.$error.required && submitted">LandMark
+								is required.</span> <span ng-show="groundForm.landMark.$error.pattern">LandMark
+								cannot contain numbers or special characters</span>
+						</span>
+					</div>
+				</div>
 
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="checkboxes">Ball Type</label>
-                    <div class="col-md-7">                       
-                        <div class="row"  ng-app="CricModule"  style="padding: 2px;">
-                            <div class="col-md-5" ng-repeat='bt in ballTypes'>
-                                <label class="checkbox-inline" for="checkboxes-0">
-                                    <input type="checkbox" ng-change="sync(bool, bt)" ng-model="bool">
-                                    {{bt.ballType}}                                        
-                                </label>
-                            </div>                              
-                        </div>                        
-                    </div>
-                </div>
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="textinput">Manager
+						Name</label>
+					<div class="col-md-4">
+						<input name="manager" ng-model="manager" type="text"
+							ng-pattern="/^[a-zA-Z\s]*$/" placeholder="manager Name"
+							class="form-control input-md" required=""> <span
+							style="color: red"
+							ng-show="groundForm.manager.$invalid && submitted"> <span
+							ng-show="groundForm.manager.$error.required && submitted">Manager
+								Name is required.</span> <span
+							ng-show="groundForm.manager.$error.pattern">Manager Name
+								cannot contain numbers or special characters</span>
+						</span>
+					</div>
+				</div>
 
-                <!-- Multiple Checkboxes (inline) -->
-                <div class="form-group">
-                    <label class="col-md-4 control-label" for="checkboxes">Pitch type</label>
-                    <div class="col-md-4">
-                        <label class="checkbox-inline" for="checkboxes-0">
-                            <input type="checkbox" name="checkboxes" id="checkboxes-0" value="1" ng-model="pitchTurf" ng-true-value="true" ng-false-value="false">
-                            Turf
-                        </label>
-                        <label class="checkbox-inline" for="checkboxes-1">
-                            <input type="checkbox" name="checkboxes" id="checkboxes-1" value="2" ng-model="pitchMat" ng-true-value="true" ng-false-value="false">
-                            Mat
-                        </label>
-                    </div>
-                </div>
-                <div class="form-group">     
-                    <fieldset>
-                        <!-- Form Name -->
-                        <legend>Slots</legend>
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="textinput">Contact
+						Number</label>
+					<div class="col-md-4">
+						<input name="contactno" ng-model="contactno" type="text"
+							placeholder="Contact Number" class="form-control input-md"
+							required=""> <span style="color: red"
+							ng-show="groundForm.contactno.$invalid && submitted"> <span
+							ng-show="groundForm.contactno.$error.required && submitted">Contact
+								Number is required.</span>
+						</span>
+					</div>
+				</div>
 
-                        <table  class="table table-hover table-striped">
-                            <tr>
-                                <th></th>
-                                <th><span style="color:#11C1F3;font-size: 20px;">Start Time</span></th>
-                                <th> <span style="color:#11C1F3;font-size: 20px;">End Time</span></th>
-                            </tr>
-                            <tr ng-repeat="slot in slots">
-                                <td class="style"><span style="color:#11C1F3;font-size: 20px;">Slot # {{slot.id = $index + 1}}</span></td>
-                            <td>
-                               <ng-timepicker class="input-small" ng-model="slot.startTime" theme="red" show-meridian="true"></ng-timepicker>
-                            </td>
-                            <td>
-                              <ng-timepicker class="input-small" ng-model="slot.endTime" theme="red" show-meridian="true"></ng-timepicker>
-                            </td>
-                            </tr>    
-                            <tr>
-                                <td colspan="2">
-                                    <button type="button" class="btn btn-success" ng-click="addNewSlot()">Add New Slot</button>
-                                    <button type="button" class="btn btn-success" ng-click="removeSlot()">Remove Slot</button>
-                                </td>
-                                <td style="color:red;font-size:18px;">{{status}} </td>
-                            </tr>
-                            <tr>
-                                <!--<td colspan="3">{{slots| json}}</td>-->                                  
-                            </tr>
-                        </table>                                                         
-                    </fieldset>
-                </div>
-            </fieldset>
-            <!-- Button-->
-            <hr>
-            <div class="form-group">
-                <label class="col-md-4 control-label" for="singlebutton"></label>
-                <div class="col-md-4 center-block">                    
-                    <button id="singlebutton" name="singlebutton" type="submit" class="btn btn-primary center-block" ng-click="postAddGround();submitted = true">
-                        Submit
-                    </button>
-                </div>  
-            </div>
-        </form>
-    </div>
+				<!-- Multiple Checkboxes (inline) -->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="checkboxes">Ball
+						Type</label>
+					<div class="col-md-7">
+						<div class="row" ng-app="CricModule" style="padding: 2px;">
+							<div class="col-md-5" ng-repeat='bt in ballTypes'>
+								<label class="checkbox-inline" for="checkboxes-0"> <input
+									type="checkbox" ng-change="sync(bool, bt)" ng-model="bool">
+									{{bt.ballType}}
+								</label>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<!-- Multiple Checkboxes (inline) -->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="checkboxes">Pitch
+						type</label>
+					<div class="col-md-4">
+						<label class="checkbox-inline" for="checkboxes-0"> <input
+							type="checkbox" name="checkboxes" id="checkboxes-0" value="1"
+							ng-model="pitchTurf" ng-true-value="true" ng-false-value="false">
+							Turf
+						</label> <label class="checkbox-inline" for="checkboxes-1"> <input
+							type="checkbox" name="checkboxes" id="checkboxes-1" value="2"
+							ng-model="pitchMat" ng-true-value="true" ng-false-value="false">
+							Mat
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<fieldset>
+						<!-- Form Name -->
+						<legend>Slots</legend>
+
+						<table class="table table-hover table-striped">
+							<tr>
+								<th></th>
+								<th><span style="color: #11C1F3; font-size: 20px;">Start
+										Time</span></th>
+								<th><span style="color: #11C1F3; font-size: 20px;">End
+										Time</span></th>
+							</tr>
+							<tr ng-show="true">
+							<td colspan="3">{{slots | json}}</td>							
+							</tr>
+							<tr ng-repeat="slot in slots">
+								<td class="style"><span
+									style="color: #11C1F3; font-size: 20px;">Slot #
+										{{$index + 1}}</span></td>
+								<td><ng-timepicker class="input-small"
+										ng-model="slot.slotStartTime" theme="red" show-meridian="true"></ng-timepicker>
+								</td>
+								<td><ng-timepicker class="input-small"
+										ng-model="slot.slotEndTime" theme="red" show-meridian="true"></ng-timepicker>
+								</td>
+							</tr>
+							<tr>
+								<td colspan="2">
+									<button type="button" class="btn btn-success"
+										ng-click="addNewSlot()">Add New Slot</button>
+									<button type="button" class="btn btn-success"
+										ng-click="removeSlot()">Remove Slot</button>
+								</td>
+								<td style="color: red; font-size: 18px;">{{status}}</td>
+							</tr>
+							<tr>
+								<!--<td colspan="3">{{slots| json}}</td>-->
+							</tr>
+						</table>
+					</fieldset>
+				</div>
+			</fieldset>
+			<!-- Button-->
+			<div class="alert alert-success" ng-show="isSuccess">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>Status!</strong> Ground Information Added Successfully.
+			</div>
+			<hr>
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="singlebutton"></label>
+				<div class="col-md-4 center-block">
+					<button id="singlebutton" name="singlebutton" type="submit"
+						class="btn btn-primary center-block"
+						ng-click="postAddGround();submitted = true">Submit</button>
+				</div>
+			</div>
+		</form>
+	</div>
 </div>

@@ -1,143 +1,570 @@
 <!--Column middle-->
-<div class="col-md-6" id="content" style='border:0px solid green;'>
-    <div class="row">
-        <div class="col-md-10 col-md-offset-1">
-            <div class="panel panel-login">
-                <div class="panel-heading">
-                    <div class="row" >
-                        <div class="col-xs-6">
-                            <a href="#" class="active" id="box1-link">Upload Status</a>
-                        </div>
-                        <div class="col-xs-6">
-                            <a href="#" id="box2-link">Upload Photo</a>
-                        </div>
-                    </div>						
-                </div>
-                <div class="panel-body1">
-                    <div class="row">
-                        <div class="col-lg-12">
-                            <div id="box1" style="display: block;padding:0px;">
-                                <div class="row">
-                                    <div class='col-md-12' style='border-top:0px solid red;'>
-                                        <textarea class="form-control noresize responsive-input"  style='resize:none;border-top:1px solid blue;' rows='2' placeholder="What's On Your Mind?"></textarea>            
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class='col-md-12' style="padding:10px;padding-right:30px;">
-                                        <input type='button' class="pull-right btn btn-success" value='Post'/>
-                                    </div>
-                                </div>
-                            </div>
-                            <div id="box2" style="display: none;"> 
-                                <div>
-                                    <input type="file">
-                                </div>                                      
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+<div class="col-md-6" id="content" style='border: 0px solid green;'
+	ng-controller="dashBoardCtrl">
+	<div class="row">
+		<div class="panel with-nav-tabs panel-primary">
+			<div class="panel-heading clearfix">
+				<div>
+					<ul class="nav nav-tabs">
+						<li class="active expand"><a data-target="#update"
+							data-toggle="tab">Update Status</a></li>
+						<li class="expand"><a data-target="#photos" data-toggle="tab">Upload
+								Photos</a></li>
+						<li class="expand"><a data-target="#videos" data-toggle="tab">Upload
+								Videos</a></li>
+					</ul>
+				</div>
+			</div>
+			<div class="panel-body">
+				<div class="tab-content">
+					<div class="tab-pane fade in active" id="update">
+						<div class="panel panel-default">
+							<div class="panel-body">
+								<textarea name="message" cols="40" rows="10" id="status_message"
+									class="form-control message"
+									style="height: 62px; overflow: hidden;"
+									placeholder="What's on your mind ?" ng-model="statusMessage"></textarea>
+							</div>
+							<div class="panel-footer">
+								<div class="row">
+									<div class="col-md-7">
+										<div class="form-group">
+											<div class="btn-group">
+												<button type="button" class="btn btn-default">
+													<i class="icon icon-map-marker"></i> Location
+												</button>
+												<button type="button" class="btn btn-default">
+													<i class="icon icon-picture"></i> Photo
+												</button>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-5">
+										<div class="form-group">
+											<select name="privacy"
+												class="form-control privacy-dropdown pull-left input-sm">
+												<option value="1" selected="selected">Public</option>
+												<option value="2">Only my friends</option>
+												<option value="3">Only me</option>
+											</select>
+											<button class="btn btn-primary" ng-click="postUserPost();"
+												style="margin-top: 8px; width: 80px;">Post</button>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="photos"
+						ng-controller="ImageUploadMultipleCtrl">
+						<div class="col-md-12"
+							style="text-align: center; margin-bottom: 10px;">
+							<input type="file" id="file" name="file"
+								ng-files="getTheFiles($files)"
+								onchange="angular.element(this).scope().setFile(this);"
+								accept="image/*" class="btn btn-warning" />
+						</div>
+						<div class="col-md-12" style="padding: 10px;">
+							Caption Text :<input type="text" ng-model="caption" />
+						</div>
+						<div class="col-md-12">
+							<button ng-click="uploadFiles()" class="btn btn-primary">Upload
+								File</button>
+						</div>
+
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-3" ng-repeat="file in fileList"
+									style="padding: 5px;">
+									<div class="panel panel-default">
+										<div class="panel-body">
+											<img class="img img-responsive" ng-src="{{file.imageData}}" />
+										</div>
+										<div class="panel-heading" ng-show="file.caption">{{file.caption}}</div>
+										<div class="panel-footer">
+											<div class="col-md-12" style="padding: 4px;">
+												<span id="{{'P' + $index}}"
+													style="margin-top: -12px; color: red; fonts-size: 15px;"
+													class="pull-left"></span> <a ng-click="removeFile($index);"
+													class="pull-right" style="margin-top: -12px;"> <span
+													class="glyphicon glyphicon-remove"></span>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="tab-pane fade" id="videos"
+						ng-controller="videoUploadCtrl">
+						<div class="col-md-12"
+							style="text-align: center; margin-bottom: 10px;">
+							<input type="file" id="file" name="file"
+								ng-files="getTheFiles($files)"
+								onchange="angular.element(this).scope().setFile(this);"
+								accept="video/*" class="btn btn-warning" />
+						</div>
+						<div class="col-md-12" style="padding: 10px;">
+							Caption Text :<input type="text" ng-model="caption" />
+						</div>
+						<div class="col-md-12">
+							<button ng-click="uploadFiles()" class="btn btn-primary">Upload
+								Video</button>
+						</div>
+						<div class="col-md-12">
+							<div class="row">
+								<div class="col-md-3" ng-repeat="file in fileList"
+									style="padding: 5px;">
+									<div class="panel panel-default">
+										<div class="panel-body">
+											<img class="img img-responsive" ng-src="{{file.imageData}}" />
+										</div>
+										<div class="panel-heading" ng-show="file.caption">{{file.caption}}</div>
+										<div class="panel-footer">
+											<div class="col-md-12" style="padding: 4px;">
+												<span id="{{'P' + $index}}"
+													style="margin-top: -12px; color: red; fonts-size: 15px;"
+													class="pull-left"></span> <a ng-click="removeFile($index);"
+													class="pull-right" style="margin-top: -12px;"> <span
+													class="glyphicon glyphicon-remove"></span>
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!--Column middle Start-->
+	<div class="row">
+		<div infinite-scroll="loadItems()" infinite-scroll-distance="10">
+			<div class="col-md-12" ng-show="false">{{postedData | json}}</div>
+			<div class="row" style="margin-top: 10px;"
+				ng-repeat="post in postedData">
+				<div class="col-md-12">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<section class="post-heading">
+								<div class="row">
+									<div class="col-md-11">
+										<div class="media">
+											<div class="media-left">
+												<a href="#"> <img class="media-object photo-profile"
+													src="{{post.postedUserImageUrl}}" width="40" height="40"
+													alt="...">
+												</a>
+											</div>
+											<div class="media-body">
+												<a href="#" class="anchor-username"><h4
+														class="media-heading">Posted
+														By:{{post.postedUserName}}</h4></a> <a href="#" class="anchor-time">{{post.timestamp
+													| contextualDate}}</a>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-1">
+										<a data-target="#"><i
+											class="glyphicon glyphicon-chevron-down"></i></a>
+									</div>
+								</div>
+							</section>
+							<section class="mbr-gallery mbr-section mbr-section--no-padding">
+							   
+							   
+							   <ng-gallery images="post.postedImagesJson" thumbs-num="4">
+                                </ng-gallery>  
+                              
+							
+								<!--<div class="mbr-gallery-layout-default">
+									<div class="row mbr-gallery-row no-gutter">
+										<div ng-if="post.postedPictures.length == 1"
+											ng-repeat="picture in post.postedPictures"
+											class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mbr-gallery-item">
+											<a data-target="#lightbox" data-slide-to="0"
+												data-toggle="modal"> <img src="{{picture}}"> <span
+												class="icon glyphicon glyphicon-zoom-in"></span>
+											</a>
+										</div>
+										<div ng-if="post.postedPictures.length == 2"
+											ng-repeat="picture in post.postedPictures"
+											class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mbr-gallery-item">
+											<a data-target="#lightbox" data-slide-to="0"
+												data-toggle="modal"> <img src="{{picture}}"> <span
+												class="icon glyphicon glyphicon-zoom-in"></span>
+											</a>
+										</div>
+										<div ng-if="post.postedPictures.length == 3"
+											ng-repeat="picture in post.postedPictures"
+											class="col-lg-4 col-md-4 col-sm-12 col-xs-12 mbr-gallery-item">
+											<a data-target="#lightbox" data-slide-to="0"
+												data-toggle="modal"> <img src="{{picture}}"> <span
+												class="icon glyphicon glyphicon-zoom-in"></span>
+											</a>
+										</div>
+										<div ng-if="post.postedPictures.length > 3"
+											ng-repeat="picture in post.postedPictures"
+											class="col-lg-4 col-md-4 col-sm-12 col-xs-12 mbr-gallery-item">
+											<a data-target="#lightbox" data-slide-to="0"
+												data-toggle="modal"> <img src="{{picture}}"> <span
+												class="icon glyphicon glyphicon-zoom-in"></span>
+											</a>
+										</div>
+									</div>
+								</div>-->
+								
+							</section>
+							<section class="post-body"
+								style="background-color: #f7e1b5; padding: 12px;">
+								<div class="more" ng-bind="post.postedContent"></div>
+							</section>
+							<section class="post-footer">
+								<hr>
+								<div class="post-footer-option container">
+									<span class="fa fa-thumbs-up link-post"
+										ng-click="$parent.currentLikeList = post.likedUserDetails;likeUpdate(post.postId);" aria-hidden="true"></span>
+									<a data-toggle="modal" class="link-post" role="button"
+										data-target="#playerModal{{$index}}">Like({{post.likedUserDetails.length}})</a>
+									<span class="fa fa-comment link-post"></span> <a
+										data-target="#" class="link-post" role="button"
+										ng-click="post.isShowAllComment=!post.isShowAllComment">Comment</a>
+									<span class="fa fa-reply link-post"></span> <a
+										data-toggle="modal" role="button"
+										data-target="#shareModal{{$index}}" class="link-post"
+										role="button">Share</a>
+								</div>
 
 
+								<!-- Share Popup modal -->
+								<div id="shareModal{{$index}}" class="modal fade" role="dialog">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">Shared Details</h4>
+											</div>
+											<div class="modal-body">
+											<div class="row" style="margin-top: 10px;">
+											  <div class="col-md-12">
+											    <input type="text" class="form-control" placeholder="your comment here" ng-model="post.sharedComment">
+											  </div>
+											</div>
+												<div class="row" style="margin-top: 10px;">
+													<div class="col-md-12">                                                        
+														<div class="panel panel-default">
+															<div class="panel-body">
+																<section class="post-heading">
+																	<div class="row">
+																		<div class="col-md-11">
+																			<div class="media">
+																				<div class="media-left">
+																					<a href="#"> <img
+																						class="media-object photo-profile"
+																						src="{{post.postedUserImageUrl}}" width="40"
+																						height="40" alt="...">
+																					</a>
+																				</div>
+																				<div class="media-body">
+																					<a href="#" class="anchor-username"><h4
+																							class="media-heading">Posted
+																							By:{{post.postedUserName}}</h4></a> <a href="#"
+																						class="anchor-time">{{post.timestamp |
+																						contextualDate}}</a>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="col-md-1">
+																			<a data-target="#"><i
+																				class="glyphicon glyphicon-chevron-down"></i></a>
+																		</div>
+																	</div>
+																</section>
+																<section
+																	class="mbr-gallery mbr-section mbr-section--no-padding">
+																	<div class="mbr-gallery-layout-default">
+																		<div class="row mbr-gallery-row no-gutter">
+																			<div ng-if="post.postedPictures.length == 1"
+																				ng-repeat="picture in post.postedPictures"
+																				class="col-lg-12 col-md-12 col-sm-12 col-xs-12 mbr-gallery-item">
+																				<a data-target="#lightbox" data-slide-to="0"
+																					data-toggle="modal"> <img src="{{picture}}">
+																					<span class="icon glyphicon glyphicon-zoom-in"></span>
+																				</a>
+																			</div>
+																			<div ng-if="post.postedPictures.length == 2"
+																				ng-repeat="picture in post.postedPictures"
+																				class="col-lg-6 col-md-6 col-sm-12 col-xs-12 mbr-gallery-item">
+																				<a data-target="#lightbox" data-slide-to="0"
+																					data-toggle="modal"> <img src="{{picture}}">
+																					<span class="icon glyphicon glyphicon-zoom-in"></span>
+																				</a>
+																			</div>
+																			<div ng-if="post.postedPictures.length == 3"
+																				ng-repeat="picture in post.postedPictures"
+																				class="col-lg-4 col-md-4 col-sm-12 col-xs-12 mbr-gallery-item">
+																				<a data-target="#lightbox" data-slide-to="0"
+																					data-toggle="modal"> <img src="{{picture}}">
+																					<span class="icon glyphicon glyphicon-zoom-in"></span>
+																				</a>
+																			</div>
+																			<div ng-if="post.postedPictures.length > 3"
+																				ng-repeat="picture in post.postedPictures"
+																				class="col-lg-4 col-md-4 col-sm-12 col-xs-12 mbr-gallery-item">
+																				<a data-target="#lightbox" data-slide-to="0"
+																					data-toggle="modal"> <img src="{{picture}}">
+																					<span class="icon glyphicon glyphicon-zoom-in"></span>
+																				</a>
+																			</div>
+																		</div>
+																	</div>
+																</section>
+															</div>
+														</div>
+													</div>
+													<section class="post-body"
+														style="background-color: #f7e1b5; padding: 12px;">
+														<div class="more" ng-bind="post.postedContent"></div>
+													</section>
+												</div>
+											</div>
+											<div class="panel-footer">
+											 
+											
+											<div class="col-md-4"> 
+											<div class="form-group">
+											<select name="privacy"
+												class="form-control privacy-dropdown pull-left input-sm" ng-model="post.sharedType">
+												<option value="public">Public</option>
+												<option value="friendsonly" selected>Only my friends</option>
+												<option value="private">Only me</option>
+											</select>											
+										   </div>
+										   </div>										   
+										   <button class="btn btn-success col-md-offset-6" data-dismiss="modal" ng-click="updateShare(post.postId,post.sharedComment,post.sharedType);">Share</button> 										
+											</div>
+										</div>
+									</div>
+								</div>
 
-
-
-    <div class="row" ng-controller="LazyLoadController">                 
-        <div  infinite-scroll="loadItems()" infinite-scroll-distance="10">                 
-            <div  ng-repeat="post in postedData">
-                <div class="col-md-12" style="background-color: #d6e9c6;margin-top: 10px;padding: 0px;">   
-                    <div class="row" style="margin-top: 10px;">
-                        <div class="col-md-2">
-                            <img src='{{post.postedPicture}}' class="img-responsive" style='height:40px;width:40px;padding: 5px;'>
-                        </div>
-                        <div class="col-md-10">
-                            <div class="row" style="color:blue;font-size:12px;">
-                                <div class="col-md-12">
-                                    Posted By:{{post.name}}
-                                </div>
-                                <div class="col-md-12">
-                                    {{post.timestamp}}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 0px;">    
-                        <div  ng-repeat="myUrl in post.imageUrl">
-                            <div ng-if="post.imageUrl.length == 1" class="col-md-12">                                                                           
-                                <img src='{{myUrl}}' class="img-responsive">                                  
-                            </div>
-                            <div class="col-md-6" ng-if="post.imageUrl.length == 2">
-                                <img src='{{myUrl}}' class="img-responsive">
-                            </div>
-                            <div ng-if="post.imageUrl.length == 3" class="col-md-4">
-                                <img src='{{myUrl}}' class="img-responsive">
-                            </div>  
-                            <div ng-if="post.imageUrl.length > 3" class="col-md-3">
-                                <img src='{{myUrl}}' class="img-responsive">
-                            </div>   
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top: 0px;">  
-                        <div class="col-md-12" style="padding: 25px;">
-                            <div class="detailBox">
-                                <div class="titleBox">
-                                    <label>Comments</label>
-                                    <button type="button" class="close" aria-hidden="true">&times;</button>
-                                </div>
-                                <div class="commentBox">
-
-                                    <p class="taskDescription">Lorem Ipsum is simply dummy text of the printing and typesetting industry.</p>
-                                </div>
-                                <div class="actionBox">
-                                    <ul class="commentList">
-                                        <li>
-                                            <div class="commenterImage">
-                                                <img src="http://lorempixel.com/50/50/people/6" />
-                                            </div>
-                                            <div class="commentText">
-                                                <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
-
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="commenterImage">
-                                                <img src="http://lorempixel.com/50/50/people/7" />
-                                            </div>
-                                            <div class="commentText">
-                                                <p class="">Hello this is a test comment and this comment is particularly very long and it goes on and on and on.</p> <span class="date sub-text">on March 5th, 2014</span>
-
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="commenterImage">
-                                                <img src="http://lorempixel.com/50/50/people/9" />
-                                            </div>
-                                            <div class="commentText">
-                                                <p class="">Hello this is a test comment.</p> <span class="date sub-text">on March 5th, 2014</span>
-
-                                            </div>
-                                        </li>
-                                    </ul>
-                                    <form class="form-inline" role="form">                                       
-                                        <div class="form-group">
-                                            <img src="images/member.jpg" style="height: 40px;width:40px;">
-                                        </div>
-                                         <div class="form-group">
-                                             <textarea class="form-control"  placeholder="Your comments" ></textarea>
-                                        </div>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>               
-                <div class="" ng-hide="more_items">
-                    There are no more items to load! 
-                </div>
-            </div>
-        </div>
-    </div> 
-    <!--Column middle End-->
+								<!-- liked List Popup Modal -->
+								<div id="playerModal{{$index}}" class="modal fade" role="dialog">
+									<div class="modal-dialog">
+										<div class="modal-content">
+											<div class="modal-header">
+												<button type="button" class="close" data-dismiss="modal">&times;</button>
+												<h4 class="modal-title">{{post.likedUserDetails.length}}
+													Likes this Post</h4>
+											</div>
+											<div class="modal-body">
+												<div class="row">
+													<div class="col-md-12" style="margin-top: 3px;"
+														ng-repeat="ud in post.likedUserDetails">
+														<a href="#user_profile/{{ud.userID}}" data-dismiss="modal">
+														<img check-image ng-src="{{ud.likedUserImage}}"
+															class="img" style="width: 50px; height: 50px;"></a>
+													 <a href="#user_profile/{{ud.userID}}">{{ud.userName}}</a>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="post-footer-comment-wrapper">
+									<div class="comment-form" ng-show="post.isShowAllComment">
+										<div class="row">
+											<div class="col-md-2 less-padding">
+												<div class="col-sm-12">
+													<div class="form-group">
+														<div class="pull-right">
+															<a href=""> <img src="images/member.jpg"
+																style='height: 40px; width: 100%;'></a>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="col-md-8 less-padding">
+												<div class="form-group">
+													<textarea
+														placeholder="place your comments.Try Shift + Enter for new line jai1"
+														style='width: 100%' ng-model="post.myComment"
+														enter-submit="$parent.currentComments =  post.commentDetailsList; updateComment(post.postId, 
+                                                              post.myComment); post.myComment = ''"></textarea>
+												</div>
+											</div>
+											<div class="col-md-2 less-padding">
+												<div class="form-group" file-browse-button
+													style="margin-top: 5px;">
+													<a data-target="#" class="btn btn-default pull-left"> <span
+														class="glyphicon glyphicon-camera"></span>
+													</a>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="row" ng-show="!post.isShowAllComment">
+										<div class="col-sm-1 col-md-2">
+											<div class="form-group">
+												<div class="pull-right">
+													<a href=""><img check-image
+														ng-src="{{post.commentDetailsList[0].commentedByImage}}"
+														title="" style='width: 100%; height: 55px;'> </a>														
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6 col-md-10">
+											<div class="form-group">
+												<div class="col-md-12" style="word-wrap: break-word;">{{post.commentDetailsList[0].content}}</div>
+												<span class="date sub-text"> </span><br> <span
+													class="date sub-text">{{post.commentDetailsList[0].timestamp
+													| contextualDate}}</span><br>
+											</div>
+										</div>
+									</div>
+									<div class="row" ng-repeat="comment in post.commentDetailsList"
+										ng-show="post.isShowAllComment">
+										<div class="col-sm-1 col-md-2">
+											<div class="form-group">
+												<div class="pull-right">
+													<a href=""><img check-image
+														ng-src="{{comment.commentedByImage}}" title=""
+														style='width: 100%; height: 55px;'> </a>
+												</div>
+											</div>
+										</div>
+										<div class="col-sm-6 col-md-10">
+											<div class="form-group">
+												<div class="col-md-12" style="word-wrap: break-word;">{{comment.content}}</div>
+												<span class="date sub-text"> </span><br> <span
+													class="date sub-text">{{comment.timestamp |
+													contextualDate}}</span><br>
+											</div>
+										</div>
+									</div>
+								</div>
+							</section>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--<div class="container">
+				<div class="row" style="margin-top: 10px">
+					<div class="col-sm-1 less-padding">
+						<div class="col-sm-8 col-md-8">
+							<div class="form-group">
+								<div class="pull-right">
+									<a href=""> <img src="images/member.jpg"
+										style='height: 40px; width: 100%;'></a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-5 col-md-2 less-padding">
+						<div class="form-group">
+							<textarea
+								placeholder="place your comments.Try Shift + Enter for new line jai2"
+								style='width: 100%' ng-model="post.myComment"
+								enter-submit="$parent.currentComments = post.commentDetailsList; updateComment(post.postId, 
+                                      post.myComment); post.myComment = ''"></textarea>
+						</div>
+					</div>
+					<div class="col-sm-2 col-md-2 less-padding">
+						<div class="form-group" file-browse-button
+							style="margin-top: 5px;">
+							<a data-target="#" class="btn btn-default pull-left"> <span
+								class="glyphicon glyphicon-camera"></span></a>
+						</div>
+					</div>
+				</div>
+				<div class="row" ng-repeat="comment in post.comments" ng-show="true">
+					<div class="col-sm-1">
+						<div class="form-group">
+							<div class="pull-right">
+								<a href=""> <img src="{{comment.userImageUrl}}" title=""
+									style='width: 100%; height: 55px;'>
+								</a>
+							</div>
+						</div>
+					</div>
+					<div class="col-sm-6">
+						<div class="form-group">
+							<p class="">{{comment.content}}</p>
+							<span class="date sub-text"> </span><br> <span
+								class="date sub-text">{{comment.timestamp|
+								contextualDate}}</span><br> <a href="">Like</a>&nbsp &nbsp<a
+								href="">Reply</a>
+						</div>
+					</div>
+				</div>
+			</div>-->
+		</div>
+		<div class="" ng-hide="more_items">There are no more items to
+			load!</div>
+		<!--</div>-->
+	</div>
 </div>
+
+<!--Column middle End-->
+<div id="lightbox" class="modal fade" tabindex="-1" role="dialog"
+	aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<button type="button" class="close hidden" data-dismiss="modal"
+			aria-hidden="true">×</button>
+		<div class="modal-content">
+			<div class="modal-body">
+				<img src="" alt="" />
+			</div>
+		</div>
+	</div>
+</div>
+</div>
+<script>
+	$(document)
+			.ready(
+					function() {
+						// Configure/customize these variables.
+						var showChar = 500; // How many characters are shown by default
+						var ellipsestext = "...";
+						var moretext = "Show more >";
+						var lesstext = "Show less";
+
+						$('.more')
+								.each(
+										function() {
+											var content = $(this).html();
+											if (content.length > showChar) {
+												var c = content.substr(0,
+														showChar);
+												var h = content.substr(
+														showChar,
+														content.length
+																- showChar);
+												var html = c
+														+ '<span class="moreellipses">'
+														+ ellipsestext
+														+ '&nbsp;</span><span class="morecontent"><span>'
+														+ h
+														+ '</span>&nbsp;&nbsp;<a href="" class="morelink">'
+														+ moretext
+														+ '</a></span>';
+												$(this).html(html);
+											}
+										});
+
+						$(".morelink").click(function() {
+							if ($(this).hasClass("less")) {
+								$(this).removeClass("less");
+								$(this).html(moretext);
+							} else {
+								$(this).addClass("less");
+								$(this).html(lesstext);
+							}
+							$(this).parent().prev().toggle();
+							$(this).prev().toggle();
+							return false;
+						});
+					});
+</script>

@@ -5,6 +5,8 @@
  */
 var groundApp = angular.module('groundModule', []);
 groundApp.controller("CreateNewGroundCtrl", function ($scope, $http) {
+	$scope.isSuccess=false;
+	
     $scope.postAddGround = function () {
         var pitch = [];
 
@@ -39,30 +41,46 @@ groundApp.controller("CreateNewGroundCtrl", function ($scope, $http) {
                 var et = $scope.slots[i].endTime;
                // alert($scope.slots[i].startTime + ' ' + $scope.slots[i].endTime);
             }
-        }
-      
-       /* var data = {
-            city: $scope.city,
-            area: $scope.area,
-            groundName: $scope.groundName,
-            groundAddress: $scope.groundAddress,
-            landMark: $scope.landMark,
-            ballType: $scope.addedBallTypes,
-            pitchType: pitch,
-            slots: $scope.slots
-        };*/
-        var data = {
-            city: $scope.city,
-            area: $scope.area,
-            groundName: $scope.groundName,
-            groundAddress: $scope.groundAddress,
-            landMark: $scope.landMark,
-            ballType: $scope.addedBallTypes,
-            pitchType: pitch,
-            slots: $scope.slots
-        };
+        }      
         
-       console.warn("I am Sending to Rest Server: "+angular.toJson(data));
+        var ballIds='';       
+        angular.forEach($scope.addedBallTypes, function(value,key){
+        	if(key==0)
+        	{
+        		ballIds=value.ballId;
+        	}
+        	else
+        	{
+        		ballIds=ballIds+","+value.ballId;
+        	}
+        });
+        
+        var pitches='';
+        angular.forEach(pitch, function(value,key){
+        	if(key==0)
+        	{
+        		pitches=value.name;
+        	}
+        	else
+        	{
+        		pitches=pitches+","+value.name;
+        	}
+        });        
+        
+        var data = {
+            city: $scope.city.cityName,
+            area: $scope.area,
+            name: $scope.groundName,
+            address: $scope.groundAddress,
+            landmark: $scope.landMark,
+            manager: $scope.manager,            
+            contactno:$scope.contactno,
+            balltype: ballIds,
+            pitchtype: pitches,
+            groundSlotsList:$scope.slots
+        };
+       
+       console.warn("hit the servicer: "+angular.toJson(data));
         
         var config = {
             headers: {
@@ -70,9 +88,13 @@ groundApp.controller("CreateNewGroundCtrl", function ($scope, $http) {
             }
         }
 
-        $http.post('rest/ground/', data, config)
+        $http.post('service/rest/ground/addground', data, config)
                 .success(function (data, status, headers, config) {
                     $scope.PostDataResponse = data;
+                    if($scope.PostDataResponse.responseStatus=="Success")
+                    {                    	
+                    	$scope.isSuccess=true;
+                    }
 
                 })
                 .error(function (data, status, header, config) {
@@ -84,26 +106,44 @@ groundApp.controller("CreateNewGroundCtrl", function ($scope, $http) {
     };
 });
 
-groundApp.controller("BookGroundCtrl", function ($scope, $http) {
-    $scope.postBookGround = function () {
-        alert('Posted ' + $scope.selectBallId);
-        var data = {
-            city: $scope.city,
-            area: $scope.area,
-            groundName: $scope.groundName,
-            groundAddress: $scope.groundAddress,
-            landMark: $scope.landMark
+groundApp.controller("BookGroundCtrl", function ($scope, $http) {	
+	
+	$scope.getSlotDetails = function () {
+		//alert(angular.toJson($scope.selectedGround));
+		var ground=$scope.selectedGround;
+		var grounId=ground.groundId;
+        var date=$scope.date;		
+		var url='service/rest/ground/getavailableslots?groundId='+ground.groundId+'&date='+date;
+		alert(url);
+		 $http.get(url).then(function (res) {
+			  alert(res.data);
+		 });		
+	}
+	
+	$scope.postBookGround = function () {      
+		alert("postBookGround");
+        var data = {        		
+        		groundId:'',
+        		date:new Date,
+        		slotId:23,
+        		status:'true',
+        		dateOfRequest:new Date(),
+        		teamAId:1,
+        		teamBId:2,
+        		ballTypeId:3,
+        		bookedBy:5           
         };
-        alert(angular.toJson($scope.addedBallTypes));
+      
         var config = {
             headers: {
-                'Content-Type': 'application/x-www-form-urlencoded;charset=utf-8;'
+                'Content-Type': 'application/json'
             }
         }
 
-        $http.post('Server.jsp', data, config)
+        $http.post('service/rest/ground/addgroundbookingdetails', data, config)
                 .success(function (data, status, headers, config) {
                     $scope.PostDataResponse = data;
+                    alert('sucesss');
 
                 })
                 .error(function (data, status, header, config) {
@@ -111,6 +151,7 @@ groundApp.controller("BookGroundCtrl", function ($scope, $http) {
                             "<hr />status: " + status +
                             "<hr />headers: " + header +
                             "<hr />config: " + config;
+                    alert('failed');
                 });
     };
 });

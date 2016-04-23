@@ -23,14 +23,15 @@ public class TeamDetails {
 	private String name;
 	private String city;
 	private String area;
-	private String caption;
-	private String contactno;
+	private String captain;
+	private String contactNo;
 	private String players;
-	private String balltype;
+	private String ballType;
 	private String managers;
-	private String pitchtype;
-	private String followersuid;
+	private String pitchType;
+	private String followersUid;
 	private String pid;
+	private String description;	
 	private String status;
 	
 	
@@ -52,17 +53,19 @@ public class TeamDetails {
 	public void setArea(String area) {
 		this.area = area;
 	}
-	public String getCaption() {
-		return caption;
+	
+	
+	/**
+	 * @return the contactNo
+	 */
+	public String getContactNo() {
+		return contactNo;
 	}
-	public void setCaption(String caption) {
-		this.caption = caption;
-	}
-	public String getContactno() {
-		return contactno;
-	}
-	public void setContactno(String contactno) {
-		this.contactno = contactno;
+	/**
+	 * @param contactNo the contactNo to set
+	 */
+	public void setContactNo(String contactNo) {
+		this.contactNo = contactNo;
 	}
 	public String getPlayers() {
 		return players;
@@ -70,29 +73,50 @@ public class TeamDetails {
 	public void setPlayers(String players) {
 		this.players = players;
 	}
-	public String getBalltype() {
-		return balltype;
-	}
-	public void setBalltype(String balltype) {
-		this.balltype = balltype;
-	}
+
 	public String getManagers() {
 		return managers;
 	}
 	public void setManagers(String managers) {
 		this.managers = managers;
 	}
-	public String getPitchtype() {
-		return pitchtype;
+
+	
+	/**
+	 * @return the ballType
+	 */
+	public String getBallType() {
+		return ballType;
 	}
-	public void setPitchtype(String pitchtype) {
-		this.pitchtype = pitchtype;
+	/**
+	 * @param ballType the ballType to set
+	 */
+	public void setBallType(String ballType) {
+		this.ballType = ballType;
 	}
-	public String getFollowersuid() {
-		return followersuid;
+	/**
+	 * @return the pitchType
+	 */
+	public String getPitchType() {
+		return pitchType;
 	}
-	public void setFollowersuid(String followersuid) {
-		this.followersuid = followersuid;
+	/**
+	 * @param pitchType the pitchType to set
+	 */
+	public void setPitchType(String pitchType) {
+		this.pitchType = pitchType;
+	}
+	/**
+	 * @return the followersUid
+	 */
+	public String getFollowersUid() {
+		return followersUid;
+	}
+	/**
+	 * @param followersUid the followersUid to set
+	 */
+	public void setFollowersUid(String followersUid) {
+		this.followersUid = followersUid;
 	}
 	public String getPid() {
 		return pid;
@@ -107,6 +131,19 @@ public class TeamDetails {
 		this.status = status;
 	}
 	
+	
+	/**
+	 * @return the captain
+	 */
+	public String getCaptain() {
+		return captain;
+	}
+	/**
+	 * @param captain the captain to set
+	 */
+	public void setCaptain(String captain) {
+		this.captain = captain;
+	}
 	/**
 	 * @return the teamID
 	 */
@@ -119,6 +156,20 @@ public class TeamDetails {
 	public void setTeamID(long teamID) {
 		this.teamID = teamID;
 	}
+	/**
+	 * @return the description
+	 */
+	public String getDescription() {
+		return description;
+	}
+	/**
+	 * @param description the description to set
+	 */
+	public void setDescription(String description) {
+		this.description = description;
+	}
+	
+	
 	
 
 }
