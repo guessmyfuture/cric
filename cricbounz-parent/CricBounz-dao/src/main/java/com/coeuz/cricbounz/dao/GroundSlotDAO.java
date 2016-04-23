@@ -15,7 +15,6 @@ import com.coeuz.cricbounz.model.GroundSlots;
 @Repository
 public class GroundSlotDAO extends BaseDAO<GroundSlots, Integer> {
 	private Session session;
-	private SessionFactory sessionFactory;
 
 	@Autowired
 	public GroundSlotDAO(SessionFactory sessionFactory) {

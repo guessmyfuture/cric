@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.springframework.stereotype.Component;
 @Entity
 @Table(name = "slots")
@@ -19,7 +21,16 @@ public class Slots {
 	private String slotStartTime;
 	private String slotEndTime;
 	private long groundId;
+	
+	@Transient
+	private String available;
 		
+	public String getAvailable() {
+		return available;
+	}
+	public void setAvailable(String available) {
+		this.available = available;
+	}
 	/**
 	 * @return the slotId
 	 */

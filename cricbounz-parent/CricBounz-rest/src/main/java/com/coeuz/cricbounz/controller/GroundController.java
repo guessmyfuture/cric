@@ -126,7 +126,7 @@ public class GroundController {
 		return responseStatus;
 	}
 
-	@RequestMapping(value = "/getgroundbookingdetails", method = RequestMethod.GET)
+	@RequestMapping(value = "/getBookingDetails", method = RequestMethod.GET)
 	public @ResponseBody GroundBookingDetails getGroundBookingDetails(@RequestParam("bookingId") long bookingId) {
 		logger.info("Starting getGroundBookingDetails");
 		GroundBookingDetails groundBookingDetails = groundBookingDetailsDAO.getGroundBookingDetails(bookingId);
@@ -134,10 +134,11 @@ public class GroundController {
 	}
 
 	@RequestMapping(value = "/getavailableslots", method = RequestMethod.GET)
-	public @ResponseBody List<GroundSlots> getAvailableSlotDetails(@RequestParam("groundId") long groundId,
+	public @ResponseBody List<Slots> getAvailableSlotDetails(@RequestParam("groundId") long groundId,
 			@RequestParam("date") String date) {
 		logger.info("Starting getAvailableSlotDetails");
-		List<GroundSlots> groundSlotDetails = groundSlotDAO.getAvailableGroundSlots(groundId, date);
+		Ground groundDetails = groundDAO.getGroundDetails(groundId);
+		List<Slots> groundSlotDetails = groundBookingDetailsDAO.getAvailableSlotsForGround(groundId, date, groundDetails);
 		return groundSlotDetails;
 	}
 	
@@ -146,5 +147,27 @@ public class GroundController {
 		logger.info("Starting getting All Grround Details");
 		List<Ground> allGround = groundDAO.getAllGroundDetails();
 		return allGround;
+	}
+	
+	@RequestMapping(value = "/City", method = RequestMethod.GET)
+	public @ResponseBody List<String> getAllCityName() {
+		logger.info("Starting getting All City Names having Grounds");
+		List<String> cities = groundDAO.getAllCities();
+		return cities;
+	}
+	
+	@RequestMapping(value = "/City/Area", method = RequestMethod.GET)
+	public @ResponseBody List<String> getAreaByCityName(@RequestParam("city") String cityName) {
+		logger.info("Starting getting All City Names having Grounds");
+		List<String> cities = groundDAO.getAreaFromCityName(cityName);
+		return cities;
+	}
+	
+	@RequestMapping(value = "/getGrounds", method = RequestMethod.GET)
+	public @ResponseBody List<Ground> getGround(@RequestParam("city") String cityName, 
+			@RequestParam("area") String areaName) {
+		logger.info("Starting getting All City Names having Grounds");
+		List<Ground> ground = groundDAO.getGrounds(cityName, areaName);
+		return ground;
 	}
 }
