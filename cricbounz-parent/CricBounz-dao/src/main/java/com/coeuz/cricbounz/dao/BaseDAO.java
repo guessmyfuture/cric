@@ -1,17 +1,16 @@
 package com.coeuz.cricbounz.dao;
 
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
+import java.util.TimeZone;
 
 import org.hibernate.Criteria;
-import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.orm.ObjectRetrievalFailureException;
-import org.springframework.orm.hibernate3.HibernateTemplate;
-
-import com.coeuz.cricbounz.dao.IBaseDAO;
 
 /**
  * Base class for all hibernate DAO implementations
@@ -187,6 +186,25 @@ public class BaseDAO<T, PK extends Serializable> implements IBaseDAO<T, PK> {
         session.close();
     }
 
+    public Date convertStrToDate(String date, String timeZone)
+    {
+    	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+    	TimeZone tz = TimeZone.getTimeZone(timeZone);
+    	formatter.setTimeZone(tz);
+    	Date serverDate = null;
+    	try {
+			Date clientDate = formatter.parse(date);
+			TimeZone serverZone = TimeZone.getDefault();
+			SimpleDateFormat serverZonedf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss a");
+			serverZonedf.setTimeZone(serverZone);
+			String serverDateTemp = serverZonedf.format(clientDate);
+			serverDate = formatter.parse(serverDateTemp);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+    	return serverDate;
+    }
    /* public List<T> findByQuery(String queryString, Map<String, Object> queryParams) {
         String[] params = new String[queryParams.size()];
         Object[] values = new Object[queryParams.size()];

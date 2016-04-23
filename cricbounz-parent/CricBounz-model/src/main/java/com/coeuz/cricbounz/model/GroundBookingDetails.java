@@ -8,6 +8,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "groundbooking")
@@ -18,7 +19,9 @@ public class GroundBookingDetails {
 	@Column(name = "bookingId")
 	private long bookingId;
 	private long groundId;
-	private Date date;
+	private Date dateOfPlay;
+	@Transient
+	String playingDate;
 	private long slotId;
 	private String status;
 	private Date dateOfRequest;
@@ -52,22 +55,24 @@ public class GroundBookingDetails {
 		this.groundId = groundId;
 	}
 	/**
-	 * @return the date
-	 */
-	public Date getDate() {
-		return date;
-	}
-	/**
-	 * @param date the date to set
-	 */
-	public void setDate(Date date) {
-		this.date = date;
-	}
+	
 	/**
 	 * @return the slotId
 	 */
 	public long getSlotId() {
 		return slotId;
+	}
+	public Date getDateOfPlay() {
+		return dateOfPlay;
+	}
+	public void setDateOfPlay(Date dateOfPlay) {
+		this.dateOfPlay = dateOfPlay;
+	}
+	public String getPlayingDate() {
+		return playingDate;
+	}
+	public void setPlayingDate(String playingDate) {
+		this.playingDate = playingDate;
 	}
 	/**
 	 * @param slotId the slotId to set

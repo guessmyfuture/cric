@@ -2,6 +2,8 @@ package com.coeuz.cricbounz.controller;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -101,7 +103,7 @@ public class GroundController {
 		return pitchTypeDetails;
 	}
 
-	@RequestMapping(value = "/addslotdetails", method = RequestMethod.POST)
+	/*@RequestMapping(value = "/addslotdetails", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus addSlotDetails(@RequestBody GroundSlots groundSlots) {
 		logger.info("Starting addSlotDetails");
 		ResponseStatus responseStatus = new ResponseStatus();
@@ -115,7 +117,7 @@ public class GroundController {
 		logger.info("Starting getSlotDetails");
 		GroundSlots groundSlotDetails = groundSlotDAO.getGroundSlotDetails(slotId);
 		return groundSlotDetails;
-	}
+	}*/
 
 	@RequestMapping(value = "/addgroundbookingdetails", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus addGroundBookingDetails(@RequestBody GroundBookingDetails bookingDetails) {
@@ -127,9 +129,35 @@ public class GroundController {
 	}
 
 	@RequestMapping(value = "/getBookingDetails", method = RequestMethod.GET)
-	public @ResponseBody GroundBookingDetails getGroundBookingDetails(@RequestParam("bookingId") long bookingId) {
+	public @ResponseBody GroundBookingDetails getBookingDetails(@RequestParam("bookingId") long bookingId) {
 		logger.info("Starting getGroundBookingDetails");
 		GroundBookingDetails groundBookingDetails = groundBookingDetailsDAO.getGroundBookingDetails(bookingId);
+		return groundBookingDetails;
+	}
+	
+	@RequestMapping(value = "/getGroundBookings", method = RequestMethod.GET)
+	public @ResponseBody List<GroundBookingDetails> getGroundBookInfo(@RequestParam("groundId") long groundId, 
+			@RequestParam("date") String date) {
+		logger.info("Starting getGroundBookingDetails");
+		List<GroundBookingDetails> groundBookingDetails = groundBookingDetailsDAO.getGroundBookInfo(groundId, date);
+		return groundBookingDetails;
+	}
+	
+	@RequestMapping(value = "/CancelBooking", method = RequestMethod.POST)
+	public @ResponseBody ResponseStatus cancelBooking(@RequestParam("bookingId") long bookingId) {
+		logger.info("Starting getGroundBookingDetails");
+		groundBookingDetailsDAO.cancelBooking(bookingId);
+		ResponseStatus res = new ResponseStatus();
+		res.setResponseStatus("The Ground Slot Booking has been Cancelled Succesfully");
+		return res;
+	}
+	
+	@RequestMapping(value = "/myBookingHistory", method = RequestMethod.GET)
+	public @ResponseBody List<GroundBookingDetails> getBookingHistory(HttpServletRequest request) {
+		logger.info("Starting getGroundBookingDetails");
+		String currentUser = (String)request.getSession(false).getAttribute("userId");
+		long userId = Long.parseLong(currentUser.trim());
+		List<GroundBookingDetails> groundBookingDetails = groundBookingDetailsDAO.getBookingHistory(userId);
 		return groundBookingDetails;
 	}
 
