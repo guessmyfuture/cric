@@ -142,6 +142,31 @@ public class BaseDAO<T, PK extends Serializable> implements IBaseDAO<T, PK> {
     /**
      * {@inheritDoc}
      */
+    public void saveorUpdate(List<T> objectList) {
+    	session = sessionFactory.openSession();
+        session.beginTransaction();
+        for(Object obj:objectList){
+        	session.saveOrUpdate(obj);
+        	session.flush();
+            session.getTransaction().commit();
+        }
+        session.close();
+    }
+    
+    public long saveAndRetrunUniqkey(T object) {
+       session = sessionFactory.openSession();
+       session.beginTransaction();
+       Long obj = (Long) session.save(object);
+       session.flush();
+       session.getTransaction().commit();
+       session.close();
+       return obj; 
+    }
+    
+    
+    /**
+     * {@inheritDoc}
+     */
     public void delete(Long id) {
     	session = sessionFactory.openSession();
         session.beginTransaction();

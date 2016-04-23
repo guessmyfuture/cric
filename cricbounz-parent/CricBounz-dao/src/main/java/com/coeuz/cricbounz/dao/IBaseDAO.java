@@ -47,6 +47,13 @@ public interface IBaseDAO <T, PK extends Serializable> {
      * @return the persisted object
      */
     T save(T object);
+    
+    /**
+     * Generic method to save an object - handles both update and insert.
+     * @param object the object to save and retruns the generated identifiers
+     * @return the persisted object
+     */
+    long saveAndRetrunUniqkey(T object);
 
     /**
      * Generic method to save or Update an object - handles both update and insert.

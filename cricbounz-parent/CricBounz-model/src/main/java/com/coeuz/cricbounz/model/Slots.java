@@ -6,7 +6,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
-
 import org.springframework.stereotype.Component;
 @Entity
 @Table(name = "slots")
@@ -17,9 +16,10 @@ public class Slots {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "slotId")
 	private long slotId;
-	private long groundId;
 	private String slotStartTime;
 	private String slotEndTime;
+	private long groundId;
+		
 	/**
 	 * @return the slotId
 	 */

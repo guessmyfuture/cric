@@ -1,5 +1,7 @@
 package com.coeuz.cricbounz.dao;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,8 +21,8 @@ public class SlotsDAO extends BaseDAO <Slots, Integer> {
         super.setSessionFactory(sessionFactory);
     }
 	
-	public void saveSlotsDetails(Slots slots){
-		 saveorUpdate(slots);	
+	public void saveSlotsDetails(List<Slots> slotsList){
+		 saveorUpdate(slotsList);	
 	}
 	
 	public Slots getSlotsDetails(long slotId){

@@ -17,12 +17,14 @@ import com.coeuz.cricbounz.dao.GroundBookingDetailsDAO;
 import com.coeuz.cricbounz.dao.GroundDAO;
 import com.coeuz.cricbounz.dao.GroundSlotDAO;
 import com.coeuz.cricbounz.dao.PitchTypeDAO;
+import com.coeuz.cricbounz.dao.SlotsDAO;
 import com.coeuz.cricbounz.model.BallTypeDetails;
 import com.coeuz.cricbounz.model.Ground;
 import com.coeuz.cricbounz.model.GroundBookingDetails;
 import com.coeuz.cricbounz.model.GroundSlots;
 import com.coeuz.cricbounz.model.PitchTypeDetails;
 import com.coeuz.cricbounz.model.ResponseStatus;
+import com.coeuz.cricbounz.model.Slots;
 
 @Controller
 @RequestMapping(value = "/rest/ground")
@@ -47,6 +49,9 @@ public class GroundController {
 
 	@Autowired
 	ResponseStatus responseStatus;
+	
+	@Autowired 
+	SlotsDAO slotsDAO;
 
 	@RequestMapping(value = "/addground", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus addGroundDetails(@RequestBody Ground ground) {

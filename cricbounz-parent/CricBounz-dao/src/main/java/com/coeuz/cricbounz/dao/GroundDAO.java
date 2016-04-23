@@ -8,9 +8,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.coeuz.cricbounz.model.Ground;
+import com.coeuz.cricbounz.model.Slots;
 
 @Repository
 public class GroundDAO extends BaseDAO<Ground, Integer> {
+	
+	@Autowired
+	SlotsDAO slotsDAO;
 
 	@Autowired
 	public GroundDAO(SessionFactory sessionFactory) {
@@ -19,8 +23,12 @@ public class GroundDAO extends BaseDAO<Ground, Integer> {
 	}
 
 	public void addGroundDetails(Ground ground) {
-		ground = save(ground);
-		update(ground);
+		long groundID=saveAndRetrunUniqkey(ground);
+		List<Slots> slotsList = ground.getSlotsList();
+		for(Slots slots:slotsList){
+			slots.setGroundId(groundID);
+			slotsDAO.saveorUpdate(slots);	
+		}
 	}
 
 	public Ground getGroundDetails(long groundId) {
