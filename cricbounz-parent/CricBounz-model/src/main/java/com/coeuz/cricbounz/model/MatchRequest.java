@@ -21,7 +21,7 @@ public class MatchRequest {
 	@Column(name="matchRequestID")	
 	private long matchRequestID;
 	private String requestStatus;
-	private String requestedBy;
+	private long requestedByID;
 	private long requestedByTeam ;
     private long requestedToTeam;
     private Date requestedDate;
@@ -30,6 +30,7 @@ public class MatchRequest {
     private String matchStartTime;
     private String matchEndTime;
     private String status;
+		
 	/**
 	 * @return the matchRequestID
 	 */
@@ -55,16 +56,16 @@ public class MatchRequest {
 		this.requestStatus = requestStatus;
 	}
 	/**
-	 * @return the requestedBy
+	 * @return the requestedByID
 	 */
-	public String getRequestedBy() {
-		return requestedBy;
+	public long getRequestedByID() {
+		return requestedByID;
 	}
 	/**
-	 * @param requestedBy the requestedBy to set
+	 * @param requestedByID the requestedByID to set
 	 */
-	public void setRequestedBy(String requestedBy) {
-		this.requestedBy = requestedBy;
+	public void setRequestedByID(long requestedByID) {
+		this.requestedByID = requestedByID;
 	}
 	/**
 	 * @return the requestedByTeam
@@ -162,8 +163,6 @@ public class MatchRequest {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	
-	
-	
+
 		
 }
