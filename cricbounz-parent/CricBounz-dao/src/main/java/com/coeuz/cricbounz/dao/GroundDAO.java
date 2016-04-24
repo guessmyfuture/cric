@@ -1,5 +1,6 @@
 package com.coeuz.cricbounz.dao;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,14 +26,15 @@ public class GroundDAO extends BaseDAO<Ground, Integer> {
 		super.setSessionFactory(sessionFactory);
 	}
 
-	public void addGroundDetails(Ground ground) {
+	public void addGroundDetails(Ground ground) throws SQLException,NullPointerException {
 		long groundID=saveAndRetrunUniqkey(ground);
 		List<Slots> slotsList = ground.getSlotsList();
 		for(Slots slots:slotsList){
 			slots.setGroundId(groundID);
 			slotsDAO.saveorUpdate(slots);	
 		}
-	}
+			
+	 }
 
 	public Ground getGroundDetails(long groundId) {
 		Ground ground = null;

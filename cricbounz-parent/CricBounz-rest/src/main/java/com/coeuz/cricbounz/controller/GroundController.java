@@ -1,5 +1,6 @@
 package com.coeuz.cricbounz.controller;
 
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -59,8 +60,17 @@ public class GroundController {
 	public @ResponseBody ResponseStatus addGroundDetails(@RequestBody Ground ground) {
 		logger.info("Starting addGroundDetails");
 		ResponseStatus responseStatus = new ResponseStatus();
-		groundDAO.addGroundDetails(ground);
-		responseStatus.setResponseStatus("Success");
+		try{
+			groundDAO.addGroundDetails(ground);
+			responseStatus.setResponseStatus("Success");	
+		}catch(SQLException sqlex){
+			responseStatus.setErrorMessage("SQL Excception occured at addGroundDetails()");
+			logger.error("SQL Excception occured at addGroundDetails()"+sqlex);
+		}catch(NullPointerException nullexp){
+			responseStatus.setErrorMessage("SQL Excception occured at addGroundDetails()");
+			logger.error("NullPointerException Excception occured at addGroundDetails()"+nullexp);
+		}
+		responseStatus.setResponseStatus("Saved Successfully");
 		return responseStatus;
 	}
 

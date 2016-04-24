@@ -34,6 +34,7 @@ public class TeamDetails {
 	private String status;
 	
 	
+	
 	public String getName() {
 		return name;
 	}

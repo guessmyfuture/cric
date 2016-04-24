@@ -13,12 +13,11 @@ import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.coeuz.cricbounz.model.CommentDetails;
-import com.coeuz.cricbounz.model.LikedUserDetails;
 import com.coeuz.cricbounz.model.PostDetails;
 import com.coeuz.cricbounz.model.ShareDetails;
 import com.coeuz.cricbounz.model.UserDetails;
+import com.coeuz.cricbounz.model.UtilUserDetails;
 @Repository
 public class PostDAO extends BaseDAO <PostDetails, Integer> {
 	private Session session;
@@ -191,7 +190,7 @@ public class PostDAO extends BaseDAO <PostDetails, Integer> {
 				
 				if(postDetails.getLikedById().length()>0){
 					StringTokenizer likedUsersIds = new StringTokenizer(postDetails.getLikedById(),delimit);
-					List<LikedUserDetails> likedUserDetailsList = new ArrayList<LikedUserDetails>();
+					List<UtilUserDetails> likedUserDetailsList = new ArrayList<UtilUserDetails>();
 					while(likedUsersIds.hasMoreElements()){
 						long likeduserId =Long.parseLong((String)likedUsersIds.nextElement());
 						String likedUserHql="FROM UserDetails u WHERE u.userId="+likeduserId;
@@ -199,11 +198,11 @@ public class PostDAO extends BaseDAO <PostDetails, Integer> {
 						List<UserDetails> likedUsersList =(List<UserDetails>)likedUserQuery.list();
 						if(likedUsersList!=null && likedUsersList.size()>0){
 							UserDetails likedUserDetailsObj=null;
-							LikedUserDetails likedUserDetails = new LikedUserDetails();
+							UtilUserDetails likedUserDetails = new UtilUserDetails();
 							likedUserDetailsObj = likedUsersList.get(0);
 							likedUserDetails.setUserID(likeduserId);
 							likedUserDetails.setUserName(likedUserDetailsObj.getName());
-							likedUserDetails.setLikedUserImage(likedUserDetailsObj.getProfileImageUrl());
+							likedUserDetails.setUserImage(likedUserDetailsObj.getProfileImageUrl());
 							likedUserDetailsList.add(likedUserDetails);
 							
 													

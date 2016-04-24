@@ -39,7 +39,7 @@ public class PostDetails {
 	@Transient
 	private String likedStatus;
 	@Transient
-	private List<LikedUserDetails> likedUserDetails=new ArrayList<LikedUserDetails>();
+	private List<UtilUserDetails> likedUserDetails=new ArrayList<UtilUserDetails>();
 		
 	public long getPostId() {
 		return postId;
@@ -121,10 +121,10 @@ public class PostDetails {
 		this.likedStatus = likedStatus;
 	}
 	
-	public List<LikedUserDetails> getLikedUserDetails() {
+	public List<UtilUserDetails> getLikedUserDetails() {
 		return likedUserDetails;
 	}
-	public void setLikedUserDetails(List<LikedUserDetails> likedUserDetails) {
+	public void setLikedUserDetails(List<UtilUserDetails> likedUserDetails) {
 		this.likedUserDetails = likedUserDetails;
 	}
 		
