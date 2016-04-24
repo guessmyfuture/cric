@@ -22,10 +22,13 @@ public class CreateRegisteredTeamDAO extends BaseDAO<TournamentRegistrationDetai
 		save(tournamentRegistrationDetail);
 	}
 
+	
+	// Retrieve team ids from tournament registartion detail table and retrieve the team details of corresponding team ids from team details table
 	public List<TeamDetails> retrieveRegisteredTeamBasedOnTournamentID(long tournamentId) {
-		String sql = "SELECT teamdetails.name, teamdetails.area FROM teamdetails INNER JOIN tournamentregistrationdetail ON tournamentregistrationdetail.teamId=teamdetails.teamId WHERE tournamentregistrationdetail.tournamentId="
-				+ tournamentId;
-		Query query = getSessionFactory().openSession().createSQLQuery(sql);
+		String sql = "FROM TeamDetails td WHERE td.teamID IN (Select trd.teamId FROM TournamentRegistrationDetail trd WHERE trd.tournamentId= :tour_Id  )";
+		
+		Query query = getSessionFactory().openSession().createQuery(sql);
+		query.setParameter("tour_Id", tournamentId);
 		List<TeamDetails> results = query.list();
 		getSessionFactory().close();
 		return results;

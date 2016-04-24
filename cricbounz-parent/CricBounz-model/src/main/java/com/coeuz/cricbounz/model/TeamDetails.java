@@ -18,7 +18,6 @@ public class TeamDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="teamID")
-
 	private long teamID;
 	private String name;
 	private String city;
