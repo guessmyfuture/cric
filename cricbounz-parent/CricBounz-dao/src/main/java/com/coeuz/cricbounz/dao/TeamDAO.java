@@ -1,5 +1,6 @@
 package com.coeuz.cricbounz.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Criteria;
@@ -54,8 +55,7 @@ public class TeamDAO extends BaseDAO <TeamDetails, Integer> {
 	
 	public List<UserDetails> getTeamMembersByTeamId(long teamId)
 	{
-		TeamDetails team=(TeamDetails)get(teamId);
-		String[] playerIds = team.getPlayers().split(",");
+		Object[] playerIds = getPlayersIdFromTeamId(teamId).toArray();
 		Session session = getSessionFactory().openSession();
 		Criteria cr = session.createCriteria(UserDetails.class);
 		cr.add(Restrictions.in("userId", playerIds));
@@ -63,4 +63,17 @@ public class TeamDAO extends BaseDAO <TeamDetails, Integer> {
 		return userDetails;
 	}
 
+	public List getPlayersIdFromTeamId(long teamId)
+	{
+		TeamDetails team=(TeamDetails)get(teamId);
+		String[] playerIds = team.getPlayers().split(",");
+		List playersList = new ArrayList();
+		for (String s : playerIds)
+		{
+			long playerId = Long.parseLong(s.trim());
+			playersList.add(playerId);
+		}
+		return playersList;
+		
+	}
 }
