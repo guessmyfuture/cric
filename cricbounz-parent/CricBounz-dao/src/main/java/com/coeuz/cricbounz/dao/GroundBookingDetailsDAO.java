@@ -58,6 +58,7 @@ public class GroundBookingDetailsDAO extends BaseDAO<GroundBookingDetails, Integ
 		Criteria cre = session.createCriteria(GroundBookingDetails.class);
 		cre.add(Restrictions.eq("bookingId", bookingId));
 		List<GroundBookingDetails> gbdList = cre.list();
+		session.close();
 		GroundBookingDetails gbd = gbdList.get(0);
 		RequestNotifications reqNotify = new RequestNotifications();
 		reqNotify.setNotifyToID(gbd.getBookedBy());
@@ -66,6 +67,7 @@ public class GroundBookingDetailsDAO extends BaseDAO<GroundBookingDetails, Integ
 		reqNotify.setRequestType(Request_Type);
 		reqNotify.setTimeStamp(new Date());
 		reqNotDAO.save(reqNotify);
+		
 
 	}
 	

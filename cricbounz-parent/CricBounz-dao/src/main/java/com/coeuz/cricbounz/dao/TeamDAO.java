@@ -38,18 +38,13 @@ public class TeamDAO extends BaseDAO <TeamDetails, Integer> {
 		session.close();
 		return teamLists;
 	}
-	public List<TeamDetails> getMyTeamsById(long userId)
+	public List<TeamDetails> getMyTeams(String userId)
 	{
-		//TeamDetails team1=(TeamDetails)get(userId);
 		Session session = getSessionFactory().openSession();
 		Criteria cr = session.createCriteria(TeamDetails.class);
-		//cr.add(Restrictions.or(Restrictions.ilike("name", text, MatchMode.ANYWHERE)))));
-		Session teamSession = getSessionFactory().openSession();
-		//String teamHql ="FROM TeamDetails t WHERE t.players like '%,"+userId+",'%";
-		String teamHql ="FROM TeamDetails t WHERE t.players like '%,"+userId+",%'";
-		Query query= session.createQuery(teamHql);
+		cr.add(Restrictions.ilike("players", userId, MatchMode.ANYWHERE));
+		List<TeamDetails> teamLists =cr.list();
 		session.close();
-		List<TeamDetails> teamLists =query.list();
 		return teamLists;
 	}
 	

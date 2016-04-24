@@ -1,5 +1,9 @@
 package com.coeuz.cricbounz.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.coeuz.cricbounz.dao.TeamDAO;
 import com.coeuz.cricbounz.model.ResponseStatus;
@@ -28,5 +33,30 @@ public class TeamController {
 		teamDAO.registerTeamDetails(teamDetails);
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
+	}
+	
+	@RequestMapping(value = "/updateTeam", method = RequestMethod.POST)
+	public @ResponseBody ResponseStatus updateTeamDetails(@RequestBody TeamDetails teamDetails) {
+		logger.info("Update Team Details");
+		ResponseStatus responseStatus = new ResponseStatus();
+		teamDAO.update(teamDetails);
+		responseStatus.setResponseStatus("Success");
+		return responseStatus;
+	}
+	
+	@RequestMapping(value = "/deleteTeam", method = RequestMethod.POST)
+	public @ResponseBody ResponseStatus deleteTeam(@RequestParam("teamId") long teamId) {
+		logger.info("Delete Team");
+		ResponseStatus responseStatus = new ResponseStatus();
+		teamDAO.delete(teamId);
+		responseStatus.setResponseStatus("Success");
+		return responseStatus;
+	}
+	
+	@RequestMapping(value = "/getMyTeams", method = RequestMethod.GET)
+	public @ResponseBody List<TeamDetails> getMyTeams(HttpServletRequest request) {
+		String userId = (String)request.getSession(false).getAttribute("userId");
+		List<TeamDetails> teamDet = teamDAO.getMyTeams(userId);
+		return teamDet;
 	}
 }
