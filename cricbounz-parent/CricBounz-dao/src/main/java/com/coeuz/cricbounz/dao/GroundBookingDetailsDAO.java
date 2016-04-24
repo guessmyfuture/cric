@@ -54,11 +54,12 @@ public class GroundBookingDetailsDAO extends BaseDAO<GroundBookingDetails, Integ
 			q.setParameter("booking_status", BOOKING_REJECTED);
 		}
 		q.setParameter("booking_Id", bookingId);
+		session.beginTransaction();
 		q.executeUpdate();
 		Criteria cre = session.createCriteria(GroundBookingDetails.class);
 		cre.add(Restrictions.eq("bookingId", bookingId));
 		List<GroundBookingDetails> gbdList = cre.list();
-		session.close();
+		
 		GroundBookingDetails gbd = gbdList.get(0);
 		RequestNotifications reqNotify = new RequestNotifications();
 		reqNotify.setNotifyToID(gbd.getBookedBy());
@@ -66,7 +67,10 @@ public class GroundBookingDetailsDAO extends BaseDAO<GroundBookingDetails, Integ
 		reqNotify.setRequestStatus(action);
 		reqNotify.setRequestType(Request_Type);
 		reqNotify.setTimeStamp(new Date());
-		reqNotDAO.save(reqNotify);
+		session.save(reqNotify);
+		session.flush();
+		session.getTransaction().commit();
+		session.close();
 		
 
 	}
@@ -76,15 +80,20 @@ public class GroundBookingDetailsDAO extends BaseDAO<GroundBookingDetails, Integ
 		bookingDetails.setDateOfPlay(playingDate);
 		Date today = new Date();
 		bookingDetails.setDateOfRequest(today);
-		saveorUpdate(bookingDetails);
-		Ground ground = groundDAO.getGroundDetails(bookingDetails.getGroundId());
+		session = getSessionFactory().openSession();
+		session.beginTransaction();
+		session.save(bookingDetails);
+		Ground ground = (Ground)session.get(Ground.class, bookingDetails.getGroundId());
 		RequestNotifications reqNotify = new RequestNotifications();
 		reqNotify.setNotifyToID(ground.getManager());
 		reqNotify.setRequestID(bookingDetails.getId());
 		reqNotify.setRequestStatus(New_Booking_request);
 		reqNotify.setRequestType(Request_Type);
 		reqNotify.setTimeStamp(new Date());
-		reqNotDAO.save(reqNotify);
+		session.save(reqNotify);
+		session.flush();
+		session.getTransaction().commit();
+		session.close();
 
 	}
 

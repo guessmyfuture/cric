@@ -55,6 +55,7 @@ public class TeamDAO extends BaseDAO <TeamDetails, Integer> {
 		Criteria cr = session.createCriteria(UserDetails.class);
 		cr.add(Restrictions.in("userId", playerIds));
 		List<UserDetails> userDetails = cr.list();
+		session.close();
 		return userDetails;
 	}
 
