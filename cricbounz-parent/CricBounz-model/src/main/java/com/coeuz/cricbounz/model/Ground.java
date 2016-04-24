@@ -26,7 +26,7 @@ public class Ground {
 	private String area;
 	private String address;
 	private String landmark;
-	private String manager;
+	private long manager;
 	private String contactno;
 	private String balltype;
 	private String pitchtype;
@@ -103,11 +103,11 @@ public class Ground {
 		this.landmark = landmark;
 	}
 
-	public String getManager() {
+	public long getManager() {
 		return manager;
 	}
 
-	public void setManager(String manager) {
+	public void setManager(long manager) {
 		this.manager = manager;
 	}
 

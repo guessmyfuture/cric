@@ -208,4 +208,14 @@ public class GroundController {
 		List<Ground> ground = groundDAO.getGrounds(cityName, areaName);
 		return ground;
 	}
+	
+	@RequestMapping(value = "/confirmGroundBooking", method = RequestMethod.POST)
+	public @ResponseBody ResponseStatus confirmGroundBooking(@RequestParam("bookingId") long bookingId, 
+			@RequestParam("requestAction") String requestAction) {
+		
+		groundBookingDetailsDAO.confirmGroundBooking(bookingId, requestAction);
+		ResponseStatus res = new ResponseStatus();
+		res.setResponseStatus("The Ground Slot Booking has been Confirmed");
+		return res;
+	}
 }

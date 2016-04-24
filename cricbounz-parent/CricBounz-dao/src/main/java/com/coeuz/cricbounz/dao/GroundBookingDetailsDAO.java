@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.hibernate.Criteria;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
@@ -14,12 +15,25 @@ import org.springframework.stereotype.Repository;
 
 import com.coeuz.cricbounz.model.Ground;
 import com.coeuz.cricbounz.model.GroundBookingDetails;
+import com.coeuz.cricbounz.model.RequestNotifications;
 import com.coeuz.cricbounz.model.Slots;
 
 @Repository
 public class GroundBookingDetailsDAO extends BaseDAO<GroundBookingDetails, Integer> {
 
 	private Session session;
+	
+	public static String Request_Type = "GROUND_BOOKING";
+	public static String New_Booking_request = "NEW_REQUEST";
+	public static String BOOKING_REJECTED = "BOOKING_REJECTED";
+	public static String CANCEL_BOOKING = "CANCEL";
+	public static String BOOKING_CONFIRMED = "BOOKING_CONFIRMED";
+	
+	@Autowired
+	private RequestNotificationDAO reqNotDAO;
+	
+	@Autowired
+	private GroundDAO groundDAO;
 
 	@Autowired
 	public GroundBookingDetailsDAO(SessionFactory sessionFactory) {
@@ -28,12 +42,47 @@ public class GroundBookingDetailsDAO extends BaseDAO<GroundBookingDetails, Integ
 	}
 
 	
+	public void confirmGroundBooking(long bookingId, String action) {
+		session = getSessionFactory().openSession();
+		Query q = session.createQuery("UPDATE GroundBookingDetails set status = :booking_status WHERE bookingId = :booking_Id");
+		if(action.equals(BOOKING_CONFIRMED))
+		{
+		q.setParameter("booking_status", BOOKING_CONFIRMED);
+		}
+		else
+		{
+			q.setParameter("booking_status", BOOKING_REJECTED);
+		}
+		q.setParameter("booking_Id", bookingId);
+		q.executeUpdate();
+		Criteria cre = session.createCriteria(GroundBookingDetails.class);
+		cre.add(Restrictions.eq("bookingId", bookingId));
+		List<GroundBookingDetails> gbdList = cre.list();
+		GroundBookingDetails gbd = gbdList.get(0);
+		RequestNotifications reqNotify = new RequestNotifications();
+		reqNotify.setNotifyToID(gbd.getBookedBy());
+		reqNotify.setRequestID(bookingId);
+		reqNotify.setRequestStatus(action);
+		reqNotify.setRequestType(Request_Type);
+		reqNotify.setTimeStamp(new Date());
+		reqNotDAO.save(reqNotify);
+
+	}
+	
 	public void addGroundBookingDetails(GroundBookingDetails bookingDetails) {
 		Date playingDate = convertStrToDate(bookingDetails.getPlayingDate(), TimeZone.getDefault().getID());
 		bookingDetails.setDateOfPlay(playingDate);
 		Date today = new Date();
 		bookingDetails.setDateOfRequest(today);
 		saveorUpdate(bookingDetails);
+		Ground ground = groundDAO.getGroundDetails(bookingDetails.getGroundId());
+		RequestNotifications reqNotify = new RequestNotifications();
+		reqNotify.setNotifyToID(ground.getManager());
+		reqNotify.setRequestID(bookingDetails.getId());
+		reqNotify.setRequestStatus(New_Booking_request);
+		reqNotify.setRequestType(Request_Type);
+		reqNotify.setTimeStamp(new Date());
+		reqNotDAO.save(reqNotify);
 
 	}
 
