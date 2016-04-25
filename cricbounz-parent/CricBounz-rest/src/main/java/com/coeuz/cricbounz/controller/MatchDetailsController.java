@@ -18,7 +18,7 @@ import com.coeuz.cricbounz.model.ResponseStatus;
 @RequestMapping(value ="/rest/matchdetails")
 public class MatchDetailsController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(NotificationsController.class);
+	private static final Logger logger = LoggerFactory.getLogger(MatchDetailsController.class);
 	@Autowired
 	private CreateMatchDetailsDAO createMatchDetailsDAO;
 	

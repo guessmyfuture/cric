@@ -59,15 +59,17 @@ public class TeamDAO extends BaseDAO <TeamDetails, Integer> {
 		return userDetails;
 	}
 
-	public List getPlayersIdFromTeamId(long teamId)
+	public List<String> getPlayersIdFromTeamId(long teamId)
 	{
 		TeamDetails team=(TeamDetails)get(teamId);
 		String[] playerIds = team.getPlayers().split(",");
-		List playersList = new ArrayList();
+		List<String> playersList = new ArrayList<String>();
 		for (String s : playerIds)
 		{
-			long playerId = Long.parseLong(s.trim());
-			playersList.add(playerId);
+			if(s.length()>0){
+			   playersList.add(s);
+			}
+					
 		}
 		return playersList;
 		

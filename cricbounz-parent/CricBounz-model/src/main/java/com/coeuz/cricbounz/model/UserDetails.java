@@ -1,5 +1,7 @@
 package com.coeuz.cricbounz.model;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,15 +27,14 @@ public class UserDetails {
 	private String phoneNo;
 	private String address;
 	private String profileName;
-	private String DOB;
+	private Date dob;
 	private String battingStyle;
 	private String bowlingStyle;
 	private String bowlingType;
 
-
 	@Column(name = "email", unique = true)
 	private String email;
-
+	
 	private String mobile;
 	private String state;
 	private String city;
@@ -113,20 +114,7 @@ public class UserDetails {
 		this.profileName = profileName;
 	}
 
-	/**
-	 * @return the dOB
-	 */
-	public String getDOB() {
-		return DOB;
-	}
-
-	/**
-	 * @param dOB the dOB to set
-	 */
-	public void setDOB(String dOB) {
-		DOB = dOB;
-	}
-
+	
 	/**
 	 * @return the battingStyle
 	 */
@@ -247,5 +235,21 @@ public class UserDetails {
 	public void setBowlingType(String bowlingType) {
 		this.bowlingType = bowlingType;
 	}
+	
+	/**
+	 * @return the dob
+	 */
+	public Date getDob() {
+		return dob;
+	}
+
+	/**
+	 * @param dob the dob to set
+	 */
+	public void setDob(Date dob) {
+		this.dob = dob;
+	}
+
+
 
 }

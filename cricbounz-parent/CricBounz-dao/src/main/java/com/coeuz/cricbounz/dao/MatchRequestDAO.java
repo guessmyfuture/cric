@@ -2,6 +2,7 @@ package com.coeuz.cricbounz.dao;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.List;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -23,7 +24,8 @@ public class MatchRequestDAO extends BaseDAO<MatchRequest, Integer>{
 	CreateMatchDetailsDAO createMatchDetailsDAO;
 	@Autowired
 	MatchDetails matchDetails;
-	
+	@Autowired
+	TeamDAO teamDAO;
 	
 	@Autowired
 	public MatchRequestDAO(SessionFactory sessionFactory) {
@@ -34,12 +36,17 @@ public class MatchRequestDAO extends BaseDAO<MatchRequest, Integer>{
 	public void saveMatchRequest(MatchRequest matchRequest) throws NullPointerException,SQLException,ClassCastException{
 		long matchreqID = saveAndRetrunUniqkey(matchRequest);
 		if(matchreqID>0 && requestNotifications!=null){
-			requestNotifications.setRequestID(matchreqID);
-			requestNotifications.setRequestStatus(matchRequest.getRequestStatus());
-			requestNotifications.setRequestType("MatchRequest");
-			requestNotifications.setNotifyToID(matchRequest.getRequestedToTeam());
-			requestNotifications.setTimeStamp(new Date());
-			requestNotificationDAO.saveorUpdate(requestNotifications);
+			List<String> playersList =teamDAO.getPlayersIdFromTeamId(matchRequest.getRequestedToTeam());
+			for(String userID:playersList){
+				requestNotifications.setReqNotificationID(0);
+				requestNotifications.setRequestID(matchreqID);
+				requestNotifications.setRequestStatus(matchRequest.getRequestStatus());
+				requestNotifications.setRequestType("MatchRequest");
+				long userIDLong=Long.parseLong(userID);
+				requestNotifications.setNotifyToID(userIDLong);
+				requestNotifications.setTimeStamp(new Date());
+				requestNotificationDAO.saveorUpdate(requestNotifications);	
+			}
 		}
 	}
 	public MatchRequest getRequestMatchidDetails(long matchRequestId) {
@@ -53,35 +60,58 @@ public class MatchRequestDAO extends BaseDAO<MatchRequest, Integer>{
 		if(matchRequest.getRequestStatus().equals("accepted")){
 			MatchRequest retrievedmatchRequest = getRequestMatchidDetails(matchRequest.getMatchRequestID());
 			if(retrievedmatchRequest.getOpponentTeamApprovalCount()<4){
-				retrievedmatchRequest.setOpponentTeamApprovalCount(retrievedmatchRequest.getOpponentTeamApprovalCount()+1);	
+				retrievedmatchRequest.setOpponentTeamApprovalCount(retrievedmatchRequest.getOpponentTeamApprovalCount()+1);
+				deleteRequestnotification(matchRequest);
 				saveorUpdate(retrievedmatchRequest);
-			}else if(retrievedmatchRequest.getOpponentTeamApprovalCount()>=4){
+								
+			}else if(retrievedmatchRequest.getOpponentTeamApprovalCount()==4){
 				matchDetails.setTeamAId(matchRequest.getRequestedByTeam());
 				matchDetails.setTeamBId(matchRequest.getRequestedToTeam());
 				matchDetails.setStatus("Sheduled");
 				matchDetails.setTimestamp(new Date());
-				createMatchDetailsDAO.save(matchDetails);
-				Session session = getSessionFactory().openSession();
-				Transaction transaction = session.beginTransaction();
-				String notificationHql="DELETE RequestNotifications r WHERE r.requestID="+matchRequest.getMatchRequestID()+" AND r.requestType='MatchRequest'";
-				Query notificationQuery = session.createQuery(notificationHql);
-				notificationQuery.executeUpdate();
-				session.flush();
-				transaction.commit();
-				session.close();
-				requestNotifications.setRequestID(matchRequest.getMatchRequestID());
-				requestNotifications.setRequestStatus("Sheduled");
-				requestNotifications.setRequestType("MatchRequest");
-				requestNotifications.setNotifyToID(matchRequest.getRequestedToTeam());
-				requestNotifications.setTimeStamp(new Date());
-				requestNotificationDAO.saveorUpdate(requestNotifications);
+				long matchID = createMatchDetailsDAO.saveAndRetrunUniqkey(matchDetails);
+				
+				deleteRequestnotification(matchRequest);
+								
+				List<String> requestedByTeamplayersList =teamDAO.getPlayersIdFromTeamId(matchRequest.getRequestedByTeam());
+				for(String requestedByTeamplayersID : requestedByTeamplayersList){
+					requestNotifications.setReqNotificationID(0);
+					requestNotifications.setRequestID(matchID);
+					requestNotifications.setRequestStatus("MatchSheduled");
+					requestNotifications.setRequestType("MatchSheduled");
+					requestNotifications.setNotifyToID(Long.parseLong(requestedByTeamplayersID));
+					requestNotifications.setTimeStamp(new Date());
+					requestNotificationDAO.saveorUpdate(requestNotifications);
+				}
+				
+				List<String> requestedToTeamplayersList =teamDAO.getPlayersIdFromTeamId(matchRequest.getRequestedToTeam());
+				for(String requestedToTeamplayersID : requestedToTeamplayersList){
+					requestNotifications.setReqNotificationID(0);
+					requestNotifications.setRequestID(matchID);
+					requestNotifications.setRequestStatus("MatchSheduled");
+					requestNotifications.setRequestType("MatchSheduled");
+					requestNotifications.setNotifyToID(Long.parseLong(requestedToTeamplayersID));
+					requestNotifications.setTimeStamp(new Date());
+					requestNotificationDAO.saveorUpdate(requestNotifications);
+				}
+				
+				
 			}
 					
 		}
 		
 	}
 	
-	
+	private void deleteRequestnotification(MatchRequest matchRequest){
+		Session session = getSessionFactory().openSession();
+		Transaction transaction = session.beginTransaction();
+		String notificationHql="DELETE RequestNotifications r WHERE r.requestID="+matchRequest.getMatchRequestID()+" AND r.requestType='MatchRequest' AND r.notifyToID="+matchRequest.getRequestedToID();
+		Query notificationQuery = session.createQuery(notificationHql);
+		notificationQuery.executeUpdate();
+		session.flush();
+		transaction.commit();
+		session.close();
+	}
 	
 	
 	

@@ -6,6 +6,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
@@ -30,7 +31,20 @@ public class MatchRequest {
     private String matchStartTime;
     private String matchEndTime;
     private String status;
-		
+    @Transient
+    private long requestedToID;
+	/**
+	 * @return the requestedToID
+	 */
+	public long getRequestedToID() {
+		return requestedToID;
+	}
+	/**
+	 * @param requestedToID the requestedToID to set
+	 */
+	public void setRequestedToID(long requestedToID) {
+		this.requestedToID = requestedToID;
+	}
 	/**
 	 * @return the matchRequestID
 	 */

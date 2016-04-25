@@ -32,6 +32,7 @@ public class FriendRequestDAO extends BaseDAO<FriendRequest, Integer>{
 	public void saveFriendRequest(FriendRequest friendrequest) throws SQLException,NullPointerException,ClassCastException{
 		long friendReqID = saveAndRetrunUniqkey(friendrequest);
 		if(friendReqID>0 && requestNotifications!=null){
+			requestNotifications.setReqNotificationID(0);
 			requestNotifications.setRequestID(friendReqID);
 			requestNotifications.setRequestStatus(friendrequest.getFriendReqStatus());
 			requestNotifications.setRequestType("FriendRequest");
@@ -46,24 +47,31 @@ public class FriendRequestDAO extends BaseDAO<FriendRequest, Integer>{
 		if(friendrequest.getFriendReqStatus().equals("accepted")){
 			Session session = getSessionFactory().openSession();
 			Transaction  transaction= session.beginTransaction();
-			String userHql="SELECT FROM UserDetails u WHERE u.userId="+friendrequest.getRequestedTo();
+			String userHql="FROM UserDetails u WHERE u.userId="+friendrequest.getRequestedTo();
 			Query userQuery = session.createQuery(userHql);
 			List<UserDetails> userList =(List<UserDetails>)userQuery.list();
 			if(userList!=null&&userList.size()>0){
 				UserDetails userDetails  = userList.get(0); 
 				String userFriends = userDetails.getFriends();
-				if(userFriends!=null&&userFriends.length()>0){
+				if(userFriends!=null&&userFriends.length()==0){
 					userFriends=userFriends+","+friendrequest.getRequestedByID()+",";
-				}else if(userFriends!=null&&userFriends.length()==0){
-					userFriends=","+friendrequest.getRequestedByID()+",";
+				}else if(userFriends!=null&&userFriends.length()>0){
+					userFriends=userFriends+friendrequest.getRequestedByID()+",";
 				}
-				String userFriendsAddedHql="UPADTE UserDetails u SET u.friends='"+userFriends+"' WHERE u.userId="+friendrequest.getRequestedTo();
-				Query userFriendsQuery = session.createQuery(userFriendsAddedHql);
-				userFriendsQuery.executeUpdate();
-				delete(friendrequest.getFiendReqId());
-				String friendReqHql ="DELETE FROM RequestNotifications  r WHERE r.requestID="+friendrequest.getFiendReqId();
+				
+				String userFriendsAddHql="UPDATE UserDetails u SET u.friends=:friends WHERE u.userId=:userId";
+				Query userFriendsAddQuery = session.createQuery(userFriendsAddHql);
+				userFriendsAddQuery.setParameter("friends", userFriends);
+				userFriendsAddQuery.setParameter("userId", friendrequest.getRequestedTo());
+				userFriendsAddQuery.executeUpdate();
+				String friendReqHql ="DELETE FROM FriendRequest  r WHERE r.fiendReqId=:fiendReqId";
 				Query friendReqQuery = session.createQuery(friendReqHql);
+				friendReqQuery.setParameter("fiendReqId", friendrequest.getFiendReqId());
 				friendReqQuery.executeUpdate();
+				String friendNotifyReqHql ="DELETE FROM RequestNotifications  r WHERE r.requestID=:requestID";
+				Query friendNotifyQuery = session.createQuery(friendNotifyReqHql);
+				friendNotifyQuery.setParameter("requestID",friendrequest.getFiendReqId());
+				friendNotifyQuery.executeUpdate();
 				session.flush();
 				transaction.commit();
 				session.close();
@@ -72,16 +80,17 @@ public class FriendRequestDAO extends BaseDAO<FriendRequest, Integer>{
 			Session session = getSessionFactory().openSession();
 			Transaction  transaction= session.beginTransaction();
 			delete(friendrequest.getFiendReqId());
-			String friendReqHql ="DELETE FROM RequestNotifications  r WHERE r.requestID="+friendrequest.getFiendReqId();
+			String friendReqHql ="DELETE FROM RequestNotifications  r WHERE r.requestID=:requestID";
 			Query friendReqQuery = session.createQuery(friendReqHql);
+			friendReqQuery.setParameter("requestID", friendrequest.getFiendReqId());
 			friendReqQuery.executeUpdate();
 			session.flush();
 			transaction.commit();
 			session.close(); 	 
-		 }else if(friendrequest.getFriendReqStatus().equals("unfired")){
+		 }else if(friendrequest.getFriendReqStatus().equals("unfriend")){
 			Session session = getSessionFactory().openSession();
 			Transaction  transaction= session.beginTransaction();
-			String userHql="SELECT FROM UserDetails u WHERE u.userId="+friendrequest.getRequestedTo();
+			String userHql="FROM UserDetails u WHERE u.userId="+friendrequest.getRequestedTo();
 			Query userQuery = session.createQuery(userHql);
 			List<UserDetails> userList =(List<UserDetails>)userQuery.list();
 			if(userList!=null&&userList.size()>0){
@@ -92,19 +101,22 @@ public class FriendRequestDAO extends BaseDAO<FriendRequest, Integer>{
 				  StringTokenizer stringTokenizer = new StringTokenizer(userFriends,delimit);
 				  String reconstructedfriends="";
 				  while(stringTokenizer.hasMoreTokens()){
-					String userid = stringTokenizer.nextToken();
-					if(!userid.equals(friendrequest.getRequestedByID())){
-						if(reconstructedfriends==null){
-							reconstructedfriends=","+userid+",";	
+					String unfriendID = stringTokenizer.nextToken();
+					long unfriendIDLong =(long)Long.parseLong(unfriendID);
+					if(unfriendIDLong!=friendrequest.getRequestedByID()){
+						if(reconstructedfriends.length()==0){
+							reconstructedfriends=","+unfriendID+",";	
 						}else if(reconstructedfriends!=null&&reconstructedfriends.length()>0){
-							reconstructedfriends=reconstructedfriends+userid+",";
+							reconstructedfriends=reconstructedfriends+unfriendID+",";
 						}
 					}
 					  
 				  }
-		       
-			String userFriendsAddedHql="UPADTE UserDetails u SET u.friends='"+reconstructedfriends+"' WHERE u.userId="+friendrequest.getRequestedTo();
+		    	
+			String userFriendsAddedHql="UPDATE UserDetails u SET u.friends=:friends WHERE u.userId=:userId";
 			Query userFriendsQuery = session.createQuery(userFriendsAddedHql);
+			userFriendsQuery.setParameter("friends",reconstructedfriends);
+			userFriendsQuery.setParameter("userId",friendrequest.getRequestedTo());
 			userFriendsQuery.executeUpdate();
 			session.flush();
 			transaction.commit();
