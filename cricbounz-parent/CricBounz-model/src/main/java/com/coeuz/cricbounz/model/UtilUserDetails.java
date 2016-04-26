@@ -7,18 +7,19 @@ public class UtilUserDetails {
 	private long userID;
 	private String userName;
 	private String userImage;
-	private Map playesRoles;
+	private Map<String,String> playesRoles;
+	
 	
 	/**
 	 * @return the playesRoles
 	 */
-	public Map getPlayesRoles() {
+	public Map<String, String> getPlayesRoles() {
 		return playesRoles;
 	}
 	/**
 	 * @param playesRoles the playesRoles to set
 	 */
-	public void setPlayesRoles(Map playesRoles) {
+	public void setPlayesRoles(Map<String, String> playesRoles) {
 		this.playesRoles = playesRoles;
 	}
 	/**
