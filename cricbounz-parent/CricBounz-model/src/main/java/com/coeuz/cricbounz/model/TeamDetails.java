@@ -1,11 +1,14 @@
 package com.coeuz.cricbounz.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.springframework.stereotype.Component;
 
@@ -33,8 +36,21 @@ public class TeamDetails {
 	private String description;	
 	private String status;
 	
-	
-	
+	@Transient
+	List<UtilUserDetails> playesDetailsList;
+		
+	/**
+	 * @return the playesDetailsList
+	 */
+	public List<UtilUserDetails> getPlayesDetailsList() {
+		return playesDetailsList;
+	}
+	/**
+	 * @param playesDetailsList the playesDetailsList to set
+	 */
+	public void setPlayesDetailsList(List<UtilUserDetails> playesDetailsList) {
+		this.playesDetailsList = playesDetailsList;
+	}
 	public String getName() {
 		return name;
 	}

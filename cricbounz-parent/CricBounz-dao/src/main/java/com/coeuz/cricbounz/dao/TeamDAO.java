@@ -1,7 +1,9 @@
 package com.coeuz.cricbounz.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -14,10 +16,14 @@ import org.springframework.stereotype.Repository;
 
 import com.coeuz.cricbounz.model.TeamDetails;
 import com.coeuz.cricbounz.model.UserDetails;
+import com.coeuz.cricbounz.model.UtilUserDetails;
 
 @Repository
 public class TeamDAO extends BaseDAO <TeamDetails, Integer> {
 	
+	@Autowired
+	UserDAO userDAO;
+		
 	@Autowired
     public TeamDAO(SessionFactory sessionFactory) {
         super(TeamDetails.class);
@@ -74,4 +80,36 @@ public class TeamDAO extends BaseDAO <TeamDetails, Integer> {
 		return playersList;
 		
 	}
+	
+	
+	public TeamDetails getTeamMembersFullDetailsByTeamId(long teamId)
+	{		
+		List<UtilUserDetails> playersDetailsList = new ArrayList<UtilUserDetails>();
+		TeamDetails teamDetails = get(teamId);
+		List<String> retrievedPlayersList =  getPlayersIdFromTeamId(teamId);
+		for(String playerID:retrievedPlayersList){
+			Map<String,String> playerRoles = new HashMap<String,String>();
+			UtilUserDetails utilUserDetails = new UtilUserDetails(); 
+			UserDetails userDetails =(UserDetails)userDAO.get(Long.parseLong(playerID));
+			utilUserDetails.setUserID(userDetails.getUserId());
+			utilUserDetails.setUserImage(userDetails.getProfileImageUrl());
+			utilUserDetails.setUserName(userDetails.getName());
+			if(userDetails.getBowlingStyle()!=null){
+				playerRoles.put("BowlingStyle", userDetails.getBowlingStyle());
+			}
+			if(userDetails.getBattingStyle()!=null){
+				playerRoles.put("BattingStyle", userDetails.getBattingStyle());
+			}
+			if(userDetails.getBowlingType()!=null){
+				playerRoles.put("BowlingType", userDetails.getBowlingType());
+			}
+			utilUserDetails.setPlayesRoles(playerRoles);
+			playersDetailsList.add(utilUserDetails);		
+		}
+		teamDetails.setPlayesDetailsList(playersDetailsList);
+		return teamDetails;
+	}
+	
+	
+	
 }
