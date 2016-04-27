@@ -57,7 +57,10 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 	public List<TeamDetails> getAllTeams(String text) {
 		Session session = getSessionFactory().openSession();
 		Criteria cr = session.createCriteria(TeamDetails.class);
+		if(!text.isEmpty())
+		{
 		cr.add(Restrictions.ilike("name", text, MatchMode.ANYWHERE));
+		}
 		List<TeamDetails> teamLists = cr.list();
 		session.close();
 		return teamLists;

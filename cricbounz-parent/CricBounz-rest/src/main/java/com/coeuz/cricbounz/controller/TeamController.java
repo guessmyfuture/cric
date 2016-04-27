@@ -61,9 +61,9 @@ public class TeamController {
 	}
 	
 	@RequestMapping(value = "/getALLTeams", method = RequestMethod.GET)
-	public @ResponseBody List<TeamDetails> getAllTeams(String searchText) {
-		//String userId = (String) request.getSession(false).getAttribute("userId");
-		List<TeamDetails> teamDet = teamDAO.getAllTeams(searchText);
+	public @ResponseBody List<TeamDetails> getAllTeams(@RequestParam("searchText") String searchText) {
+		String search = "" +searchText;
+		List<TeamDetails> teamDet = teamDAO.getAllTeams(search);
 		return teamDet;
 	}
 
