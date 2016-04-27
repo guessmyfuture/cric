@@ -42,9 +42,10 @@ public class GroundBookingDetailsDAO extends BaseDAO<GroundBookingDetails, Integ
 	}
 
 	
-	public void confirmGroundBooking(long bookingId, String action) {
+	public void confirmGroundBooking(long userId, long bookingId, String action) {
 		session = getSessionFactory().openSession();
-		Query q = session.createQuery("UPDATE GroundBookingDetails set status = :booking_status WHERE bookingId = :booking_Id");
+		Query q = session.createQuery("UPDATE GroundBookingDetails gbd set gbd.status = :booking_status WHERE gbd.bookingId = :booking_Id AND gbd.groundId IN "
+				+ "(SELECT g.groundId from Ground g where g.manager = :managerId )");
 		if(action.equals(BOOKING_CONFIRMED))
 		{
 		q.setParameter("booking_status", BOOKING_CONFIRMED);
@@ -54,6 +55,7 @@ public class GroundBookingDetailsDAO extends BaseDAO<GroundBookingDetails, Integ
 			q.setParameter("booking_status", BOOKING_REJECTED);
 		}
 		q.setParameter("booking_Id", bookingId);
+		q.setParameter("managerId", userId);
 		session.beginTransaction();
 		q.executeUpdate();
 		Criteria cre = session.createCriteria(GroundBookingDetails.class);
@@ -81,6 +83,7 @@ public class GroundBookingDetailsDAO extends BaseDAO<GroundBookingDetails, Integ
 		Date today = new Date();
 		bookingDetails.setDateOfRequest(today);
 		session = getSessionFactory().openSession();
+		bookingDetails.setStatus(New_Booking_request);
 		session.beginTransaction();
 		session.save(bookingDetails);
 		Ground ground = (Ground)session.get(Ground.class, bookingDetails.getGroundId());

@@ -57,8 +57,11 @@ public class GroundController {
 	SlotsDAO slotsDAO;
 
 	@RequestMapping(value = "/addground", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus addGroundDetails(@RequestBody Ground ground) {
+	public @ResponseBody ResponseStatus addGroundDetails(HttpServletRequest request, @RequestBody Ground ground) {
 		logger.info("Starting addGroundDetails");
+		String userIdStr = (String)request.getSession(false).getAttribute("userId");
+		long userId = Long.parseLong(userIdStr.trim());
+		ground.setManager(userId);
 		ResponseStatus responseStatus = new ResponseStatus();
 		try{
 			groundDAO.addGroundDetails(ground);
@@ -130,9 +133,12 @@ public class GroundController {
 	}*/
 
 	@RequestMapping(value = "/addgroundbookingdetails", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus addGroundBookingDetails(@RequestBody GroundBookingDetails bookingDetails) {
+	public @ResponseBody ResponseStatus addGroundBookingDetails(HttpServletRequest request, @RequestBody GroundBookingDetails bookingDetails) {
 		logger.info("Starting addGroundBookingDetails");
 		ResponseStatus responseStatus = new ResponseStatus();
+		String userIdStr = (String)request.getSession(false).getAttribute("userId");
+		long userId = Long.parseLong(userIdStr.trim());
+		bookingDetails.setBookedBy(userId);
 		groundBookingDetailsDAO.addGroundBookingDetails(bookingDetails);
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
@@ -210,10 +216,11 @@ public class GroundController {
 	}
 	
 	@RequestMapping(value = "/confirmGroundBooking", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus confirmGroundBooking(@RequestParam("bookingId") long bookingId, 
+	public @ResponseBody ResponseStatus confirmGroundBooking(HttpServletRequest request, @RequestParam("bookingId") long bookingId, 
 			@RequestParam("requestAction") String requestAction) {
-		
-		groundBookingDetailsDAO.confirmGroundBooking(bookingId, requestAction);
+		String userIdStr = (String)request.getSession(false).getAttribute("userId");
+		long userId = Long.parseLong(userIdStr.trim());
+		groundBookingDetailsDAO.confirmGroundBooking(userId, bookingId, requestAction);
 		ResponseStatus res = new ResponseStatus();
 		res.setResponseStatus("The Ground Slot Booking has been Confirmed");
 		return res;
