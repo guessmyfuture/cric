@@ -1,6 +1,5 @@
 package com.coeuz.cricbounz.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.coeuz.cricbounz.dao.CreatePlayersDetailsDAO;
 import com.coeuz.cricbounz.dao.TeamDAO;
 import com.coeuz.cricbounz.model.ResponseStatus;
 import com.coeuz.cricbounz.model.TeamDetails;
@@ -28,7 +26,6 @@ public class TeamController {
 	@Autowired
 	private TeamDAO teamDAO;
 
-	
 	@RequestMapping(value = "/createteam", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus registerTeamDetails(@RequestBody TeamDetails teamDetails) {
 		logger.info("Start registerTeamDetails method");
@@ -62,12 +59,18 @@ public class TeamController {
 		List<TeamDetails> teamDet = teamDAO.getMyTeams(userId);
 		return teamDet;
 	}
+	
+	@RequestMapping(value = "/getALLTeams", method = RequestMethod.GET)
+	public @ResponseBody List<TeamDetails> getAllTeams(String searchText) {
+		//String userId = (String) request.getSession(false).getAttribute("userId");
+		List<TeamDetails> teamDet = teamDAO.getAllTeams(searchText);
+		return teamDet;
+	}
 
-	@RequestMapping(value = "/getTeamFullDetails", method = RequestMethod.GET) 
+	@RequestMapping(value = "/getTeamFullDetails", method = RequestMethod.GET)
 	public @ResponseBody TeamDetails getTeamMembersFullDetailsByTeamId(@RequestParam("teamId") long teamId) {
-		TeamDetails teamDetails =teamDAO.getTeamMembersFullDetailsByTeamId(teamId);
+		TeamDetails teamDetails = teamDAO.getTeamMembersFullDetailsByTeamId(teamId);
 		return teamDetails;
 	}
-	
 
 }
