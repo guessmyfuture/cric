@@ -188,7 +188,7 @@ public class BaseDAO<T, PK extends Serializable> implements IBaseDAO<T, PK> {
 
     public Date convertStrToDate(String date, String timeZone)
     {
-    	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+    	SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
     	TimeZone tz = TimeZone.getTimeZone(timeZone);
     	formatter.setTimeZone(tz);
     	Date serverDate = null;

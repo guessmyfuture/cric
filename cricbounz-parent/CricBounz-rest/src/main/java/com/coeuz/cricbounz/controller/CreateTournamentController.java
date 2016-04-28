@@ -27,7 +27,7 @@ import com.coeuz.cricbounz.model.Tournament;
 import com.coeuz.cricbounz.model.TournamentRegistrationDetail;
 
 @Controller
-@RequestMapping(value = "/tournament")
+@RequestMapping(value = "/rest/tournament")
 public class CreateTournamentController {
 
 	@Autowired
@@ -40,8 +40,11 @@ public class CreateTournamentController {
 	private CreateRegisteredTeamDAO createRegisteredTeamDAO;
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus createTournament(@RequestBody Tournament tournament) {
+	public @ResponseBody ResponseStatus createTournament(HttpServletRequest request, @RequestBody Tournament tournament) {
 		ResponseStatus responseStatus = new ResponseStatus();
+		String userIdStr = (String)request.getSession(false).getAttribute("userId");
+		long userId = Long.parseLong(userIdStr.trim());
+		tournament.setOrganizer(userId);
 		createTournamentDAO.createTournament(tournament);
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
@@ -49,13 +52,16 @@ public class CreateTournamentController {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus registerTournament(HttpServletRequest request,
-			@RequestParam long tournamentId) {
+			@RequestParam("tournamentId") long tournamentId, @RequestParam("teamId") long teamId) {
 		ResponseStatus responseStatus = new ResponseStatus();
 		String userIdAsString = (String) request.getSession(false).getAttribute("userId");
+		long userId = Long.parseLong(userIdAsString);
 		TournamentRegistrationDetail tournamentRegistrationDetail = new TournamentRegistrationDetail();
 		tournamentRegistrationDetail.setTournamentId(tournamentId);
 		Date utilDate = new java.util.Date();
 		java.sql.Date sqlDate = new java.sql.Date(utilDate.getTime());
+		tournamentRegistrationDetail.setUserId(userId);
+		tournamentRegistrationDetail.setTeamId(teamId);
 		tournamentRegistrationDetail.setRegistrationDate(sqlDate);
 		tournamentRegistrationDetail.setRegistrationStatus("Requested");
 		/*

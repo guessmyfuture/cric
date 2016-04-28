@@ -1,6 +1,7 @@
 package com.coeuz.cricbounz.dao;
 
 import java.util.List;
+import java.util.TimeZone;
 
 import org.hibernate.Query;
 import org.hibernate.SessionFactory;
@@ -19,7 +20,11 @@ public class TournamentDAO extends BaseDAO<Tournament, Integer> {
 	
 	
 	public void createTournament(Tournament tournament){
-		save(tournament);
+		tournament.setTourStartDate(convertStrToDate(tournament.getTournamentStartDate(), TimeZone.getDefault().getID()));
+		tournament.setTourEndDate(convertStrToDate(tournament.getTournamentEndDate(), TimeZone.getDefault().getID()));
+		tournament.setRegEndDate(convertStrToDate(tournament.getRegistrationEndDate(), TimeZone.getDefault().getID()));
+		tournament.setRegStartDate(convertStrToDate(tournament.getRegistrationStartDate(), TimeZone.getDefault().getID()));
+		saveorUpdate(tournament);
 	}
 	
 	public List<Tournament> retrieveTournamentBasedOnStatus(String status){

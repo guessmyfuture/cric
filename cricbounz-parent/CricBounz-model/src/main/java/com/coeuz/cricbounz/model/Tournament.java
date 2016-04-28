@@ -1,6 +1,6 @@
 package com.coeuz.cricbounz.model;
 
-import java.sql.Date;
+import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -8,29 +8,43 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import org.springframework.stereotype.Component;
 
 @Entity
 @Table(name = "tournament")
+@Component
 public class Tournament {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name="ID")
+	@Column(name="id")
 	private long id;
 	private String name;
-	private Date registrationStartDate;
-	private Date registrationEndDate;
-	private Date tournamentStartDate;
-	private Date tournamentEndDate;
-	private String organizer;
+	@Transient
+	private String registrationStartDate;
+	@Transient
+	private String registrationEndDate;
+	@Transient
+	private String tournamentStartDate;
+	@Transient
+	private String tournamentEndDate;
+	
+	private Date regStartDate;
+	private Date regEndDate;
+	private Date tourStartDate;
+	private Date tourEndDate;
+	private long organizer;
 	private String priceDetails;	
-	private String winner;
-	private String runner;
-	private String manOfTheSeries;
-	private String batsmanOfTheTournament;
-	private String bowlerOfTheTournament;
+	private long winner;
+	private long runner;
+	private long manOfTheSeries;
+	private long batsmanOfTheTournament;
+	private long bowlerOfTheTournament;
 	private String status;
 	private String type;
+	
 	public long getId() {
 		return id;
 	}
@@ -43,10 +57,10 @@ public class Tournament {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getOrganizer() {
+	public long getOrganizer() {
 		return organizer;
 	}
-	public void setOrganizer(String organizer) {
+	public void setOrganizer(long organizer) {
 		this.organizer = organizer;
 	}
 	public String getPriceDetails() {
@@ -55,34 +69,34 @@ public class Tournament {
 	public void setPriceDetails(String priceDetails) {
 		this.priceDetails = priceDetails;
 	}
-	public String getWinner() {
+	public long getWinner() {
 		return winner;
 	}
-	public void setWinner(String winner) {
+	public void setWinner(long winner) {
 		this.winner = winner;
 	}
-	public String getRunner() {
+	public long getRunner() {
 		return runner;
 	}
-	public void setRunner(String runner) {
+	public void setRunner(long runner) {
 		this.runner = runner;
 	}
-	public String getManOfTheSeries() {
+	public long getManOfTheSeries() {
 		return manOfTheSeries;
 	}
-	public void setManOfTheSeries(String manOfTheSeries) {
+	public void setManOfTheSeries(long manOfTheSeries) {
 		this.manOfTheSeries = manOfTheSeries;
 	}
-	public String getBatsmanOfTheTournament() {
+	public long getBatsmanOfTheTournament() {
 		return batsmanOfTheTournament;
 	}
-	public void setBatsmanOfTheTournament(String batsmanOfTheTournament) {
+	public void setBatsmanOfTheTournament(long batsmanOfTheTournament) {
 		this.batsmanOfTheTournament = batsmanOfTheTournament;
 	}
-	public String getBowlerOfTheTournament() {
+	public long getBowlerOfTheTournament() {
 		return bowlerOfTheTournament;
 	}
-	public void setBowlerOfTheTournament(String bowlerOfTheTournament) {
+	public void setBowlerOfTheTournament(long bowlerOfTheTournament) {
 		this.bowlerOfTheTournament = bowlerOfTheTournament;
 	}
 	public String getStatus() {
@@ -97,32 +111,58 @@ public class Tournament {
 	public void setType(String type) {
 		this.type = type;
 	}
-	public Date getRegistrationStartDate() {
+	public String getRegistrationStartDate() {
 		return registrationStartDate;
 	}
-	public void setRegistrationStartDate(Date registrationStartDate) {
-		this.registrationStartDate = registrationStartDate;
-	}
-	public Date getRegistrationEndDate() {
+	
+	public String getRegistrationEndDate() {
 		return registrationEndDate;
 	}
-	public void setRegistrationEndDate(Date registrationEndDate) {
-		this.registrationEndDate = registrationEndDate;
-	}
-	public Date getTournamentStartDate() {
+	
+	public String getTournamentStartDate() {
 		return tournamentStartDate;
 	}
-	public void setTournamentStartDate(Date tournamentStartDate) {
-		this.tournamentStartDate = tournamentStartDate;
-	}
-	public Date getTournamentEndDate() {
+	
+	public String getTournamentEndDate() {
 		return tournamentEndDate;
 	}
-	public void setTournamentEndDate(Date tournamentEndDate) {
+
+	public Date getRegStartDate() {
+		return regStartDate;
+	}
+	public void setRegStartDate(Date regStartDate) {
+		this.regStartDate = regStartDate;
+	}
+	public Date getRegEndDate() {
+		return regEndDate;
+	}
+	public void setRegEndDate(Date regEndDate) {
+		this.regEndDate = regEndDate;
+	}
+	public Date getTourStartDate() {
+		return tourStartDate;
+	}
+	public void setTourStartDate(Date tourStartDate) {
+		this.tourStartDate = tourStartDate;
+	}
+	public Date getTourEndDate() {
+		return tourEndDate;
+	}
+	public void setTourEndDate(Date tourEndDate) {
+		this.tourEndDate = tourEndDate;
+	}
+	public void setRegistrationStartDate(String registrationStartDate) {
+		this.registrationStartDate = registrationStartDate;
+	}
+	public void setRegistrationEndDate(String registrationEndDate) {
+		this.registrationEndDate = registrationEndDate;
+	}
+	public void setTournamentStartDate(String tournamentStartDate) {
+		this.tournamentStartDate = tournamentStartDate;
+	}
+	public void setTournamentEndDate(String tournamentEndDate) {
 		this.tournamentEndDate = tournamentEndDate;
 	}
-	
-	
 }
 
 
