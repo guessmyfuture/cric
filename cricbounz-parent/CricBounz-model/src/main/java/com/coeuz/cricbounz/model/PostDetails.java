@@ -1,5 +1,6 @@
 package com.coeuz.cricbounz.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -19,8 +20,9 @@ import org.springframework.stereotype.Component;
 @Entity
 @Table(name = "postdetails")
 @Component
-public class PostDetails {
+public class PostDetails implements Serializable {
 	
+	private static final long serialVersionUID = 1274119084524542751L;
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="postId")
@@ -31,8 +33,17 @@ public class PostDetails {
     private String postedUserImageUrl;
     private String postedContent;
     private Date  timestamp;
+    @Transient
     private String[] postedPictures;
-    private String likedById;
+    private String imagePostUrl;
+    public String getImagePostUrl() {
+		return imagePostUrl;
+	}
+	public void setImagePostUrl(String imagePostUrl) {
+		this.imagePostUrl = imagePostUrl;
+	}
+
+	private String likedById;
     private String postedType;
 	private String imageCaption;
 	private String status;

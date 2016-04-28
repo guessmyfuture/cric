@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -107,17 +108,22 @@ public class PostDAO extends BaseDAO <PostDetails, Integer> {
 		return postDetailsList;
 	}
 	
-	public List<PostDetails> getPostDetails(long userId, int limit,int offset){
+	public List<PostDetails> getPostDetails(Long userId, int limit,int offset){
 		List<PostDetails> postDetailsList= new ArrayList<PostDetails>();
 		session = getSessionFactory().openSession();
 		session.beginTransaction();
-		
-		String publicShareHql="FROM PostDetails p WHERE p.postedUserId="+userId+" and p.postedType ='Public' or p.postedType ='Private' or p.postedType like '%"+userId+",%' and p.status='A' order by p.timestamp desc";
+		Criteria cr =session.createCriteria(PostDetails.class);
+		cr.add(Restrictions.and(Restrictions.or(Restrictions.eq("postedType", "Public"), 
+				Restrictions.ilike("postedType", userId.toString(), MatchMode.ANYWHERE)), Restrictions.eq("status", "A")));
+/*		//cr.add(Restrictions.)
+		//String publicShareHql="FROM PostDetails p WHERE p.postedUserId = :user_Id OR p.Restrictions ='Public' OR p.postedType ='Private' OR p.postedType like '%"+userId+",%' and p.status='A' ORDER BY p.timestamp DESC";
 		Query publicShareQuery = session.createQuery(publicShareHql);
 		publicShareQuery.setFirstResult(offset);
-		publicShareQuery.setMaxResults(limit);
+		publicShareQuery.setMaxResults(limit);*/
+		cr.setFirstResult(offset);
+		cr.setFetchSize(limit);
 		
-		List<PostDetails> retrievedPostedToPublicList =(List<PostDetails>)publicShareQuery.list();
+		List<PostDetails> retrievedPostedToPublicList = cr.list();
 		if(retrievedPostedToPublicList!=null && retrievedPostedToPublicList.size()>0){
 			List<PostDetails> publicPostDetailsList = populateUserNameAndImage(retrievedPostedToPublicList);
 			postDetailsList.addAll(publicPostDetailsList);	
