@@ -1,6 +1,10 @@
 package com.coeuz.cricbounz.dao;
 
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -56,6 +60,35 @@ public class UserDAO extends BaseDAO <UserDetails, Integer> {
 						(Restrictions.ilike("email", text, MatchMode.ANYWHERE)))));
 	List<UserDetails> userLists = cr.list();		
 		return userLists;
-	}		
+	}	
+	
+	public List<Map> getFriendsListDetailsByUserID(long userID) throws NumberFormatException , NullPointerException, ArrayIndexOutOfBoundsException, SQLException{
+		List<Map> friendsListDetails = new ArrayList<Map>();
+		UserDetails  userDetails = (UserDetails)get(userID);
+		String userFriends = userDetails.getFriends();
+		String [] userFriendsIDArray = userFriends.split(",");
+		for(String friendsID:userFriendsIDArray){
+			if(friendsID.length()>0){
+			UserDetails friednsDetails = get(Long.parseLong(friendsID));
+			Map<String,String> freindsDetailsMap = new HashMap<String,String>();
+			freindsDetailsMap.put("UserID",friendsID);
+			freindsDetailsMap.put("Name", friednsDetails.getName());
+			freindsDetailsMap.put("Area", friednsDetails.getArea());
+			freindsDetailsMap.put("City", friednsDetails.getCity());
+			freindsDetailsMap.put("BattingStyle", friednsDetails.getBattingStyle());
+			freindsDetailsMap.put("BowlingStyle", friednsDetails.getBowlingStyle());
+			freindsDetailsMap.put("BowlingType", friednsDetails.getBowlingType());
+			friendsListDetails.add(freindsDetailsMap);
+			}
+		 }
+				
+		return friendsListDetails;
+		
+	}
+	
+	
+	
+	
+	
 	
 }
