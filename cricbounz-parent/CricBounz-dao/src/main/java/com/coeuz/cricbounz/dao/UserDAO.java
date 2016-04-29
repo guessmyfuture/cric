@@ -66,22 +66,24 @@ public class UserDAO extends BaseDAO <UserDetails, Integer> {
 		List<Map> friendsListDetails = new ArrayList<Map>();
 		UserDetails  userDetails = (UserDetails)get(userID);
 		String userFriends = userDetails.getFriends();
-		String [] userFriendsIDArray = userFriends.split(",");
-		for(String friendsID:userFriendsIDArray){
-			if(friendsID.length()>0){
-			UserDetails friednsDetails = get(Long.parseLong(friendsID));
-			Map<String,String> freindsDetailsMap = new HashMap<String,String>();
-			freindsDetailsMap.put("UserID",friendsID);
-			freindsDetailsMap.put("Name", friednsDetails.getName());
-			freindsDetailsMap.put("Area", friednsDetails.getArea());
-			freindsDetailsMap.put("City", friednsDetails.getCity());
-			freindsDetailsMap.put("BattingStyle", friednsDetails.getBattingStyle());
-			freindsDetailsMap.put("BowlingStyle", friednsDetails.getBowlingStyle());
-			freindsDetailsMap.put("BowlingType", friednsDetails.getBowlingType());
-			friendsListDetails.add(freindsDetailsMap);
-			}
-		 }
-				
+		if(userFriends!=null){
+			String [] userFriendsIDArray = userFriends.split(",");	
+			for(String friendsID:userFriendsIDArray){
+				if(friendsID.length()>0){
+				UserDetails friednsDetails = get(Long.parseLong(friendsID));
+				Map<String,String> freindsDetailsMap = new HashMap<String,String>();
+				freindsDetailsMap.put("UserID",friendsID);
+				freindsDetailsMap.put("Name", friednsDetails.getName());
+				freindsDetailsMap.put("Area", friednsDetails.getArea());
+				freindsDetailsMap.put("City", friednsDetails.getCity());
+				freindsDetailsMap.put("BattingStyle", friednsDetails.getBattingStyle());
+				freindsDetailsMap.put("BowlingStyle", friednsDetails.getBowlingStyle());
+				freindsDetailsMap.put("BowlingType", friednsDetails.getBowlingType());
+				friendsListDetails.add(freindsDetailsMap);
+				}
+			 }
+		}
+							
 		return friendsListDetails;
 		
 	}
