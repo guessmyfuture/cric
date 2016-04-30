@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.coeuz.cricbounz.model.BallTypeDetails;
-import com.coeuz.cricbounz.model.PostDetails;
 @Repository
 public class BallTypeDAO extends BaseDAO <BallTypeDetails, Integer> {
 

@@ -15,24 +15,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.coeuz.cricbounz.dao.MatchDetailsControlDAO;
+import com.coeuz.cricbounz.dao.MatchDetailsDAO;
 import com.coeuz.cricbounz.dao.PlayersinActionDAO;
 import com.coeuz.cricbounz.dao.TeamDAO;
 import com.coeuz.cricbounz.dao.UserDAO;
-import com.coeuz.cricbounz.model.MatchScoreDetails;
+import com.coeuz.cricbounz.model.MatchDetails;
 import com.coeuz.cricbounz.model.PlayersinAction;
 import com.coeuz.cricbounz.model.ResponseStatus;
 import com.coeuz.cricbounz.model.TeamDetails;
 import com.coeuz.cricbounz.model.UserDetails;
 
 @Controller
-@RequestMapping(value = "/rest/match")
+@RequestMapping(value = "/rest/score")
 public class MatchScoreDetailsController {
 
-	private static final Logger logger = LoggerFactory.getLogger(MatchScoreDetailsController.class);
+	private static final Logger logger = LoggerFactory.getLogger(MatchDetailsController.class);
 
 	@Autowired
-	private MatchDetailsControlDAO matchDetailsControlDAO;
+	private MatchDetailsDAO matchDetailsDAO;
 
 	@Autowired
 	private TeamDAO teamDAO;
@@ -44,19 +44,19 @@ public class MatchScoreDetailsController {
 	private UserDAO userDAO;
 
 	@RequestMapping(value = "/savescoredetails", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus saveMatchScoreDetails(@RequestBody MatchScoreDetails matchScoreDetails) {
+	public @ResponseBody ResponseStatus saveMatchDetails(@RequestBody MatchDetails MatchDetails) {
 		logger.info("Start scoring Details method");
 		ResponseStatus responseStatus = new ResponseStatus();
-		matchDetailsControlDAO.saveMatchDetails(matchScoreDetails);
+		matchDetailsDAO.saveMatchDetails(MatchDetails);
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
 	}
 	
 	@RequestMapping(value = "/updatescoredetails", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus updateMatchScoreDetails(@RequestBody MatchScoreDetails matchScoreDetails) {
+	public @ResponseBody ResponseStatus updateMatchDetails(@RequestBody MatchDetails MatchDetails) {
 		logger.info("Start scoring Details method");
 		ResponseStatus responseStatus = new ResponseStatus();
-		matchDetailsControlDAO.updateMatchDetails(matchScoreDetails);
+		matchDetailsDAO.updateMatchDetails(MatchDetails);
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
 	}
@@ -84,11 +84,11 @@ public class MatchScoreDetailsController {
 		return userDetailsList;
 	}
 
-	@RequestMapping(value = "/getmatchscoredetails", method = RequestMethod.GET)
-	public @ResponseBody MatchScoreDetails getMatchidDetails(@RequestParam("matchId") long matchId) {
-		logger.info("Starting getMatchScoreDetails");
-		MatchScoreDetails matchScoreDetails = matchDetailsControlDAO.getMatchScoreDetails(matchId);
-		return matchScoreDetails;
+	@RequestMapping(value = "/getMatchDetails", method = RequestMethod.GET)
+	public @ResponseBody MatchDetails getMatchidDetails(@RequestParam("matchId") long matchId) {
+		logger.info("Starting getMatchDetails");
+		MatchDetails MatchDetails = matchDetailsDAO.getMatchDetails(matchId);
+		return MatchDetails;
 	}
 
 	@RequestMapping(value = "/getplayerinaction", method = RequestMethod.GET)

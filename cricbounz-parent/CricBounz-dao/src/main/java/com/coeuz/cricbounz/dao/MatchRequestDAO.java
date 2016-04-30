@@ -21,7 +21,7 @@ public class MatchRequestDAO extends BaseDAO<MatchRequest, Integer>{
 	@Autowired
 	RequestNotifications requestNotifications;
 	@Autowired
-	CreateMatchDetailsDAO createMatchDetailsDAO;
+	MatchDetailsDAO matchDetailsDAO;
 	@Autowired
 	MatchDetails matchDetails;
 	@Autowired
@@ -69,7 +69,7 @@ public class MatchRequestDAO extends BaseDAO<MatchRequest, Integer>{
 				matchDetails.setTeamBId(matchRequest.getRequestedToTeam());
 				matchDetails.setStatus("Sheduled");
 				matchDetails.setTimestamp(new Date());
-				long matchID = createMatchDetailsDAO.saveAndRetrunUniqkey(matchDetails);
+				long matchID = matchDetailsDAO.saveAndRetrunUniqkey(matchDetails);
 				
 				deleteRequestnotification(matchRequest);
 								

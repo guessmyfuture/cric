@@ -31,6 +31,13 @@ public class TeamDetails {
 	private String players;
 	private String ballType;
 	private long managers;
+	private long createdBy;
+	public long getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(long createdBy) {
+		this.createdBy = createdBy;
+	}
 	private String pitchType;
 	private String followersUid;
 	private String pid;

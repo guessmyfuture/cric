@@ -16,8 +16,8 @@ public class BowlingDetails {
 	@Column(name = "bowlingDetailsId")
 	private long bowlingDetailsId;
 	private long bowlerId;
-	private long runsConceded;
-	private long dotBalls;
+	private int runsConceded;
+	private int dotBalls;
 	private int noOfOvers;
 	private int noOfWickets;
 	private int wides;
@@ -72,7 +72,7 @@ public class BowlingDetails {
 	/**
 	 * @return the runsConceded
 	 */
-	public long getRunsConceded() {
+	public int getRunsConceded() {
 		return runsConceded;
 	}
 
@@ -80,7 +80,7 @@ public class BowlingDetails {
 	 * @param runsConceded
 	 *            the runsConceded to set
 	 */
-	public void setRunsConceded(long runsConceded) {
+	public void setRunsConceded(int runsConceded) {
 		this.runsConceded = runsConceded;
 	}
 
@@ -162,7 +162,7 @@ public class BowlingDetails {
 	/**
 	 * @return the dotBalls
 	 */
-	public long getDotBalls() {
+	public int getDotBalls() {
 		return dotBalls;
 	}
 
@@ -170,7 +170,7 @@ public class BowlingDetails {
 	 * @param dotBalls
 	 *            the dotBalls to set
 	 */
-	public void setDotBalls(long dotBalls) {
+	public void setDotBalls(int dotBalls) {
 		this.dotBalls = dotBalls;
 	}
 }

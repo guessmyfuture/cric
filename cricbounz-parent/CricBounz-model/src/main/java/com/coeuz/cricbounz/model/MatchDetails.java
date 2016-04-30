@@ -31,9 +31,10 @@ public class MatchDetails {
 	private long umpire2;
 	private String ballType;
 	private long scorer;
-	private String pitchType;
+	private long pitchType;
 	private String resultDescription;
 	private long manOfTheMatch;
+	
 	/**
 	 * @return the manOfTheMatch
 	 */
@@ -184,13 +185,13 @@ public class MatchDetails {
 	/**
 	 * @return the pitchType
 	 */
-	public String getPitchType() {
+	public long getPitchType() {
 		return pitchType;
 	}
 	/**
 	 * @param pitchType the pitchType to set
 	 */
-	public void setPitchType(String pitchType) {
+	public void setPitchType(long pitchType) {
 		this.pitchType = pitchType;
 	}
 	/**

@@ -25,6 +25,8 @@ public class ScoreUpdate {
 	private int wides;
 	private int byes;
 	private int legByes;
+	private int wickets;
+	private int overs;
 	@OneToMany
 	@JoinColumn(name = "scoreDetailsId")
 	private Set<BattingDetails> battingDetails;
@@ -168,6 +170,26 @@ public class ScoreUpdate {
 	 */
 	public void setBowlingDetails(Set<BowlingDetails> bowlingDetails) {
 		this.bowlingDetails = bowlingDetails;
+	}
+
+	public int getWickets() {
+		return wickets;
+	}
+
+	public void setWickets(int wickets) {
+		this.wickets = wickets;
+	}
+
+	public int getOvers() {
+		return overs;
+	}
+
+	public void setOvers(int overs) {
+		this.overs = overs;
+	}
+
+	public void setBattingDetails(Set<BattingDetails> battingDetails) {
+		this.battingDetails = battingDetails;
 	}
 
 }

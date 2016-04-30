@@ -20,9 +20,9 @@ public class BattingDetails {
 	private long score;
 	private long ballsFaced;
 	private long dotBalls;
-	private String OtherPlayerInvolved;
-	private String wicketTakenBy;
-	private String wicketType;
+	private long OtherPlayerInvolved;
+	private long wicketTakenBy;
+	private long wicketType;
 	private String status;
 	private int sixes;
 	private int fours;
@@ -122,7 +122,7 @@ public class BattingDetails {
 	/**
 	 * @return the otherPlayerInvolved
 	 */
-	public String getOtherPlayerInvolved() {
+	public long getOtherPlayerInvolved() {
 		return OtherPlayerInvolved;
 	}
 
@@ -130,14 +130,14 @@ public class BattingDetails {
 	 * @param otherPlayerInvolved
 	 *            the otherPlayerInvolved to set
 	 */
-	public void setOtherPlayerInvolved(String otherPlayerInvolved) {
+	public void setOtherPlayerInvolved(long otherPlayerInvolved) {
 		OtherPlayerInvolved = otherPlayerInvolved;
 	}
 
 	/**
 	 * @return the wicketTakenBy
 	 */
-	public String getWicketTakenBy() {
+	public long getWicketTakenBy() {
 		return wicketTakenBy;
 	}
 
@@ -145,14 +145,14 @@ public class BattingDetails {
 	 * @param wicketTakenBy
 	 *            the wicketTakenBy to set
 	 */
-	public void setWicketTakenBy(String wicketTakenBy) {
+	public void setWicketTakenBy(long wicketTakenBy) {
 		this.wicketTakenBy = wicketTakenBy;
 	}
 
 	/**
 	 * @return the wicketType
 	 */
-	public String getWicketType() {
+	public long getWicketType() {
 		return wicketType;
 	}
 
@@ -160,7 +160,7 @@ public class BattingDetails {
 	 * @param wicketType
 	 *            the wicketType to set
 	 */
-	public void setWicketType(String wicketType) {
+	public void setWicketType(long wicketType) {
 		this.wicketType = wicketType;
 	}
 

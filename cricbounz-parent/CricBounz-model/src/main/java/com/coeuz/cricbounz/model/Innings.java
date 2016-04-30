@@ -10,6 +10,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -22,11 +23,11 @@ public class Innings {
 	private long inningsId;
 	private long matchID;
 	private String inningsType;
-	private String battingTeam;
-	private String bowlingTeam;
-	@OneToMany
+	private long battingTeam;
+	private long bowlingTeam;
+	@OneToOne
 	@JoinColumn(name = "inningsId")
-	private Set<ScoreUpdate> scoreUpdate;
+	private ScoreUpdate scoreUpdate;
 	@OneToMany
 	@JoinColumn(name = "inningsId")
 	private List<OverDetails> overDetails;
@@ -79,7 +80,7 @@ public class Innings {
 	/**
 	 * @return the battingTeam
 	 */
-	public String getBattingTeam() {
+	public long getBattingTeam() {
 		return battingTeam;
 	}
 
@@ -87,14 +88,14 @@ public class Innings {
 	 * @param battingTeam
 	 *            the battingTeam to set
 	 */
-	public void setBattingTeam(String battingTeam) {
+	public void setBattingTeam(long battingTeam) {
 		this.battingTeam = battingTeam;
 	}
 
 	/**
 	 * @return the bowlingTeam
 	 */
-	public String getBowlingTeam() {
+	public long getBowlingTeam() {
 		return bowlingTeam;
 	}
 
@@ -102,14 +103,14 @@ public class Innings {
 	 * @param bowlingTeam
 	 *            the bowlingTeam to set
 	 */
-	public void setBowlingTeam(String bowlingTeam) {
+	public void setBowlingTeam(long bowlingTeam) {
 		this.bowlingTeam = bowlingTeam;
 	}
 
 	/**
 	 * @return the scoreUpdate
 	 */
-	public Set<ScoreUpdate> getScoreUpdate() {
+	public ScoreUpdate getScoreUpdate() {
 		return scoreUpdate;
 	}
 
@@ -117,7 +118,7 @@ public class Innings {
 	 * @param scoreUpdate
 	 *            the scoreUpdate to set
 	 */
-	public void setScoreUpdate(Set<ScoreUpdate> scoreUpdate) {
+	public void setScoreUpdate(ScoreUpdate scoreUpdate) {
 		this.scoreUpdate = scoreUpdate;
 	}
 

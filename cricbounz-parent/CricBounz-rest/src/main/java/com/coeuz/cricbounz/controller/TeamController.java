@@ -1,6 +1,7 @@
 package com.coeuz.cricbounz.controller;
 
 import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -27,9 +28,12 @@ public class TeamController {
 	private TeamDAO teamDAO;
 
 	@RequestMapping(value = "/createteam", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus registerTeamDetails(@RequestBody TeamDetails teamDetails) {
+	public @ResponseBody ResponseStatus registerTeamDetails(HttpServletRequest request, @RequestBody TeamDetails teamDetails) {
 		logger.info("Start registerTeamDetails method");
 		ResponseStatus responseStatus = new ResponseStatus();
+		String userIdStr = (String)request.getSession(false).getAttribute("userId");
+		long userId = Long.parseLong(userIdStr.trim());
+		teamDetails.setCreatedBy(userId);
 		teamDAO.registerTeamDetails(teamDetails);
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
