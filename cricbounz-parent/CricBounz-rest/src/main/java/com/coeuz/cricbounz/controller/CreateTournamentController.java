@@ -106,7 +106,6 @@ public class CreateTournamentController {
 	public @ResponseBody Map<Integer, List<MatchDetails>> scheduleMatchesByLeague(@RequestParam String tournamentId,
 			@RequestParam Integer noOfGroup, @RequestParam Integer countOfFaceToFace,
 			@RequestParam String typeOfNextLevel) {
-
 		List<TeamDetails> resultList = createRegisteredTeamDAO
 				.retrieveRegisteredTeamBasedOnTournamentID(Long.parseLong(tournamentId));
 

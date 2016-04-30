@@ -42,6 +42,7 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 		Criteria cr = session.createCriteria(TeamDetails.class);
 		cr.add(Restrictions.or(Restrictions.ilike("name", text, MatchMode.ANYWHERE),
 				Restrictions.or((Restrictions.ilike("area", text, MatchMode.ANYWHERE)))));
+		@SuppressWarnings("unchecked")
 		List<TeamDetails> teamLists = cr.list();
 		session.close();
 		return teamLists;
@@ -51,6 +52,7 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 		Session session = getSessionFactory().openSession();
 		Criteria cr = session.createCriteria(TeamDetails.class);
 		cr.add(Restrictions.ilike("players", userId, MatchMode.ANYWHERE));
+		@SuppressWarnings("unchecked")
 		List<TeamDetails> teamLists = cr.list();
 		return teamLists;
 	}
@@ -62,14 +64,13 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 		List<TeamDetails> teamLists = cr.list();
 		return teamLists.get(0).getName();
 	}
-	
 	public List<TeamDetails> getAllTeams(String text) {
 		Session session = getSessionFactory().openSession();
 		Criteria cr = session.createCriteria(TeamDetails.class);
-		if(!text.isEmpty())
-		{
-		cr.add(Restrictions.ilike("name", text, MatchMode.ANYWHERE));
+		if (!text.isEmpty()) {
+			cr.add(Restrictions.ilike("name", text, MatchMode.ANYWHERE));
 		}
+		@SuppressWarnings("unchecked")
 		List<TeamDetails> teamLists = cr.list();
 		session.close();
 		return teamLists;
@@ -95,6 +96,7 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 		Session session = getSessionFactory().openSession();
 		Criteria cr = session.createCriteria(UserDetails.class);
 		cr.add(Restrictions.in("userId", playerIds));
+		@SuppressWarnings("unchecked")
 		List<UserDetails> userDetails = cr.list();
 		session.close();
 		return userDetails;
@@ -118,7 +120,6 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 		TeamDetails teamDetails = get(teamId);
 		List<String> retrievedPlayersList = getPlayersIdFromTeamId(teamId);
 		for (String playerID : retrievedPlayersList) {
-
 			Map<String, String> playerRoles = new HashMap<String, String>();
 			UtilUserDetails utilUserDetails = new UtilUserDetails();
 			UserDetails userDetails = (UserDetails) userDAO.get(Long.parseLong(playerID));

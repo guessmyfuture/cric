@@ -1,5 +1,7 @@
 package com.coeuz.cricbounz.controller;
 
+import java.sql.SQLException;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +24,17 @@ public class MatchDetailsController {
 	@Autowired
 	private CreateMatchDetailsDAO createMatchDetailsDAO;	
 	
-	@RequestMapping(value = "/create", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus createMatchDetils(@RequestBody MatchDetails matchDetails) {
+	@RequestMapping(value = "/creatematch", method = RequestMethod.POST)
+	public @ResponseBody ResponseStatus createMatchDetils(@RequestBody MatchDetails matchDetails){
 		logger.info("Starting MatchDetails");
 		ResponseStatus responseStatus = new ResponseStatus();
-		createMatchDetailsDAO.createMatchDetails(matchDetails);		
+		try{
+			createMatchDetailsDAO.createMatchDetails(matchDetails);  	
+		}catch(SQLException | NullPointerException |ClassCastException ex){
+			responseStatus.setErrorMessage("Excpetion occured at createMatchDetils"+ex);
+			logger.info("Excpetion occured at createMatchDetils"+ex);
+			return responseStatus;
+		}
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
 	}
@@ -36,5 +44,7 @@ public class MatchDetailsController {
 		MatchDetails matchDetails = createMatchDetailsDAO. getMatchidDetails(Id);
 		return matchDetails;
 	}
+	
+	
 
 }

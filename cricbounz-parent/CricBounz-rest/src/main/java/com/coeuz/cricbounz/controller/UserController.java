@@ -175,15 +175,11 @@ public class UserController {
 	}
 
 	@RequestMapping(value = "/getfriends", method = RequestMethod.GET)
-	public @ResponseBody List<Map> getFriendsListDetailsByUserID(HttpServletRequest request) throws Exception {
+	public @ResponseBody List<Map> getFriendsListDetailsByUserID(@RequestParam("userid") long userId) throws Exception {
 		logger.info("Start getFriendsListDetailsByUserID");
 		List<Map> userFriendsDetails = null;
 		try {
-			String id = (String) request.getSession(false).getAttribute("userId");
-			id = id.trim();
-			long userId = Long.parseLong(id);
 			userFriendsDetails = userDAO.getFriendsListDetailsByUserID(userId);
-
 		} catch (NumberFormatException | SQLException | NullPointerException | ArrayIndexOutOfBoundsException e) {
 			logger.error("Exception occured at getFriendsListDetailsByUserID");
 			throw new Exception(e);

@@ -30,7 +30,7 @@ public class AppAuthenticationSuccessHandler implements AuthenticationSuccessHan
 		User authUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();  
         //session.setAttribute("uname", authUser.getUsername());
         session.setAttribute("userId",  userDAO.getUserIdFromMail(authUser.getUsername()));
-        session.setAttribute("authorities", authentication.getAuthorities()); 
+        session.setAttribute("authorities", authentication.getAuthorities());
         response.sendRedirect("UserHome.html");
 	}
 }

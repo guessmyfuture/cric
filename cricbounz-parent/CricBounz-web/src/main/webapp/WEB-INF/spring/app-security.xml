@@ -25,7 +25,7 @@
 		<intercept-url pattern ="/fonts/**" access="permitAll" />
 		<intercept-url pattern ="/js/**" access="permitAll" />
 		<intercept-url pattern="/**" access="hasRole('USER')" />
-		<form-login login-page="/index.jsp" default-target-url="/UserHome.html" always-use-default-target='true' 
+		 <form-login login-page="/index.jsp" default-target-url="/UserHome.html" always-use-default-target='true' 
 		authentication-failure-url="/index.jsp?login_error=1" 
 		authentication-success-handler-ref="customAuthenticationSuccessHandler" />
 		<logout />

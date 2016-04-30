@@ -19,28 +19,27 @@
 								required.</span>
 						</span>
 					</div>-->
-					
+
 					<script type="text/ng-template" id="customTemplateCity.html">
                     <a>	
                         <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
                         <!--<i>({{match.model.area}})</i>-->
                      </a>
 	                 </script>
-	                 <label class="col-md-1 control-label" for="textinput">City</label>
-					<div class="col-md-4" ng-controller="loadCity">					
-					 <input
-							type="text" ng-model="selectedCity"
+					<label class="col-md-1 control-label" for="textinput">City</label>
+					<div class="col-md-4" ng-controller="loadCity">
+						<input type="text" ng-model="selectedCity"
 							placeholder="Search City"
 							typeahead="c as c.cityName for c in cityList | filter:$viewValue | limitTo:10"
 							typeahead-min-length='1'
 							typeahead-on-select='onSelectPart($item, $model, $label);changeArea();'
-							typeahead-template-url="customTemplateCity.html" class="form-control"
-							style=""> 
-							<i class="icon-search nav-search-icon"></i>
-							<textarea ng-show="false">{{selectedCity}}</textarea>						
+							typeahead-template-url="customTemplateCity.html"
+							class="form-control" style=""> <i
+							class="icon-search nav-search-icon"></i>
+						<textarea ng-show="false">{{selectedCity}}</textarea>
 					</div>
-					
-					
+
+
 					<!--<label class="col-md-1 control-label" for="textinput">Area</label>
 				 	<div class="col-md-4" ng-controller="loadArea">
 						<input name="area" ng-model="area" list="areaList"
@@ -54,27 +53,26 @@
 							<span ng-show="groundForm.area.$error.required">Area is
 								required.</span>
 						</span>
-					</div> -->	
-					
+					</div> -->
+
 					<script type="text/ng-template" id="customTemplateArea.html">
                     <a>	
                         <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
                         <!--<i>({{match.model.area}})</i>-->
                      </a>
 	                 </script>
-	                 <label class="col-md-1 control-label" for="textinput">Area</label>
-					<div class="col-md-4" ng-controller="loadArea">					
-					 <input
-							type="text" ng-model="selectedArea"
+					<label class="col-md-1 control-label" for="textinput">Area</label>
+					<div class="col-md-4" ng-controller="loadArea">
+						<input type="text" ng-model="selectedArea"
 							placeholder="Search Grounds"
 							typeahead="c as c.area for c in areaList | filter:$viewValue | limitTo:10"
 							typeahead-min-length='1'
 							typeahead-on-select='onSelectPart($item, $model,$label);changeCity();'
-							typeahead-template-url="customTemplateArea.html" class="form-control"
-							style=""> 
-							<i class="icon-search nav-search-icon"></i>
-							<textarea ng-show="false">{{selectedArea}}</textarea>						
-					</div>					
+							typeahead-template-url="customTemplateArea.html"
+							class="form-control" style=""> <i
+							class="icon-search nav-search-icon"></i>
+						<textarea ng-show="false">{{selectedArea}}</textarea>
+					</div>
 				</div>
 			</div>
 			<div class="row">
@@ -100,32 +98,32 @@
                         <i>({{match.model.area}},{{match.model.city}})</i>
                      </a>
 	                 </script>
-	                 <label class="col-md-1 control-label" for="textinput">Ground</label>
-					<div class="col-md-4" ng-controller="loadGrounds">					
-					 <input
-							type="text" ng-model="$parent.selectedGround"
+					<label class="col-md-1 control-label" for="textinput">Ground</label>
+					<div class="col-md-4" ng-controller="loadGrounds">
+						<input type="text" ng-model="$parent.selectedGround"
 							placeholder="Search Grounds"
 							typeahead="c as c.name for c in grounds | filter:$viewValue | limitTo:10"
 							typeahead-min-length='1'
 							typeahead-on-select='onSelectPart($item, $model, $label);$parent.getSlotDetails();'
-							typeahead-template-url="customTemplateGround.html" class="form-control"
-							style=""> 
-							<i class="icon-search nav-search-icon"></i>
-							<textarea ng-show="false">{{selectedGround}}</textarea>						
+							typeahead-template-url="customTemplateGround.html"
+							class="form-control" style=""> <i
+							class="icon-search nav-search-icon"></i>
+						<textarea ng-show="false">{{selectedGround}}</textarea>
 					</div>
-					
+
 					<label class="col-md-1 control-label" for="textinput">Date</label>
 					<div class="col-md-4">
 						<div class="input-group date" data-date-format="mm-dd-yyyy"
 							date-picker>
-							<input class="form-control" type="text" readonly name="date"
-								ng-model="date" /> <span class="input-group-addon"><i
+							<input class="form-control" type="text" value="" readonly
+								id="date" name="date" ng-model="date" required="" /> <span
+								class="input-group-addon"> <i
 								class="glyphicon glyphicon-calendar"></i></span>
 						</div>
 						<span style="color: red"
-							ng-show="groundForm.date.$invalid && !groundForm.date.$pristine">
-							<span ng-show="groundForm.date.$error.required">Date is
-								required.</span>
+							ng-show="groundForm.date.$invalid && submitted"> <span
+							ng-show="groundForm.date.$error.required && submitted">Date
+								is required.</span>
 						</span>
 					</div>
 				</div>
