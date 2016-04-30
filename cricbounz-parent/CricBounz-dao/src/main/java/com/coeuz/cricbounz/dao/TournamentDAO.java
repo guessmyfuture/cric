@@ -24,14 +24,14 @@ public class TournamentDAO extends BaseDAO<Tournament, Integer> {
 		tournament.setTourEndDate(convertStrToDate(tournament.getTournamentEndDate(), TimeZone.getDefault().getID()));
 		tournament.setRegEndDate(convertStrToDate(tournament.getRegistrationEndDate(), TimeZone.getDefault().getID()));
 		tournament.setRegStartDate(convertStrToDate(tournament.getRegistrationStartDate(), TimeZone.getDefault().getID()));
+		tournament.setStatus("UPCOMING");
 		saveorUpdate(tournament);
 	}
 	
 	public List<Tournament> retrieveTournamentBasedOnStatus(String status){
 		String hql = "FROM Tournament E WHERE E.status = '"+status+"'";
 		Query query = getSessionFactory().openSession().createQuery(hql);
-		List<Tournament> results = query.list();
-		getSessionFactory().close();
+		List<Tournament> results = query.list();		
 		return results;
 	}
 	}

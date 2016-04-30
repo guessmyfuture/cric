@@ -20,8 +20,7 @@ public class MatchDetailsController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MatchDetailsController.class);
 	@Autowired
-	private CreateMatchDetailsDAO createMatchDetailsDAO;
-	
+	private CreateMatchDetailsDAO createMatchDetailsDAO;	
 	
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus createMatchDetils(@RequestBody MatchDetails matchDetails) {
@@ -37,6 +36,5 @@ public class MatchDetailsController {
 		MatchDetails matchDetails = createMatchDetailsDAO. getMatchidDetails(Id);
 		return matchDetails;
 	}
-
 
 }

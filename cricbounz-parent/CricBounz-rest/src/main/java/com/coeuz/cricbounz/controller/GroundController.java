@@ -2,6 +2,7 @@ package com.coeuz.cricbounz.controller;
 
 import java.sql.SQLException;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -21,9 +22,11 @@ import com.coeuz.cricbounz.dao.GroundDAO;
 import com.coeuz.cricbounz.dao.GroundSlotDAO;
 import com.coeuz.cricbounz.dao.PitchTypeDAO;
 import com.coeuz.cricbounz.dao.SlotsDAO;
+import com.coeuz.cricbounz.dao.TeamDAO;
 import com.coeuz.cricbounz.model.BallTypeDetails;
 import com.coeuz.cricbounz.model.Ground;
 import com.coeuz.cricbounz.model.GroundBookingDetails;
+import com.coeuz.cricbounz.model.GroundBookingHistory;
 import com.coeuz.cricbounz.model.GroundSlots;
 import com.coeuz.cricbounz.model.PitchTypeDetails;
 import com.coeuz.cricbounz.model.ResponseStatus;
@@ -45,9 +48,6 @@ public class GroundController {
 	private PitchTypeDAO pitchTypeDAO;
 
 	@Autowired
-	private GroundSlotDAO groundSlotDAO;
-
-	@Autowired
 	private GroundBookingDetailsDAO groundBookingDetailsDAO;
 
 	@Autowired
@@ -55,6 +55,10 @@ public class GroundController {
 	
 	@Autowired 
 	SlotsDAO slotsDAO;
+	
+	@Autowired 
+	TeamDAO teamDAO;
+
 
 	@RequestMapping(value = "/addground", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus addGroundDetails(HttpServletRequest request, @RequestBody Ground ground) {
@@ -91,6 +95,13 @@ public class GroundController {
 		ballTypeDAO.addBallTypeDetails(ballTypeDetails);
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
+	}
+	
+	@RequestMapping(value = "/getAllBallTypes", method = RequestMethod.GET)
+	public @ResponseBody BallTypeDetails getAllBallTypes(@RequestParam("ballId") long ballId) {
+		logger.info("Starting getBallTypeDetails");
+		BallTypeDetails ballTypeDetails = ballTypeDAO.getBallTypeDetails(ballId);
+		return ballTypeDetails;
 	}
 
 	@RequestMapping(value = "/getballdetails", method = RequestMethod.GET)
@@ -169,11 +180,15 @@ public class GroundController {
 	}
 	
 	@RequestMapping(value = "/myBookingHistory", method = RequestMethod.GET)
-	public @ResponseBody List<GroundBookingDetails> getBookingHistory(HttpServletRequest request) {
+	public @ResponseBody List<GroundBookingHistory> getBookingHistory(HttpServletRequest request) {
 		logger.info("Starting getGroundBookingDetails");
 		String currentUser = (String)request.getSession(false).getAttribute("userId");
 		long userId = Long.parseLong(currentUser.trim());
-		List<GroundBookingDetails> groundBookingDetails = groundBookingDetailsDAO.getBookingHistory(userId);
+		List<GroundBookingHistory> groundBookingDetails = groundBookingDetailsDAO.getBookingHistory(userId);
+		for(GroundBookingHistory gbh : groundBookingDetails)
+		{
+			gbh.setMyTeam(teamDAO.getTeamName(gbh.getMyTeamId()));
+		}
 		return groundBookingDetails;
 	}
 

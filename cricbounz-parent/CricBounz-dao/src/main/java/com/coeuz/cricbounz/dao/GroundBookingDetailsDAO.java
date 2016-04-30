@@ -2,7 +2,10 @@ package com.coeuz.cricbounz.dao;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.hibernate.Criteria;
@@ -10,11 +13,15 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.mapping.Array;
+import org.hibernate.mapping.Value;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.coeuz.cricbounz.model.Ground;
 import com.coeuz.cricbounz.model.GroundBookingDetails;
+import com.coeuz.cricbounz.model.GroundBookingHistory;
 import com.coeuz.cricbounz.model.RequestNotifications;
 import com.coeuz.cricbounz.model.Slots;
 
@@ -128,13 +135,17 @@ public class GroundBookingDetailsDAO extends BaseDAO<GroundBookingDetails, Integ
 		delete(id);
 	}
 	
-	public List<GroundBookingDetails> getBookingHistory(long userId)
+	public List<GroundBookingHistory> getBookingHistory(long userId)
 	{
 		session = getSessionFactory().openSession();
-		Criteria cr = session.createCriteria(GroundBookingDetails.class);
-		cr.add(Restrictions.eq("bookedBy", userId));
-		List<GroundBookingDetails> gb = cr.list();
-		session.close();
+		String queryStr = "SELECT gbd.bookingId AS bookingId, gbd.groundId AS groundId, gbd.myTeam AS myTeamId, gbd.opponentTeam AS opponentTeamId, gbd.dateOfPlay AS dateOfPlay, "
+				+ "gbd.dateOfRequest AS dateOfRequest, g.name AS groundName, g.city AS city, g.area AS area, b.ballType AS ballType, t.name AS opponent "
+				+ "FROM GroundBookingDetails gbd, Ground g, BallTypeDetails b, TeamDetails t WHERE gbd.bookedBy =:user_Id AND g.groundId = gbd.groundId "
+				+ "AND b.ballId = gbd.ballTypeId AND t.teamID = gbd.opponentTeam";
+		Query q = session.createQuery(queryStr).setResultTransformer(Transformers.aliasToBean(GroundBookingHistory.class));
+		q.setParameter("user_Id", userId);
+		List<GroundBookingHistory> gb = q.list();
+		
 		return gb;
 	}
 

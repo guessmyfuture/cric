@@ -25,8 +25,8 @@ public class GroundBookingDetails {
 	private long slotId;
 	private String status;
 	private Date dateOfRequest;
-	private long teamAId;
-	private long teamBId;
+	private long myTeam;
+	private long opponentTeam;
 	private long ballTypeId;
 	private long bookedBy;
 	
@@ -104,29 +104,24 @@ public class GroundBookingDetails {
 	public void setDateOfRequest(Date dateOfRequest) {
 		this.dateOfRequest = dateOfRequest;
 	}
-	/**
-	 * @return the teamA
-	 */
-	public long getTeamAId() {
-		return teamAId;
+	
+	public long getBookingId() {
+		return bookingId;
 	}
-	/**
-	 * @param teamA the teamA to set
-	 */
-	public void setTeamAId(long teamA) {
-		this.teamAId = teamA;
+	public void setBookingId(long bookingId) {
+		this.bookingId = bookingId;
 	}
-	/**
-	 * @return the teamB
-	 */
-	public long getTeamBId() {
-		return teamBId;
+	public long getMyTeam() {
+		return myTeam;
 	}
-	/**
-	 * @param teamB the teamB to set
-	 */
-	public void setTeamBId(long teamB) {
-		this.teamBId = teamB;
+	public void setMyTeam(long myTeam) {
+		this.myTeam = myTeam;
+	}
+	public long getOpponentTeam() {
+		return opponentTeam;
+	}
+	public void setOpponentTeam(long opponentTeam) {
+		this.opponentTeam = opponentTeam;
 	}
 	/**
 	 * @return the ballTypeId

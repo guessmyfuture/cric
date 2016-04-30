@@ -181,7 +181,7 @@ public class UserController {
 		try {
 			String id = (String) request.getSession(false).getAttribute("userId");
 			id = id.trim();
-			Long userId = Long.parseLong(id);
+			long userId = Long.parseLong(id);
 			userFriendsDetails = userDAO.getFriendsListDetailsByUserID(userId);
 
 		} catch (NumberFormatException | SQLException | NullPointerException | ArrayIndexOutOfBoundsException e) {
