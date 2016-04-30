@@ -187,5 +187,15 @@ public class UserController {
 		}
 		return userFriendsDetails;
 	}
+	
+	@RequestMapping(value = "/getPostDetailsByFriend", method = RequestMethod.GET)
+	public @ResponseBody List<PostDetails> getPostDetailsByFriend(@RequestParam("userid") long userId, @RequestParam("limit") int limit,
+			@RequestParam("offset") int offset) {
+		logger.info("Start getPostDetailsByFriend");
+		ResponseStatus responseStatus = new ResponseStatus();
+		List<PostDetails> postdetailsList = postDAO.getPostDetails(userId, limit, offset);
+		responseStatus.setResponseStatus("Success");
+		return postdetailsList;
+	}
 
 }
