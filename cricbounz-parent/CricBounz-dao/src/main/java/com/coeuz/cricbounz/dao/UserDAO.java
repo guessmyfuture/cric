@@ -12,8 +12,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+
+import com.coeuz.cricbounz.model.GlobalSearch;
 import com.coeuz.cricbounz.model.UserDetails;
 @Repository
 public class UserDAO extends BaseDAO <UserDetails, Integer> {
@@ -60,7 +63,20 @@ public class UserDAO extends BaseDAO <UserDetails, Integer> {
 						(Restrictions.ilike("email", text, MatchMode.ANYWHERE)))));
 	List<UserDetails> userLists = cr.list();		
 		return userLists;
-	}	
+	}
+	
+	public List<GlobalSearch> getUsersForGlobalSearch(String text)
+	{		
+		Session session = getSessionFactory().openSession();
+		Query q = session.createQuery("SELECT e.userId AS id, e.name AS name, e.profileImageUrl AS imageUrl"
+				+ " FROM UserDetails e WHERE e.name ilike :text OR e.profileName ilike :text_profile"
+				+ " OR e.email ilike :text_mail").setResultTransformer(Transformers.aliasToBean(GlobalSearch.class));
+		q.setParameter("text", "%"+text+"%");
+		q.setParameter("text_profile","%"+text+"%");
+		q.setParameter("text_mail", "%"+text+"%");
+		List<GlobalSearch> userLists = q.list();		
+		return userLists;
+	}
 	
 	public List<Map> getFriendsListDetailsByUserID(long userID) throws NumberFormatException , NullPointerException, ArrayIndexOutOfBoundsException, SQLException{
 		List<Map> friendsListDetails = new ArrayList<Map>();

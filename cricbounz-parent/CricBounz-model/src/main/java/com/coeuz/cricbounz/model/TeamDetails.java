@@ -26,11 +26,11 @@ public class TeamDetails {
 	private String name;
 	private String city;
 	private String area;
-	private String captain;
+	private long captain;
 	private String contactNo;
 	private String players;
 	private String ballType;
-	private String managers;
+	private long managers;
 	private String pitchType;
 	private String followersUid;
 	private String pid;
@@ -91,10 +91,10 @@ public class TeamDetails {
 		this.players = players;
 	}
 
-	public String getManagers() {
+	public long getManagers() {
 		return managers;
 	}
-	public void setManagers(String managers) {
+	public void setManagers(long managers) {
 		this.managers = managers;
 	}
 
@@ -152,13 +152,13 @@ public class TeamDetails {
 	/**
 	 * @return the captain
 	 */
-	public String getCaptain() {
+	public long getCaptain() {
 		return captain;
 	}
 	/**
 	 * @param captain the captain to set
 	 */
-	public void setCaptain(String captain) {
+	public void setCaptain(long captain) {
 		this.captain = captain;
 	}
 	/**

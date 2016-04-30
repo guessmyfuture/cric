@@ -11,9 +11,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.coeuz.cricbounz.model.GlobalSearch;
 import com.coeuz.cricbounz.model.TeamDetails;
 import com.coeuz.cricbounz.model.UserDetails;
 import com.coeuz.cricbounz.model.UtilUserDetails;
@@ -71,6 +73,16 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 		List<TeamDetails> teamLists = cr.list();
 		session.close();
 		return teamLists;
+	}
+	
+	public List<GlobalSearch> getTeamsForGlobalSearch(String text)
+	{		
+		Session session = getSessionFactory().openSession();
+		Query q = session.createQuery("SELECT e.teamID AS id, e.name AS name"
+				+ " FROM TeamDetails e WHERE e.name ilike :text").setResultTransformer(Transformers.aliasToBean(GlobalSearch.class));
+		q.setParameter("text", "%"+text+"%");
+		List<GlobalSearch> userLists = q.list();		
+		return userLists;
 	}
 
 	public List<UserDetails> getTeamMembersByTeamId(long teamId) {

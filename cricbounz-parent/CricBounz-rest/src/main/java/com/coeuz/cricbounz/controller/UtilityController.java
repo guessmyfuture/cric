@@ -21,12 +21,17 @@ import com.coeuz.cricbounz.dao.GroundDAO;
 import com.coeuz.cricbounz.dao.GroundSlotDAO;
 import com.coeuz.cricbounz.dao.PitchTypeDAO;
 import com.coeuz.cricbounz.dao.SlotsDAO;
+import com.coeuz.cricbounz.dao.TeamDAO;
+import com.coeuz.cricbounz.dao.UserDAO;
 import com.coeuz.cricbounz.model.BallTypeDetails;
+import com.coeuz.cricbounz.model.GlobalSearch;
 import com.coeuz.cricbounz.model.Ground;
 import com.coeuz.cricbounz.model.GroundBookingDetails;
 import com.coeuz.cricbounz.model.PitchTypeDetails;
 import com.coeuz.cricbounz.model.ResponseStatus;
 import com.coeuz.cricbounz.model.Slots;
+import com.coeuz.cricbounz.model.TeamDetails;
+import com.coeuz.cricbounz.model.UserDetails;
 
 @Controller
 @RequestMapping(value = "/rest/utility")
@@ -54,8 +59,13 @@ public class UtilityController {
 	
 	@Autowired 
 	SlotsDAO slotsDAO;
-
 	
+	@Autowired
+	UserDAO userDAO;
+	
+	@Autowired
+	TeamDAO teamDAO;
+
 	@RequestMapping(value = "/addballtype", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus addBallDetails(@RequestBody BallTypeDetails ballTypeDetails) {
 		logger.info("Starting addBallDetails");
@@ -63,6 +73,15 @@ public class UtilityController {
 		ballTypeDAO.addBallTypeDetails(ballTypeDetails);
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
+	}
+	
+	@RequestMapping(value = "/globalSearch", method = RequestMethod.GET)
+	public @ResponseBody List<GlobalSearch> getUsersAndTeams(@RequestParam("searchText") String text) {
+		logger.info("Starting search");
+		 List <GlobalSearch> userDtl = userDAO.getUsersForGlobalSearch(text);
+		 List <GlobalSearch> teamDtl = teamDAO.getTeamsForGlobalSearch(text);
+		 userDtl.addAll(teamDtl);
+		return userDtl;
 	}
 	
 	@RequestMapping(value = "/getAllBallTypes", method = RequestMethod.GET)
