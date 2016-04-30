@@ -77,11 +77,16 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 	
 	public List<GlobalSearch> getTeamsForGlobalSearch(String text)
 	{		
+		text = text.toLowerCase();
 		Session session = getSessionFactory().openSession();
 		Query q = session.createQuery("SELECT e.teamID AS id, e.name AS name"
-				+ " FROM TeamDetails e WHERE e.name ilike :text").setResultTransformer(Transformers.aliasToBean(GlobalSearch.class));
+				+ " FROM TeamDetails e WHERE LOWER(e.name) like :text").setResultTransformer(Transformers.aliasToBean(GlobalSearch.class));
 		q.setParameter("text", "%"+text+"%");
-		List<GlobalSearch> userLists = q.list();		
+		List<GlobalSearch> userLists = q.list();
+		for(GlobalSearch a: userLists)
+		{
+			a.setType("TEAM");
+		}
 		return userLists;
 	}
 

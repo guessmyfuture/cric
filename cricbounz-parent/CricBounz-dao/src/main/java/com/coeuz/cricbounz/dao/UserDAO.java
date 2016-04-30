@@ -67,14 +67,19 @@ public class UserDAO extends BaseDAO <UserDetails, Integer> {
 	
 	public List<GlobalSearch> getUsersForGlobalSearch(String text)
 	{		
+		text = text.toLowerCase();
 		Session session = getSessionFactory().openSession();
 		Query q = session.createQuery("SELECT e.userId AS id, e.name AS name, e.profileImageUrl AS imageUrl"
-				+ " FROM UserDetails e WHERE e.name ilike :text OR e.profileName ilike :text_profile"
-				+ " OR e.email ilike :text_mail").setResultTransformer(Transformers.aliasToBean(GlobalSearch.class));
+				+ " FROM UserDetails e WHERE LOWER(e.name) like :text OR LOWER(e.profileName) like :text_profile"
+				+ " OR LOWER(e.email) like :text_mail").setResultTransformer(Transformers.aliasToBean(GlobalSearch.class));
 		q.setParameter("text", "%"+text+"%");
 		q.setParameter("text_profile","%"+text+"%");
 		q.setParameter("text_mail", "%"+text+"%");
-		List<GlobalSearch> userLists = q.list();		
+		List<GlobalSearch> userLists = q.list();
+		for(GlobalSearch a: userLists)
+		{
+			a.setType("USER");
+		}
 		return userLists;
 	}
 	
