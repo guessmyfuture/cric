@@ -2,6 +2,7 @@ package com.coeuz.cricbounz.model;
 
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +11,8 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.springframework.stereotype.Component;
 
 @Entity
@@ -25,7 +28,9 @@ public class MatchDetails {
 	private long teamBId;
 	private String venue;
 	private String status;
-	private Date timestamp;
+	private Date playingDate;
+	@Transient
+	private String matchDate;
 	private long wonBy;
 	private long umpire1;
 	private long umpire2;
@@ -110,17 +115,18 @@ public class MatchDetails {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-	/**
-	 * @return the timestamp
-	 */
-	public Date getTimestamp() {
-		return timestamp;
+	
+	public Date getPlayingDate() {
+		return playingDate;
 	}
-	/**
-	 * @param timestamp the timestamp to set
-	 */
-	public void setTimestamp(Date timestamp) {
-		this.timestamp = timestamp;
+	public void setPlayingDate(Date playingDate) {
+		this.playingDate = playingDate;
+	}
+	public String getMatchDate() {
+		return matchDate;
+	}
+	public void setMatchDate(String matchDate) {
+		this.matchDate = matchDate;
 	}
 	/**
 	 * @return the wonBy

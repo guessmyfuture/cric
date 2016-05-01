@@ -68,7 +68,7 @@ public class MatchRequestDAO extends BaseDAO<MatchRequest, Integer>{
 				matchDetails.setTeamAId(matchRequest.getRequestedByTeam());
 				matchDetails.setTeamBId(matchRequest.getRequestedToTeam());
 				matchDetails.setStatus("Sheduled");
-				matchDetails.setTimestamp(new Date());
+				matchDetails.setPlayingDate(new Date());
 				long matchID = matchDetailsDAO.saveAndRetrunUniqkey(matchDetails);
 				
 				deleteRequestnotification(matchRequest);

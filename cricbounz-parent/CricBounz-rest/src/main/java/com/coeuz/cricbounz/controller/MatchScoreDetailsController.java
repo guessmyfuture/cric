@@ -20,7 +20,7 @@ import com.coeuz.cricbounz.dao.PlayersinActionDAO;
 import com.coeuz.cricbounz.dao.TeamDAO;
 import com.coeuz.cricbounz.dao.UserDAO;
 import com.coeuz.cricbounz.model.MatchDetails;
-import com.coeuz.cricbounz.model.PlayersinAction;
+import com.coeuz.cricbounz.model.LiveAction;
 import com.coeuz.cricbounz.model.ResponseStatus;
 import com.coeuz.cricbounz.model.TeamDetails;
 import com.coeuz.cricbounz.model.UserDetails;
@@ -69,14 +69,14 @@ public class MatchScoreDetailsController {
 	}
 
 	@RequestMapping(value = "/getplayerinaction", method = RequestMethod.GET)
-	public @ResponseBody PlayersinAction getPlayersInAction(@RequestParam("playersinactionid") long playersInActionId) {
+	public @ResponseBody LiveAction getPlayersInAction(@RequestParam("playersinactionid") long playersInActionId) {
 		logger.info("Starting getplayersinaction method");
-		PlayersinAction playersInAction = playersinActionDAO.getPlayersinAction(playersInActionId);
+		LiveAction playersInAction = playersinActionDAO.getPlayersinAction(playersInActionId);
 		return playersInAction;
 	}
 
 	@RequestMapping(value = "/playersinactiondetails", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus savePlayersInAction(@RequestBody PlayersinAction playersInAction) {
+	public @ResponseBody ResponseStatus savePlayersInAction(@RequestBody LiveAction playersInAction) {
 		logger.info("Start players in action method");
 		ResponseStatus responseStatus = new ResponseStatus();
 		try {

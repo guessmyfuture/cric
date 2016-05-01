@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import org.springframework.stereotype.Component;
 
 @Entity
-@Table(name = "playersinaction")
+@Table(name = "livematch")
 @Component
 public class MatchinAction {
 

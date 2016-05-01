@@ -1,6 +1,7 @@
 package com.coeuz.cricbounz.dao;
 
 import java.util.List;
+import java.util.TimeZone;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
@@ -23,8 +24,9 @@ public class MatchDetailsDAO extends BaseDAO<MatchDetails, Integer> {
 		super.setSessionFactory(sessionFactory);
 	}
 
-	public void saveMatchDetails(MatchDetails MatchDetails) {
-		save(MatchDetails);
+	public void saveMatchDetails(MatchDetails matchDetails) {
+		//matchDetails.setPlayingDate(convertStrToDate(matchDetails.getMatchDate(), TimeZone.getDefault().getID()));
+		save(matchDetails);
 	}
 
 	public MatchDetails getMatchDetails(long matchId) {

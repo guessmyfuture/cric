@@ -6,24 +6,24 @@ import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.coeuz.cricbounz.model.PlayersinAction;
+import com.coeuz.cricbounz.model.LiveAction;
 
 @Repository
-public class PlayersinActionDAO extends BaseDAO<PlayersinAction, Integer> {
+public class PlayersinActionDAO extends BaseDAO<LiveAction, Integer> {
 
 	@Autowired
 	public PlayersinActionDAO(SessionFactory sessionFactory) {
-		super(PlayersinAction.class);
+		super(LiveAction.class);
 		super.setSessionFactory(sessionFactory);
 
 	}
 
-	public void savePlayersinAction(PlayersinAction playersinAction) throws NullPointerException, SQLException {
+	public void savePlayersinAction(LiveAction playersinAction) throws NullPointerException, SQLException {
 		saveorUpdate(playersinAction);
 	}
 
-	public PlayersinAction getPlayersinAction(long playersinActionId) {
-		PlayersinAction playersinAction = (PlayersinAction) get(playersinActionId);
+	public LiveAction getPlayersinAction(long playersinActionId) {
+		LiveAction playersinAction = (LiveAction) get(playersinActionId);
 		return playersinAction;
 	}
 

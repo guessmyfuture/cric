@@ -1,6 +1,7 @@
 package com.coeuz.cricbounz.controller;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +41,7 @@ public class MatchDetailsController {
 		logger.info("Starting MatchDetails");
 		ResponseStatus responseStatus = new ResponseStatus();
 		try {
+			matchDetails.setPlayingDate(new Date());
 			matchDetailsDAO.save(matchDetails);
 		} catch (NullPointerException | ClassCastException ex) {
 			responseStatus.setErrorMessage("Excpetion occured at createMatchDetils" + ex);
