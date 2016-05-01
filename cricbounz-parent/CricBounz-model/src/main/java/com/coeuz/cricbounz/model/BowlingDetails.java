@@ -24,6 +24,15 @@ public class BowlingDetails {
 	private int noBalls;
 	private int maidenOvers;
 	private long scoreDetailsId;
+	private String status;
+
+	public String getStatus() {
+		return status;
+	}
+
+	public void setStatus(String status) {
+		this.status = status;
+	}
 
 	/**
 	 * @return the scoreDetailsId

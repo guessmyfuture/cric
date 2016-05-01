@@ -1,5 +1,8 @@
 package com.coeuz.cricbounz.model;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class AbstractInnings {
 	private long matchId;
 	private long tosswonBy;
@@ -16,6 +19,14 @@ public class AbstractInnings {
 		this.tosswonBy = tosswonBy;
 	}
 	
+	private List<PlayingEleven>	playing11 = new ArrayList<PlayingEleven>();
+	public List<PlayingEleven> getPlaying11() {
+		return playing11;
+	}
+	public void setPlaying11(List<PlayingEleven> playing11) {
+		this.playing11 = playing11;
+	}
+
 	private long batting;
 	private long bowling;
 	public long getBatting() {

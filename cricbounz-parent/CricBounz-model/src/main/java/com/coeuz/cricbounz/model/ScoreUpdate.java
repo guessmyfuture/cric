@@ -29,11 +29,11 @@ public class ScoreUpdate {
 	private int overs;
 	@OneToMany
 	@JoinColumn(name = "scoreDetailsId")
-	private Set<BattingDetails> battingDetails;
+	private List<BattingDetails> battingDetails;
 
 	@OneToMany
 	@JoinColumn(name = "scoreDetailsId")
-	private Set<BowlingDetails> bowlingDetails;
+	private List<BowlingDetails> bowlingDetails;
 	private long inningsId;
 
 	/**
@@ -144,7 +144,7 @@ public class ScoreUpdate {
 	/**
 	 * @return the battingDetails
 	 */
-	public Set<BattingDetails> getBattingDetails() {
+	public List<BattingDetails> getBattingDetails() {
 		return battingDetails;
 	}
 
@@ -154,13 +154,13 @@ public class ScoreUpdate {
 	 */
 	@SuppressWarnings("unchecked")
 	public void setBattingDetails(List<BattingDetails> battingDetails) {
-		this.battingDetails = (Set<BattingDetails>) battingDetails;
+		this.battingDetails = battingDetails;
 	}
 
 	/**
 	 * @return the bowlingDetails
 	 */
-	public Set<BowlingDetails> getBowlingDetails() {
+	public List<BowlingDetails> getBowlingDetails() {
 		return bowlingDetails;
 	}
 
@@ -168,7 +168,7 @@ public class ScoreUpdate {
 	 * @param bowlingDetails
 	 *            the bowlingDetails to set
 	 */
-	public void setBowlingDetails(Set<BowlingDetails> bowlingDetails) {
+	public void setBowlingDetails(List<BowlingDetails> bowlingDetails) {
 		this.bowlingDetails = bowlingDetails;
 	}
 
@@ -186,10 +186,6 @@ public class ScoreUpdate {
 
 	public void setOvers(int overs) {
 		this.overs = overs;
-	}
-
-	public void setBattingDetails(Set<BattingDetails> battingDetails) {
-		this.battingDetails = battingDetails;
 	}
 
 }

@@ -61,29 +61,6 @@ public class MatchScoreDetailsController {
 		return responseStatus;
 	}
 
-	@RequestMapping(value = "/getplayerslist", method = RequestMethod.GET)
-	public @ResponseBody List<UserDetails> getTeamListByTeamID(HttpServletRequest request) {
-		logger.info("Start getplayerslist ");
-		UserDetails userDetails = null;
-		List<UserDetails> userDetailsList = null;
-		String userIdString = (String) request.getSession(false).getAttribute("userId");
-		List<TeamDetails> teamDet = teamDAO.getMyTeams(userIdString);
-		if (teamDet != null && !teamDet.isEmpty()) {
-			for (TeamDetails teamDetails : teamDet) {
-				List<String> userIdList = null;
-				long teamId = teamDetails.getTeamID();
-				userIdList = teamDAO.getPlayersIdFromTeamId(teamId);
-				for(String userIDStr: userIdList){
-					Long userId = Long.parseLong(userIDStr);	
-					userDetails=userDAO.getUserDetails(userId);
-					userDetailsList.add(userDetails);
-				}
-			
-			}
-		}
-		return userDetailsList;
-	}
-
 	@RequestMapping(value = "/getMatchDetails", method = RequestMethod.GET)
 	public @ResponseBody MatchDetails getMatchidDetails(@RequestParam("matchId") long matchId) {
 		logger.info("Starting getMatchDetails");
