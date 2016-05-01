@@ -24,7 +24,9 @@ import com.coeuz.cricbounz.model.AbstractInnings;
 import com.coeuz.cricbounz.model.BattingDetails;
 import com.coeuz.cricbounz.model.BowlingDetails;
 import com.coeuz.cricbounz.model.Innings;
+import com.coeuz.cricbounz.model.LiveMatches;
 import com.coeuz.cricbounz.model.MatchDetails;
+import com.coeuz.cricbounz.model.MatchinAction;
 import com.coeuz.cricbounz.model.PlayingEleven;
 import com.coeuz.cricbounz.model.ResponseStatus;
 import com.coeuz.cricbounz.model.ScoreUpdate;
@@ -49,12 +51,16 @@ public class MatchDetailsController {
 	private LiveActionDAO liveaction;
 
 	@RequestMapping(value = "/createMatch", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus createMatchDetils(@RequestBody MatchDetails matchDetails) {
+	public @ResponseBody ResponseStatus createMatchDetils(HttpServletRequest request, @RequestBody MatchDetails matchDetails) {
 		logger.info("Starting MatchDetails");
 		ResponseStatus responseStatus = new ResponseStatus();
+		String id = (String) request.getSession(false).getAttribute("userId");
+		id = id.trim();
+		Long userId = Long.parseLong(id);
 		try {
 			matchDetails.setPlayingDate(new Date());
 			matchDetails.setStatus(MATCH_SCHEDULED);
+			matchDetails.setCreatedBy(userId);
 			matchDetailsDAO.save(matchDetails);
 		} catch (NullPointerException | ClassCastException ex) {
 			responseStatus.setErrorMessage("Excpetion occured at createMatchDetils" + ex);
@@ -205,6 +211,13 @@ public class MatchDetailsController {
 		logger.info("Starting getMatchidDetails");
 		MatchDetails matchDetails = matchDetailsDAO.get(Id);
 		return matchDetails;
+	}
+	
+	@RequestMapping(value = "/getLiveMatches", method = RequestMethod.GET)
+	public @ResponseBody List<LiveMatches> getLiveMatches() {
+		
+		List<LiveMatches> livematches = matchAction.liveMatches();
+		return livematches;
 	}
 
 }

@@ -18,14 +18,32 @@ public class MatchinAction {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name="matchinactionID")
 	private long matchinactionID;
+	@Column(unique=true)
 	private long matchID;
 	@Column(unique=true)
-	private long teamID;
+	private long teamAID;
+	@Column(unique=true)
+	private long teamBID;
+	@Column(unique=true)
+	
+	
 	/**
 	 * @return the matchinactionID
 	 */
 	public long getMatchinactionID() {
 		return matchinactionID;
+	}
+	public long getTeamAID() {
+		return teamAID;
+	}
+	public void setTeamAID(long teamAID) {
+		this.teamAID = teamAID;
+	}
+	public long getTeamBID() {
+		return teamBID;
+	}
+	public void setTeamBID(long teamBID) {
+		this.teamBID = teamBID;
 	}
 	/**
 	 * @param matchinactionID the matchinactionID to set

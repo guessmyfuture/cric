@@ -46,7 +46,41 @@ public class MatchDetails {
 	private long pitchType;
 	private String resultDescription;
 	private long manOfTheMatch;
-	
+	private long tournamentId;
+	private String matchType;
+	private int group;
+	private long createdBy;
+	private int slot;
+	public int getSlot() {
+		return slot;
+	}
+	public void setSlot(int slot) {
+		this.slot = slot;
+	}
+	public long getTournamentId() {
+		return tournamentId;
+	}
+	public void setTournamentId(long tournamentId) {
+		this.tournamentId = tournamentId;
+	}
+	public String getMatchType() {
+		return matchType;
+	}
+	public void setMatchType(String matchType) {
+		this.matchType = matchType;
+	}
+	public int getGroup() {
+		return group;
+	}
+	public void setGroup(int group) {
+		this.group = group;
+	}
+	public long getCreatedBy() {
+		return createdBy;
+	}
+	public void setCreatedBy(long createdBy) {
+		this.createdBy = createdBy;
+	}
 	/**
 	 * @return the manOfTheMatch
 	 */
