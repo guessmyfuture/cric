@@ -19,8 +19,8 @@ public class MatchinAction {
 	@Column(name="matchinactionID")
 	private long matchinactionID;
 	private long matchID;
-	private long teamAID;
-	private long teamBID;
+	@Column(unique=true)
+	private long teamID;
 	/**
 	 * @return the matchinactionID
 	 */
@@ -45,29 +45,4 @@ public class MatchinAction {
 	public void setMatchID(long matchID) {
 		this.matchID = matchID;
 	}
-	/**
-	 * @return the teamAID
-	 */
-	public long getTeamAID() {
-		return teamAID;
-	}
-	/**
-	 * @param teamAID the teamAID to set
-	 */
-	public void setTeamAID(long teamAID) {
-		this.teamAID = teamAID;
-	}
-	/**
-	 * @return the teamBID
-	 */
-	public long getTeamBID() {
-		return teamBID;
-	}
-	/**
-	 * @param teamBID the teamBID to set
-	 */
-	public void setTeamBID(long teamBID) {
-		this.teamBID = teamBID;
-	}
-	
 }

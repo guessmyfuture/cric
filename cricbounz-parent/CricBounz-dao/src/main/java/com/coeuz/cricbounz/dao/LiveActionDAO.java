@@ -9,10 +9,10 @@ import org.springframework.stereotype.Repository;
 import com.coeuz.cricbounz.model.LiveAction;
 
 @Repository
-public class PlayersinActionDAO extends BaseDAO<LiveAction, Integer> {
+public class LiveActionDAO extends BaseDAO<LiveAction, Integer> {
 
 	@Autowired
-	public PlayersinActionDAO(SessionFactory sessionFactory) {
+	public LiveActionDAO(SessionFactory sessionFactory) {
 		super(LiveAction.class);
 		super.setSessionFactory(sessionFactory);
 

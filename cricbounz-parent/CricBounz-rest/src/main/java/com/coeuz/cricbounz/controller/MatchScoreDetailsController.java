@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.coeuz.cricbounz.dao.MatchDetailsDAO;
-import com.coeuz.cricbounz.dao.PlayersinActionDAO;
+import com.coeuz.cricbounz.dao.LiveActionDAO;
 import com.coeuz.cricbounz.dao.TeamDAO;
 import com.coeuz.cricbounz.dao.UserDAO;
 import com.coeuz.cricbounz.model.MatchDetails;
@@ -38,7 +38,7 @@ public class MatchScoreDetailsController {
 	private TeamDAO teamDAO;
 
 	@Autowired
-	PlayersinActionDAO playersinActionDAO;
+	LiveActionDAO playersinActionDAO;
 	
 	@Autowired
 	private UserDAO userDAO;

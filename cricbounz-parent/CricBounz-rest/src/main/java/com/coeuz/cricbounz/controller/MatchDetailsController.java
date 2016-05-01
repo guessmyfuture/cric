@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.coeuz.cricbounz.dao.LiveActionDAO;
 import com.coeuz.cricbounz.dao.MatchDetailsDAO;
+import com.coeuz.cricbounz.dao.MatchinActionDAO;
 import com.coeuz.cricbounz.model.AbstractInnings;
 import com.coeuz.cricbounz.model.BattingDetails;
 import com.coeuz.cricbounz.model.BowlingDetails;
@@ -31,10 +33,20 @@ import com.coeuz.cricbounz.model.UserDetails;
 @Controller
 @RequestMapping(value = "/rest/match")
 public class MatchDetailsController {
+	
+	private static String MATCH_CANCELLED = "CANCELLED";
+	
+	private static String MATCH_COMPLETED = "COMPLETED";
+	
+	private static String MATCH_SCHEDULED = "SCHEDULED";
 
 	private static final Logger logger = LoggerFactory.getLogger(MatchDetailsController.class);
 	@Autowired
 	private MatchDetailsDAO matchDetailsDAO;
+	
+	private MatchinActionDAO matchAction;
+	
+	private LiveActionDAO liveaction;
 
 	@RequestMapping(value = "/createMatch", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus createMatchDetils(@RequestBody MatchDetails matchDetails) {
@@ -42,6 +54,7 @@ public class MatchDetailsController {
 		ResponseStatus responseStatus = new ResponseStatus();
 		try {
 			matchDetails.setPlayingDate(new Date());
+			matchDetails.setStatus(MATCH_SCHEDULED);
 			matchDetailsDAO.save(matchDetails);
 		} catch (NullPointerException | ClassCastException ex) {
 			responseStatus.setErrorMessage("Excpetion occured at createMatchDetils" + ex);
@@ -134,7 +147,10 @@ public class MatchDetailsController {
 		try {
 			long matchId = inningsAb.getMatchId();
 			MatchDetails match = matchDetailsDAO.get(matchId);
-			if(match.getScorer()== userId)
+			boolean status = matchAction.checkMatchStatus(match);
+			if(status)
+			{
+			if(match.getScorer()== userId && match.getStatus().equals(MATCH_SCHEDULED))
 			{
 			long batting = inningsAb.getBatting();
 			long bowling = inningsAb.getBowling();
@@ -156,8 +172,14 @@ public class MatchDetailsController {
 			}
 			else
 			{
-				throw new AccessDeniedException("You are not the Scorer for the Selected Match");
+				throw new AccessDeniedException("Match is not in Scheduled State"
+						+ "OR You are not the Scorer for the Selected Match");
 			}
+			}
+			else {
+				throw new Exception("Match and Team are already in Action, "
+						+ "a team cannot play two matches at a time");			
+				}
 		} catch (NullPointerException | ClassCastException ex) {
 			responseStatus.setErrorMessage("Excpetion occured at createMatchDetils" + ex);
 			logger.error("Excpetion occured at createMatchDetils" + ex);
@@ -166,6 +188,12 @@ public class MatchDetailsController {
 		catch (AccessDeniedException ex) {
 			responseStatus.setErrorMessage("Access Denied:" + ex);
 			logger.error("Access Denied Exception for scoring the match");
+			return responseStatus;
+		}
+		catch (Exception e)
+		{
+			responseStatus.setErrorMessage("Invalid Match and Team:" + e);
+			logger.error("Match Cannot be Set in Action since two teams cannot play at the same time");
 			return responseStatus;
 		}
 		responseStatus.setResponseStatus("Success");

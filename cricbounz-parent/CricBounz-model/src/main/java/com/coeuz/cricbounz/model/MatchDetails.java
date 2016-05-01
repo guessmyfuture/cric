@@ -31,6 +31,13 @@ public class MatchDetails {
 	private Date playingDate;
 	@Transient
 	private String matchDate;
+	private int overs;
+	public int getOvers() {
+		return overs;
+	}
+	public void setOvers(int overs) {
+		this.overs = overs;
+	}
 	private long wonBy;
 	private long umpire1;
 	private long umpire2;
