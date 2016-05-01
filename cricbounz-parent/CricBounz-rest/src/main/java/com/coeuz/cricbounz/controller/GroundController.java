@@ -230,6 +230,13 @@ public class GroundController {
 		return ground;
 	}
 	
+	@RequestMapping(value = "/getGroundsByName", method = RequestMethod.GET)
+	public @ResponseBody List<Ground> getGround(@RequestParam("searchText") String searchText) {
+		logger.info("Starting getting All City Names having Grounds");
+		List<Ground> ground = groundDAO.getGroundsByName(searchText);
+		return ground;
+	}
+	
 	@RequestMapping(value = "/confirmGroundBooking", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus confirmGroundBooking(HttpServletRequest request, @RequestParam("bookingId") long bookingId, 
 			@RequestParam("requestAction") String requestAction) {

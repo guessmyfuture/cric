@@ -90,6 +90,13 @@ public class UtilityController {
 		List<BallTypeDetails> ballTypeDetails = ballTypeDAO.getAll();
 		return ballTypeDetails;
 	}
+	
+	@RequestMapping(value = "/getAllPitchTypes", method = RequestMethod.GET)
+	public @ResponseBody List<PitchTypeDetails> getAllPitchTypes() {
+		logger.info("Starting getBallTypeDetails");
+		List<PitchTypeDetails> pitchTypeDetails = pitchTypeDAO.getAll();
+		return pitchTypeDetails;
+	}
 
 	@RequestMapping(value = "/getballdetails", method = RequestMethod.GET)
 	public @ResponseBody BallTypeDetails getBallTypeDetails(@RequestParam("ballId") long ballId) {

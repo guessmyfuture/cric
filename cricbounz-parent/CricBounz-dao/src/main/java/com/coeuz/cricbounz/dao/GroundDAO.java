@@ -4,9 +4,12 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -56,7 +59,6 @@ public class GroundDAO extends BaseDAO<Ground, Integer> {
 		session = getSessionFactory().openSession();
 		Query q =session.createQuery("SELECT DISTINCT city FROM Ground");
 		cities = q.list();
-		session.close();
 		return cities;
 	}
 
@@ -67,7 +69,6 @@ public class GroundDAO extends BaseDAO<Ground, Integer> {
 		Query q =session.createQuery("SELECT DISTINCT area FROM Ground where city = :city_name");
 		q.setParameter("city_name",city);
 		area = q.list();
-		session.close();
 		return area;
 	}
 	
@@ -79,7 +80,16 @@ public class GroundDAO extends BaseDAO<Ground, Integer> {
 		q.setParameter("city_name", city);
 		q.setParameter("area_name", area);
 		grounds = q.list();
-		session.close();
+		return grounds;
+	}
+	
+	@SuppressWarnings("unchecked")
+	public List<Ground> getGroundsByName(String searchText) {
+		List<Ground> grounds = null;
+		session = getSessionFactory().openSession();
+		Criteria cr =session.createCriteria(Ground.class);
+		cr.add(Restrictions.ilike("name", searchText, MatchMode.ANYWHERE));
+		grounds = cr.list();
 		return grounds;
 	}
 	

@@ -171,8 +171,8 @@ public class GroundBookingDetailsDAO extends BaseDAO<GroundBookingDetails, Integ
 				for (GroundBookingDetails bd : gb) {
 					slotIds.add(bd.getSlotId());
 				}
+				tempSlots.addAll(slots);
 				for (long bookedId : slotIds) {
-					tempSlots.addAll(slots);
 					for (Slots l : slots)
 					{
 						if(l.getSlotId() == bookedId)
