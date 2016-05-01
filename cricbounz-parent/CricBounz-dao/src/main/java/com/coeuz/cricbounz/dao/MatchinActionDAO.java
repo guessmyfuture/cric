@@ -38,7 +38,7 @@ public class MatchinActionDAO extends BaseDAO <MatchinAction, Integer> {
 				Restrictions.or(Restrictions.in("teamAID", teams), 
 						Restrictions.in("teamBID", teams))));
 		List action = cr.list();
-		if(action != null && action.isEmpty())
+		if(action != null && !action.isEmpty())
 		{
 			status = false;
 		}

@@ -67,28 +67,4 @@ public class MatchScoreDetailsController {
 		MatchDetails MatchDetails = matchDetailsDAO.getMatchDetails(matchId);
 		return MatchDetails;
 	}
-
-	@RequestMapping(value = "/getplayerinaction", method = RequestMethod.GET)
-	public @ResponseBody LiveAction getPlayersInAction(@RequestParam("playersinactionid") long playersInActionId) {
-		logger.info("Starting getplayersinaction method");
-		LiveAction playersInAction = playersinActionDAO.getPlayersinAction(playersInActionId);
-		return playersInAction;
-	}
-
-	@RequestMapping(value = "/playersinactiondetails", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus savePlayersInAction(@RequestBody LiveAction playersInAction) {
-		logger.info("Start players in action method");
-		ResponseStatus responseStatus = new ResponseStatus();
-		try {
-			playersinActionDAO.savePlayersinAction(playersInAction);
-		} catch (NullPointerException nullPointerException) {
-			nullPointerException.printStackTrace();
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		responseStatus.setResponseStatus("Success");
-		return responseStatus;
-	}
-	
-
 }

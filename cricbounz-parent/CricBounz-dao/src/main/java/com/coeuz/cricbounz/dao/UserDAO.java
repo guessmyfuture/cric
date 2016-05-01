@@ -109,7 +109,14 @@ public class UserDAO extends BaseDAO <UserDetails, Integer> {
 		
 	}
 	
-	
+	public List getUserNameFromUserIds(List userId)
+	{
+		Session session = getSessionFactory().openSession();
+		String hql = "SELECT user.name AS name from UserDetails user WHERE user.userId IN (:user_Id)";
+		Query q = session.createQuery(hql);
+		q.setParameterList("user_Id", userId);
+		return q.list();
+	}
 	
 	
 	

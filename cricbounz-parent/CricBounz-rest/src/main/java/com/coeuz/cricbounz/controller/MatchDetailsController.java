@@ -20,13 +20,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.coeuz.cricbounz.dao.LiveActionDAO;
 import com.coeuz.cricbounz.dao.MatchDetailsDAO;
 import com.coeuz.cricbounz.dao.MatchinActionDAO;
+import com.coeuz.cricbounz.dao.UserDAO;
 import com.coeuz.cricbounz.model.AbstractInnings;
 import com.coeuz.cricbounz.model.BattingDetails;
 import com.coeuz.cricbounz.model.BowlingDetails;
 import com.coeuz.cricbounz.model.Innings;
+import com.coeuz.cricbounz.model.LiveAction;
 import com.coeuz.cricbounz.model.LiveMatches;
 import com.coeuz.cricbounz.model.MatchDetails;
-import com.coeuz.cricbounz.model.MatchinAction;
 import com.coeuz.cricbounz.model.PlayingEleven;
 import com.coeuz.cricbounz.model.ResponseStatus;
 import com.coeuz.cricbounz.model.ScoreUpdate;
@@ -45,10 +46,12 @@ public class MatchDetailsController {
 	private static final Logger logger = LoggerFactory.getLogger(MatchDetailsController.class);
 	@Autowired
 	private MatchDetailsDAO matchDetailsDAO;
-	
+	@Autowired
 	private MatchinActionDAO matchAction;
-	
+	@Autowired
 	private LiveActionDAO liveaction;
+	@Autowired
+	private UserDAO userDAO;
 
 	@RequestMapping(value = "/createMatch", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus createMatchDetils(HttpServletRequest request, @RequestBody MatchDetails matchDetails) {
@@ -102,6 +105,10 @@ public class MatchDetailsController {
 			MatchDetails match = matchDetailsDAO.get(matchId);
 			List<Innings> innings = match.getInnings();
 			List<PlayingEleven> playing11 = inningsAb.getPlaying11();
+			List<LiveAction> NAPlayers = liveaction.checkForPlayerAvailability(playing11);
+			if(NAPlayers == null || NAPlayers.isEmpty())
+			{
+				liveaction.updatePlayingEleven(playing11);
 			for (Innings in : innings)
 			{
 				ScoreUpdate sc = new ScoreUpdate();
@@ -132,10 +139,32 @@ public class MatchDetailsController {
 				sc.setBowlingDetails(bowling);
 				in.setScoreUpdate(sc);
 			}
-			
 			matchDetailsDAO.saveorUpdate(match);
+			}
+			else
+			{
+				ArrayList l = new ArrayList();
+				for(LiveAction la : NAPlayers)
+				{
+					l.add(la.getPlayerId());
+				}
+				List users = userDAO.getUserNameFromUserIds(l);
+				String a = "";
+				for(Object s : users)
+				{
+					a = a+s;
+					a=a+",";
+				}
+				a = a.substring(0, a.lastIndexOf(","));
+				throw new Exception(a);
+			}
 		} catch (NullPointerException | ClassCastException ex) {
 			responseStatus.setErrorMessage("Excpetion occured in updating the Playing Eleven" + ex);
+			logger.error("Excpetion occured in updating the Eleven's:" + ex);
+			return responseStatus;
+		}
+		catch (Exception ex) {
+			responseStatus.setErrorMessage("Following Players are not available for Selection:" + ex);
 			logger.error("Excpetion occured in updating the Eleven's:" + ex);
 			return responseStatus;
 		}
