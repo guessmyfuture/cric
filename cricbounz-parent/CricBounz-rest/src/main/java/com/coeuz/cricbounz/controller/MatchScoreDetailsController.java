@@ -60,11 +60,4 @@ public class MatchScoreDetailsController {
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
 	}
-
-	@RequestMapping(value = "/getMatchDetails", method = RequestMethod.GET)
-	public @ResponseBody MatchDetails getMatchidDetails(@RequestParam("matchId") long matchId) {
-		logger.info("Starting getMatchDetails");
-		MatchDetails MatchDetails = matchDetailsDAO.getMatchDetails(matchId);
-		return MatchDetails;
-	}
 }

@@ -17,6 +17,11 @@ import com.coeuz.cricbounz.model.UserDetails;
 public class MatchDetailsDAO extends BaseDAO<MatchDetails, Integer> {
 
 	private Session sess;
+	
+	private static String MATCH_COMPLETED = "COMPLETED";
+	
+	@Autowired
+	MatchinActionDAO matchDAO;
 
 	@Autowired
 	public MatchDetailsDAO(SessionFactory sessionFactory) {
@@ -37,6 +42,10 @@ public class MatchDetailsDAO extends BaseDAO<MatchDetails, Integer> {
 
 	public void updateMatchDetails(MatchDetails matchDetails) {
 		update(matchDetails);
+		if(matchDetails.getStatus().equals(MATCH_COMPLETED))
+		{
+			
+		}
 	}
 
 	public void updateScorer(long scorer, long matchId) {
