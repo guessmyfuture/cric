@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.coeuz.cricbounz.dao.CreateRegisteredTeamDAO;
+import com.coeuz.cricbounz.dao.MatchDetailsDAO;
 import com.coeuz.cricbounz.dao.RegisterTournamentDAO;
 import com.coeuz.cricbounz.dao.TournamentDAO;
 import com.coeuz.cricbounz.model.MatchDetails;
@@ -35,9 +36,13 @@ public class CreateTournamentController {
 
 	@Autowired
 	private RegisterTournamentDAO registerTournamentDAO;
-
+		
 	@Autowired
 	private CreateRegisteredTeamDAO createRegisteredTeamDAO;
+	
+	@Autowired
+	MatchDetailsDAO matchDetailsDAO;
+	
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus createTournament(HttpServletRequest request, @RequestBody Tournament tournament) {
@@ -103,11 +108,11 @@ public class CreateTournamentController {
 	}
 
 	@RequestMapping(value = "/schedulematchesbyleague", method = RequestMethod.GET)
-	public @ResponseBody Map<Integer, List<MatchDetails>> scheduleMatchesByLeague(@RequestParam String tournamentId,
-			@RequestParam Integer noOfGroup, @RequestParam Integer countOfFaceToFace,
+	public @ResponseBody Map<Integer, List<MatchDetails>> scheduleMatchesByLeague(@RequestParam long tournamentId,
+			@RequestParam int noOfGroup, @RequestParam int countOfFaceToFace,
 			@RequestParam String typeOfNextLevel) {
 		List<TeamDetails> resultList = createRegisteredTeamDAO
-				.retrieveRegisteredTeamBasedOnTournamentID(Long.parseLong(tournamentId));
+				.retrieveRegisteredTeamBasedOnTournamentID(tournamentId);
 
 		Integer teamCount = Integer.valueOf(resultList.size());
 		Integer teamCountinGroup = teamCount / noOfGroup;
@@ -123,7 +128,7 @@ public class CreateTournamentController {
 			resultListTemp.addAll(resultList);
 			for (Iterator iterator = resultListTemp.iterator(); iterator.hasNext();) {
 				TeamDetails teamDetail = (TeamDetails) iterator.next();
-				teamDetails.add(teamDetail);
+				teamDetails.add(teamDetail); 
 				resultList.remove(teamDetail);
 				if (teamDetails.size() >= teamCountinGroup) {
 					break;
@@ -148,13 +153,16 @@ public class CreateTournamentController {
 		for (Integer groupId : leaugeTeamDetails.keySet()) {
 			List<TeamDetails> teamDetails = leaugeTeamDetails.get(groupId);
 			List<MatchDetails> matchDetails = new ArrayList<MatchDetails>();
-			for (int i = 0; i < teamDetails.size(); i++) {
-				for (int j = i + 1; j < teamDetails.size(); j++) {
-					MatchDetails matchDetail = new MatchDetails();
-					matchDetail.setTeamAId(teamDetails.get(i).getTeamID());
-					matchDetail.setTeamBId(teamDetails.get(j).getTeamID());
-					matchDetails.add(matchDetail);
+			for(int l=1;l<=countOfFaceToFace;l++){
+				for (int i = 0; i < teamDetails.size(); i++) {
+					for (int j = i + 1; j < teamDetails.size(); j++) {
+						MatchDetails matchDetail = new MatchDetails();
+						matchDetail.setTeamAId(teamDetails.get(i).getTeamID());
+						matchDetail.setTeamBId(teamDetails.get(j).getTeamID());
+						matchDetails.add(matchDetail);
+					}
 				}
+				
 			}
 			leaugeMatchDetails.put(groupId, matchDetails);
 		}
@@ -162,5 +170,9 @@ public class CreateTournamentController {
 		return leaugeMatchDetails;
 
 	}
+	
+	
+	
+	
 
 }

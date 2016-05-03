@@ -1,9 +1,8 @@
 package com.coeuz.cricbounz.controller;
 
 import java.util.List;
-
+import java.util.Map;
 import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +12,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.coeuz.cricbounz.dao.TeamDAO;
 import com.coeuz.cricbounz.model.Ground;
 import com.coeuz.cricbounz.model.ResponseStatus;
@@ -78,6 +76,13 @@ public class TeamController {
 		return teamDetails;
 	}
 	
+
+	@RequestMapping(value = "/getUserDetailsByUserId",method = RequestMethod.GET)
+	public @ResponseBody  List<Map<String,String>> getUserDetailsByUserId(@RequestParam("teamId") long teamId){
+		 List<Map<String,String>> teamDetails = teamDAO.getTeamDetails(teamId);
+		return teamDetails;
+}
+		
 	@RequestMapping(value = "/City", method = RequestMethod.GET)
 	public @ResponseBody List<String> getAllCityName() {
 		logger.info("Starting getting All City Names having Teams");

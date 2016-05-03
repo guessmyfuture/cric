@@ -1,17 +1,31 @@
 package com.coeuz.cricbounz.dao;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
-
 import org.hibernate.Query;
+import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
+import com.coeuz.cricbounz.model.Ground;
+import com.coeuz.cricbounz.model.MatchDetails;
 import com.coeuz.cricbounz.model.Tournament;
 
 @Repository
 public class TournamentDAO extends BaseDAO<Tournament, Integer> {
+		
+	@Autowired
+	MatchDetailsDAO matchDetailsDAO;
+	
 	@Autowired
 	public TournamentDAO(SessionFactory sessionFactory) {
 		super(Tournament.class);
@@ -34,4 +48,73 @@ public class TournamentDAO extends BaseDAO<Tournament, Integer> {
 		List<Tournament> results = query.list();		
 		return results;
 	}
+	
+	public Map<Integer, List<MatchDetails>> saveUpdatedTournmentDetails(Map<Integer, List<MatchDetails>> updatedTournmentdetails) throws ParseException{
+		
+		for(Integer groupID : updatedTournmentdetails.keySet()){
+			List<MatchDetails> matchDetailsList = updatedTournmentdetails.get(groupID);
+			for(MatchDetails matchDetails:matchDetailsList){
+				if(matchDetails.getMatchType().equals("Daily")){
+					String tournmentHql="FROM Tournament tm WHERE tm.id='"+matchDetails.getTournamentId();
+					Session session =getSessionFactory().openSession();
+					Query tournmenQuery = session.createQuery(tournmentHql);
+					List<Tournament> tournamentList =(List<Tournament>)tournmenQuery.list(); 
+					if(tournamentList!=null && tournamentList.size()>0){
+						Tournament tournament = tournamentList.get(0);
+						Date tournmentStartDate = tournament.getTourStartDate();
+						Date tournmentEndDate =tournament.getTourEndDate();
+						
+						SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+						Date startDate = formatter.parse(tournmentStartDate.toString());
+						Date endDate = formatter.parse(tournmentEndDate.toString());
+						 
+						Calendar start = Calendar.getInstance();
+						start.setTime(startDate);
+
+						Calendar end = Calendar.getInstance();
+						end.setTime(endDate);
+								
+						while(start.before(end)){
+							int slot=1;
+							while(slot==4){
+								matchDetails.setGroup(groupID);
+								matchDetails.setPlayingDate(start.getTime());
+								matchDetails.setSlot(1);
+								matchDetails.setStatus("Scheduled");
+								matchDetailsDAO.save(matchDetails);
+								slot=slot+1;
+							}
+																		
+							start.add(Calendar.DATE, 1);
+						}
+						
+					}
+									
+				}else if(matchDetails.getMatchType().equals("Weekends")){
+					
+					
+				}
+				
+			}
+		}
+				
+		return updatedTournmentdetails;	
 	}
+	
+	public  boolean isWeekends(Date date)
+    {
+ 	    LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		int year  = localDate.getYear();
+		int month = localDate.getMonthValue();
+		int day   = localDate.getDayOfMonth();
+		Calendar cal = new GregorianCalendar(year, month -1, day);
+        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+        return (Calendar.SUNDAY == dayOfWeek || Calendar.SATURDAY == dayOfWeek);
+    }
+	
+	
+	
+	
+	
+	
+}

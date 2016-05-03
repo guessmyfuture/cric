@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -14,7 +13,6 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.coeuz.cricbounz.model.GlobalSearch;
 import com.coeuz.cricbounz.model.TeamDetails;
 import com.coeuz.cricbounz.model.UserDetails;
@@ -38,7 +36,6 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 		saveorUpdate(teamDetails);
 	}
 
-	/**/
 	public List<TeamDetails> getTeamsByName(String text) {
 		Session session = getSessionFactory().openSession();
 		Criteria cr = session.createCriteria(TeamDetails.class);
@@ -82,8 +79,9 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 	public List<GlobalSearch> getTeamsForGlobalSearch(String text) {
 		text = text.toLowerCase();
 		Session session = getSessionFactory().openSession();
-		Query q = session.createQuery(
-				"SELECT e.teamID AS id, e.name AS name" + " FROM TeamDetails e WHERE LOWER(e.name) like :text")
+Query q = session
+				.createQuery(
+						"SELECT e.teamID AS id, e.name AS name" + " FROM TeamDetails e WHERE LOWER(e.name) like :text")
 				.setResultTransformer(Transformers.aliasToBean(GlobalSearch.class));
 		q.setParameter("text", "%" + text + "%");
 		List<GlobalSearch> userLists = q.list();
@@ -142,6 +140,22 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 		}
 		teamDetails.setPlayesDetailsList(playersDetailsList);
 		return teamDetails;
+	}
+
+	public List<Map<String, String>> getTeamDetails(long teamId) {
+		List<Map<String, String>> detailsList = new ArrayList<Map<String, String>>();
+		List<String> playersIds = getPlayersIdFromTeamId(teamId);
+		for (String Id : playersIds) {
+			UserDetails userDetails = (UserDetails) userDAO.get(Long.parseLong(Id));
+			Map<String, String> utilUserDetails = new HashMap<String, String>();
+			utilUserDetails.put("userName", userDetails.getName());
+			utilUserDetails.put("userId", Long.toString(userDetails.getUserId()));
+			utilUserDetails.put("userImage", userDetails.getProfileImageUrl());
+			utilUserDetails.put("area", userDetails.getArea());
+			utilUserDetails.put("city", userDetails.getCity());
+			detailsList.add(utilUserDetails);
+		}
+		return detailsList;
 	}
 
 	public List<String> getAllCities() {

@@ -8,7 +8,8 @@ public class UtilUserDetails {
 	private String userName;
 	private String userImage;
 	private Map<String,String> playesRoles;
-	
+	private String area;
+	private String city;
 	
 	/**
 	 * @return the playesRoles
@@ -58,6 +59,34 @@ public class UtilUserDetails {
 	public void setUserImage(String userImage) {
 		this.userImage = userImage;
 	}
+	
+	/**
+	 * @return the area
+	 */
+	public String getArea() {
+		return area;
+	}
+	/**
+	 * @param area the area to set
+	 */
+	public void setArea(String area) {
+		this.area = area;
+	}
+	/**
+	 * @return the city
+	 */
+	public String getCity() {
+		return city;
+	}
+	/**
+	 * @param city the city to set
+	 */
+	public void setCity(String city) {
+		this.city = city;
+	}
+
+	
+	
 	
 	
 }
