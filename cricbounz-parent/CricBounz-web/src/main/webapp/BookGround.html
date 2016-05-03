@@ -4,94 +4,48 @@
 		<fieldset>
 			<legend>Book a Ground</legend>
 			<div class="row">
-				<div class="form-group">
-					<!-- <label class="col-md-1 control-label" for="textinput">City</label>
-					<div class="col-md-4" ng-controller="loadCity">
-						<input name="city" autocomplete="off" list="cityList"
-							ng-model="city" ng-blur="loadArea(city)" placeholder="City"
-							class="form-control input-md" required="" type="text">
-						<datalist id="cityList">
-							<option ng-repeat="cl in cityList" value="{{cl.cityName}}">{{cl.cityName}}</option>
-						</datalist>
-						<span style="color: red"
-							ng-show="groundForm.city.$invalid && !groundForm.city.$pristine">
-							<span ng-show="groundForm.city.$error.required">City is
-								required.</span>
-						</span>
-					</div>-->
 
+				<div class="form-group" ng-controller="loadCityArea">					
+	
 					<script type="text/ng-template" id="customTemplateCity.html">
                     <a>	
-                        <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
-                        <!--<i>({{match.model.area}})</i>-->
-                     </a>
+                        <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>                       
+                    </a>
 	                 </script>
 					<label class="col-md-1 control-label" for="textinput">City</label>
-					<div class="col-md-4" ng-controller="loadCity">
+					<div class="col-md-4">
 						<input type="text" ng-model="selectedCity"
 							placeholder="Search City"
-							typeahead="c as c.cityName for c in cityList | filter:$viewValue | limitTo:10"
+							typeahead="c as c.city for c in cityLists | filter:$viewValue | limitTo:10"
 							typeahead-min-length='1'
-							typeahead-on-select='onSelectPart($item, $model, $label);changeArea();'
+							typeahead-on-select='loadArea(selectedCity)'
 							typeahead-template-url="customTemplateCity.html"
-							class="form-control" style=""> <i
-							class="icon-search nav-search-icon"></i>
-						<textarea ng-show="false">{{selectedCity}}</textarea>
+							class="form-control"  style="">
+						<i class="icon-search nav-search-icon"></i>					
 					</div>
-
-
-					<!--<label class="col-md-1 control-label" for="textinput">Area</label>
-				 	<div class="col-md-4" ng-controller="loadArea">
-						<input name="area" ng-model="area" list="areaList"
-							placeholder="Area" autocomplete="off"
-							class="form-control input-md" required="" type="text">
-						<datalist id="areaList">
-							<option ng-repeat="cl in areaList" value="{{cl.area}}">
-						</datalist>
-						<span style="color: red"
-							ng-show="groundForm.area.$invalid && !groundForm.area.$pristine">
-							<span ng-show="groundForm.area.$error.required">Area is
-								required.</span>
-						</span>
-					</div> -->
 
 					<script type="text/ng-template" id="customTemplateArea.html">
                     <a>	
-                        <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
-                        <!--<i>({{match.model.area}})</i>-->
-                     </a>
+                        <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>                       
+                    </a>
 	                 </script>
 					<label class="col-md-1 control-label" for="textinput">Area</label>
-					<div class="col-md-4" ng-controller="loadArea">
+					<div class="col-md-4">
 						<input type="text" ng-model="selectedArea"
-							placeholder="Search Grounds"
-							typeahead="c as c.area for c in areaList | filter:$viewValue | limitTo:10"
+							placeholder="Search Area"
+							typeahead="c as c.area for c in areaLists | filter:$viewValue | limitTo:10"
 							typeahead-min-length='1'
-							typeahead-on-select='onSelectPart($item, $model,$label);changeCity();'
+							typeahead-on-select='$parent.bindGroundDetails(selectedCity,selectedArea)'
 							typeahead-template-url="customTemplateArea.html"
-							class="form-control" style=""> <i
-							class="icon-search nav-search-icon"></i>
-						<textarea ng-show="false">{{selectedArea}}</textarea>
+							class="form-control"  style="">
+						<i class="icon-search nav-search-icon"></i>		
 					</div>
 				</div>
+				
+				
 			</div>
 			<div class="row">
 				<div class="form-group">
-					<!--<label class="col-md-1 control-label" for="textinput">Ground</label>
-					<div class="col-md-4" ng-controller="loadGrounds">
-						<input name="ground" ng-model="ground" list='grounds'
-							placeholder="Ground" class="form-control input-md" required=""
-							type="text">
-						<datalist id="grounds">
-							<option ng-repeat="ground in grounds"
-								value="{{ground.id}}">{{ground.name}}</option>
-						</datalist>
-						<span style="color: red"
-							ng-show="groundForm.ground.$invalid && !groundForm.ground.$pristine">
-							<span ng-show="groundForm.ground.$error.required">Ground
-								is required.</span>
-						</span>
-					</div>-->
 					<script type="text/ng-template" id="customTemplateGround.html">
                     <a>	
                         <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
@@ -99,26 +53,25 @@
                      </a>
 	                 </script>
 					<label class="col-md-1 control-label" for="textinput">Ground</label>
-					<div class="col-md-4" ng-controller="loadGrounds">
-						<input type="text" ng-model="$parent.selectedGround"
+		<div class="col-md-4">
+						<input type="text" ng-model="selectedGround"
 							placeholder="Search Grounds"
 							typeahead="c as c.name for c in grounds | filter:$viewValue | limitTo:10"
 							typeahead-min-length='1'
-							typeahead-on-select='onSelectPart($item, $model, $label);$parent.getSlotDetails();'
+							typeahead-on-select='$parent.getSlotDetails();'
 							typeahead-template-url="customTemplateGround.html"
-							class="form-control" style=""> <i
-							class="icon-search nav-search-icon"></i>
-						<textarea ng-show="false">{{selectedGround}}</textarea>
+							
+							class="form-control" style="">
+						<i class="icon-search nav-search-icon"></i>
 					</div>
 
 					<label class="col-md-1 control-label" for="textinput">Date</label>
 					<div class="col-md-4">
-						<div class="input-group date" data-date-format="mm-dd-yyyy"
+						<div class="input-group date" data-date-format="dd-mm-yyyy"
 							date-picker>
-							<input class="form-control" type="text" value="" readonly
-								id="date" name="date" ng-model="date" required="" /> <span
-								class="input-group-addon"> <i
-								class="glyphicon glyphicon-calendar"></i></span>
+							<input class="form-control" type="text" readonly name="date"
+								ng-model="date" /> <span class="input-group-addon"><i
+								class="glyphicon glyphicon-calendar"></i></span>								
 						</div>
 						<span style="color: red"
 							ng-show="groundForm.date.$invalid && submitted"> <span
@@ -126,6 +79,69 @@
 								is required.</span>
 						</span>
 					</div>
+				</div>
+			</div>
+			<div class="row">
+			<div class="form-group" ng-controller="viewMyTeamsCtrl">					
+					
+					<script type="text/ng-template" id="customTemplateTeamA.html">
+                    <a>	
+                       <div class="row" style="border-bottom:1px blue solid;">
+                          <div class="col-md-2">
+                            <img src="images/team/team1.jpg" style="height:45px;width:45px">
+                          </div>
+						  <div class="col-md-10">
+                             <div class="col-md-12">
+                              <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+							 </div>
+							 <div class="col-md-12">
+                               <i>({{match.model.city}},{{match.model.area}})</i>
+							 </div>   
+                          </div>
+                        </div>                     
+                    </a>
+	                 </script>
+					<label class="col-md-1 control-label" for="textinput">Team-A</label>
+					<div class="col-md-4">					   
+						<input type="text" ng-model="$parent.selectedMyTeam"
+							placeholder="Select Your Team"
+							typeahead="c as c.name for c in myTeamList | filter:$viewValue | limitTo:10"
+							typeahead-min-length='1'
+							typeahead-on-select=''
+							typeahead-template-url="customTemplateTeamA.html"
+							class="form-control"  style="">
+						<i class="icon-search nav-search-icon"></i>					
+					</div>					
+					
+					<script type="text/ng-template" id="customTemplateTeamB.html">
+                     <a>	
+                       <div class="row">
+                          <div class="col-md-2">
+                            <img src="images/team/team1.jpg" style="height:45px;width:45px">
+                          </div>
+						  <div class="col-md-10">
+                             <div class="col-md-12">
+                              <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+							 </div>
+							 <div class="col-md-12">
+                               <i>({{match.model.city}},{{match.model.area}})</i>
+							 </div>   
+                          </div>
+                        </div>                     
+                    </a>
+	                 </script>
+					<label class="col-md-1 control-label" for="textinput">Team-B</label>
+					<div class="col-md-4">					    
+						<input type="text" ng-model="$parent.selectedOpponentTeam"
+							placeholder="Select Your Team"
+							typeahead="c as c.name for c in opponentTeamList | filter:$viewValue | limitTo:10"
+							typeahead-min-length='1'
+							typeahead-on-select=''
+							ng-keyup="searchMyTeams(selectedOpponentTeam)"
+							typeahead-template-url="customTemplateTeamB.html"
+							class="form-control"  style="">
+						<i class="icon-search nav-search-icon"></i>					
+					</div>					
 				</div>
 			</div>
 			<div class="row">
@@ -156,31 +172,32 @@
 							</label>
 						</div>
 					</div>
+					<div class="form-group">						
+						<div class="col-md-10">
+						    <div class="col-md-4 pull-left">
+							 <button ng-click="getSlotDetails()" class="form-control btn-danger">Slots Avalability</button>
+							</div>
+						</div>
+					</div>
 				</div>
 			</div>
 		</fieldset>
 		<div class="row">
-			<fieldset>
-				<legend>Slot Availability</legend>
-				<div class="row">
-					<div class="col-md-3 time">
-						<img src="images/2.png" width="100" height="100" border="0" alt="" />
-						Time <a href="">6 to 9</a>
+			<div class="row">
+				<h3 style="color: red; font-size: 15px;" ng-show="selectedSlot">Selected
+					Slot Is: {{selectedSlot}} {{availableSlots}}</h3>
+				<h1 style="color: red; font-size: 18px;">Slots List</h1>
+				<form class="form">
+					<div class="btn-group" data-toggle="buttons">
+						<label class="btn btn-success" style="margin-left: 2px;"
+							ng-repeat="slot in availableSlots"
+							ng-click="$parent.selectedSlot=slot"> <input name="year"
+							value="2011" type="radio">{{slot.slotStartTime}}-{{slot.slotEndTime}}
+						</label>
 					</div>
-					<div class="col-md-3 time">
-						<img src="images/3.png" width="100" height="100" border="0" alt="">
-						Time <a href="">9.30 to 12.30</a>
-					</div>
-					<div class="col-md-3 time">
-						<img src="images/2.png" width="100" height="100" border="0" alt="">
-						Time <a href="">1 to 4</a>
-					</div>
-					<div class="col-md-3 time">
-						<img src="images/3.png" width="100" height="100" border="0" alt="">
-						Time <a href="">4 to 7</a>
-					</div>
-				</div>
-			</fieldset>
+				</form>
+			</div>
+
 			<div class="row" style="padding-top: 15px;">
 				<div class="form-group">
 					<label class="col-md-4 control-label" for="singlebutton"></label>
@@ -188,6 +205,7 @@
 						<button id="singlebutton" name="singlebutton"
 							class="btn btn-primary center-block" ng-click="postBookGround();">
 							Book Ground</button>
+							<br><br>
 					</div>
 				</div>
 			</div>

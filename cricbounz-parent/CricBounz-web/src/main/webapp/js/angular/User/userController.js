@@ -9,16 +9,51 @@ userApp.controller("viewUserProfileCtrl", function ($scope,$rootScope,$routePara
         //alert(angular.toJson(data));
     })
     .error(function (data, status, header, config) {
-        $scope.ResponseDetails = "Data: " + data +
-            "<br />status: " + status +
-            "<br />headers: " + jsonFilter(header) +
-            "<br />config: " + jsonFilter(config);
+       
     });
 	
 });
 
+userApp.controller("searchUserCtrl", function ($scope,$rootScope,$routeParams,$http) {
+	$scope.searchUser = function (stext) {    		
+    if (stext == '')
+    {
+        $scope.userList = [];
+        return;
+    }
+    $http.get('service/rest/user/getUserListsByName?searchText=' + stext).then(function (res) {
+        console.log(angular.toJson(res.data));        	
+        $scope.userList = res.data;
+        $scope.$parent.userList=$scope.userList;
+    });
+	}
+});
+    
 
+userApp.controller("searchUsersList", function ($scope,$rootScope,$routeParams,$http) {	
+	$scope.searchUser=function()
+	{
+		$http.get('service/rest/user/getfriends')
+	    .success(function (data, status, headers, config) {
+	        $scope.userList = data;
+	        //alert(angular.toJson($scope.myFriendsList));
+	    })
+	    .error(function (data, status, header, config) {
+	       
+	    });
+	}
+});
 
+userApp.controller("myFriendsController", function ($scope,$rootScope,$routeParams,$http) {	
+	$http.get('service/rest/user/getfriends')
+    .success(function (data, status, headers, config) {
+        $scope.myFriendsList = data;
+        //alert(angular.toJson($scope.myFriendsList));
+    })
+    .error(function (data, status, header, config) {
+       
+    });
+});
 
 userApp.controller("userCtrl", function ($scope,$rootScope,$http) {	
 	
@@ -32,12 +67,17 @@ userApp.controller("userCtrl", function ($scope,$rootScope,$http) {
         "value": "Left Hand"
     };
 
-    $http.get('service/rest/user/getcurrentuser')
+    /*$http.get('service/rest/user/getcurrentuser')
     .then(function (res) {
     	$scope.user=res.data;
     	$rootScope.currentUser=res.data;
-    });
+    });*/
    
+   
+    // alert(angular.toJson($rootScope.loggedInUser));
+    $scope.user=$rootScope.loggedInUser;
+    alert($rootScope.loggedInUser);
+    alert($scope.user);
     $scope.updateUser = function () {        
         console.warn("Update Profile Fired"+angular.toJson($scope.user));   
         //alert(angular.toJson($scope.user));

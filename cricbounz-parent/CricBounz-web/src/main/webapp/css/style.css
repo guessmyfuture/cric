@@ -84,17 +84,16 @@ body{
 
 /*div box*/
 .box {
-    padding: 7px 7px;
+    padding: 7px;
 }
 .box .inner {
-    padding: 12px;
-    background: #fff none repeat scroll 0 0;
+   background: #fff none repeat scroll 0 0;
     border: 2px solid #ddd;
     border-radius: 6px;
     box-shadow: 0 0 10px #ddd inset;
-    min-height: 110px;
+    min-height: 230px;
+    padding: 12px;
 }
-
 
 
 .cls
@@ -595,4 +594,136 @@ element.style {
 .morelink {
     display: block;
 }
+
+.btn-success:hover, .btn-success:focus, .btn-success:active, .btn-success.active, .open > .dropdown-toggle.btn-success {
+    background: #33a6cc;
+}
+ 
+.btn-success:active, .btn-success.active {
+    background: #007299;
+    box-shadow: none;
+}
+
+
+
+/*Custom Tab*/
+
+
+.custom-tab {
+    border: 1px solid #dddddd;
+}
+
+.tab-content {
+    margin: 18px 25px;
+}
+
+.custom-tab .nav-tabs-user {
+    background: -moz-linear-gradient(top, rgba(252,255,244,1) 0%, rgba(229,226,211,0.82) 100%); 
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(252,255,244,1)), color-stop(100%,rgba(229,226,211,0.82)));
+    background: -webkit-linear-gradient(top, rgba(252,255,244,1) 0%,rgba(229,226,211,0.82) 100%); 
+    background: -o-linear-gradient(top, rgba(252,255,244,1) 0%,rgba(229,226,211,0.82) 100%);
+    background: -ms-linear-gradient(top, rgba(252,255,244,1) 0%,rgba(229,226,211,0.82) 100%); 
+    background: linear-gradient(to bottom, rgba(252,255,244,1) 0%,rgba(229,226,211,0.82) 100%); 
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#fcfff4', endColorstr='#d1e5e2d3',GradientType=0 ); 
+    position: relative;
+}
+
+.nav-tabs-user > li.active > a, 
+.nav-tabs-user > li.active > a:hover, 
+.nav-tabs-user > li.active > a:focus {
+    cursor: default;
+    border: 0;
+    border-bottom-color: transparent;
+}
+
+span.rounded{
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    display: inline-block;
+    border-radius: 50%;
+    background: white;
+    color: #999;
+    position: absolute;
+    left: 0;
+    text-align: center;
+    font-size: 25px;
+    border: 2px solid #E4DEDE;
+}
+
+div.success span.rounded{
+    color: #5cb85c;
+}
+
+div.success li.active span.rounded{
+    background: #5cb85c !important;
+    border: none;
+    color: #fff;
+}
+
+div.warning span.rounded{
+    color: #ed9c28;
+}
+
+div.warning li.active span.rounded{
+    background: #ed9c28 !important;
+    border: none;
+    color: #ffffff;
+}
+
+div.info span.rounded{
+    color: #39b3d7;
+}
+
+div.info li.active span.rounded{
+    background: #39b3d7 !important;
+    border: none;
+    color: #fff;
+}
+
+div.danger span.rounded{
+    color: #39b3d7;
+}
+
+div.danger li.active span.rounded{
+    border: none;
+    background: #39b3d7 !important;
+    color: #fff;
+}
+
+.nav-tabs-user > li.active > a span.rounded{
+    background: #fafafa;
+}
+.nav-tabs-user > li {
+    width: 25%;
+}
+.nav-tabs-user > li a{
+   width: 50px;
+   height: 50px;
+   margin: 20px auto;
+   border-radius: 50%;
+   padding: 0;
+}
+
+@media(max-width:585px){    
+    .custom-tab {
+        width: 90%;
+        height:auto !important;
+    }
+    span.rounded {
+        font-size:16px;
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+    }
+    .tab-content .head{
+        font-size:20px;
+    }
+    .nav-tabs-user > li a {
+        width: 50px;
+        height: 50px;
+        line-height:50px;
+    }
+}
+/*Custom Tab Finished*/
 

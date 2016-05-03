@@ -13,16 +13,36 @@
 
         <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-          <form class="navbar-form navbar-left" role="search">
+          <form class="navbar-form navbar-left" role="search" ng-controller="entireSearchCtrl">
             <div class="form-group">
               <div class="search">
-                <input type="text" class="form-control" placeholder="Search peoples, places and more">
-                 <span class="fa fa-search"><a href="#/" ng-click="changeContentPage('partials/content.html')"></a></span>
+                   <script type="text/ng-template" id="customTemplateGlobal.html">
+                    <a>
+                      <div class="row">
+                      <div class="col-md-3">
+                        <img src="images/1.jpg" style="height:40px;width:40px;">
+					  </div>
+					  <div class="col-md-9">
+                           <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+					  </div>
+                      </div>
+                        <!--<i>({{match.model.name}},{{match.model.type}})</i>-->
+                     </a>
+	                 </script>
+						<input type="text" ng-model="$parent.selectedObj"
+							placeholder="Search peoples, places and more"
+							typeahead="c as c.name for c in searchedList | filter:$viewValue | limitTo:10"
+							typeahead-min-length='1'
+							typeahead-on-select='openSelectedData(selectedObj)'
+							ng-keyup="searchFromEverthing(selectedObj)"
+							typeahead-template-url="customTemplateGlobal.html"
+							class="form-control"  style="">
+						    <span class="fa fa-search"><a href=""></a></span>
               </div>
             </div>
           </form>
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#/"><span class="glyphicon glyphicon-home"></span></a></li>
+            <li><a href="UserHome.html"><span class="glyphicon glyphicon-home"></span></a></li>
             <li><a href="#" class="fa fa-user"></a></li>
             <li><a href="#" class="fa fa-comments"></a></li>
             <li><a href="#" class="fa fa-bell"></a></li>

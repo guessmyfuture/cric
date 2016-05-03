@@ -1,64 +1,113 @@
-<div class="col-md-6">
+<div class="col-md-6" ng-controller="upcomingTourmentCtrl">
     <fieldset>
         <legend>Upcoming Tournaments</legend>
-        <div class="col-md-12">
-            <div class="row">
-                <!-- <div class="col-sm-10">
-                        <button type="button" class="btn btn-primary btn-sm" style="float:right;">Update</button>
-                </div> -->
-            </div>
+        <div class="col-md-12">           
             <div class="table-responsive">          
                 <table class="table">
                     <thead>
                         <tr style='background-color:#dfdfdf;'>
-                            <td align='center'>
-                                Tournament Name
-                            </td>
-                            <td align='center'>
+                            <th align='center'>
+                                S.NO
+                            </th>
+                            <th ng-click="myOrder='name';isDescending=!isDescending;" style="cursor: pointer;">                           
+                                 Name
+                                 <span  class="glyphicon glyphicon-chevron-up" title="ASCENDING NAME" ng-show="isDescending"></span>
+                                 <span  class="glyphicon glyphicon-chevron-down" title="DESCENDING NAME" ng-hide="isDescending"></span>
+                            </th>
+                            <th align='center'>
                                 City
-                            </td>
-                            <td align='center'>
+                            </th>
+                            <th align='center' ng-click="myOrder='tourStartDate';isDescending=!isDescending;">                             
                                 Start Date
-                            </td >
-                            <td align='center'>
+                            </th >
+                            <th align='center' >
                                 End Date
-                            </td >
-                            <td align='center'>
+                            </th>
+                            <th align='center'>
                                 Ball Type
-                            </td>
-                            <td align='center'>
-                                Participant
-                            </td>
-
+                            </th>
+                            <th align='center'>
+                                Registration
+                            </th>
                         </tr>
                     </thead>
-                    <tbody ng-controller="upcomingTournamentCtrl">
-                        <tr ng-repeat="ut in upcomingTournaments">
+                    <tbody>
+                        <tr ng-repeat="ut in upcomingTournamentList | orderBy:myOrder:isDescending" ng-style="$index%2==0 && {'background-color':'lightgreen'}">
+                           <td align='center'>
+                               {{$index+1}}
+                            </td>
                             <td align='center'>
-                                <a href="#" ng-click="changeContentPage('TournamentDetails.html')">{{ut.tournamentNameId}}</a>
+                                {{ut.name}}
                             </td>
                             <td align='center'>
                                 {{ut.city}}
                             </td>
                             <td align='center'>
-                                {{ut.startDate}}
+                                {{ut.tourStartDate | myDate}}
                             </td>
                             <td align='center'>
-                                {{ut.EndDate}}
+                               {{ut.tourEndDate | myDate}}
                             </td>
                             <td align='center'>
                                 {{ut.ballType}}
                             </td>
-                            <td align='center'>
+                           <td align='center'>
+                                <button type="button" class="btn btn-md btn-primary" data-target="#myModal{{$index}}" data-toggle="modal" ng-click="changeContentPage('TournamentDetails.html')">Register</button>
+                                <!-- Modal -->
+							<div id="myModal{{$index}}" class="modal fade" role="dialog" ng-controller="viewMyTeamsCtrl">
+								<div class="modal-dialog">
+									<!-- Modal content-->
+									<div class="modal-content">
+										<div class="modal-header">
+											<button type="button" class="close" data-dismiss="modal">&times;</button>
+											<h3 class="modal-title" style="color:blue;">Toutnament Registeration</h3>
+										</div>
+										<div class="modal-body">
+				<div class="row">
+					<script type="text/ng-template" id="customTemplateTeamA.html">
+                    <a>	
+                       <div class="row" style="border-bottom:0px blue solid;">
+                          <div class="col-md-2">
+                            <img src="images/team/team1.jpg" style="height:45px;width:45px">
+                          </div>
+						  <div class="col-md-10">
+                             <div class="col-md-12">
+                              <span bind-html-unsafe="match.label | typeaheadHighlight:query" style='text-align:left;'></span>
+							 </div>
+							 <div class="col-md-12">
+                               <i>({{match.model.city}},{{match.model.area}})</i>
+							 </div>   
+                          </div>
+                        </div>                     
+                    </a>
+	               </script>
+					<label class="col-md-4 control-label" for="textinput">Select Your Team</label>
+					<div class="col-md-6" >					   
+						<input type="text" ng-model="selectedMyTeam"
+							placeholder="Select Your Team"
+							typeahead="c as c.name for c in myTeamList | filter:$viewValue | limitTo:10"
+							typeahead-min-length='1'
+							typeahead-on-select=''
+							typeahead-template-url="customTemplateTeamA.html"
+							class="form-control"  style="">
+						<i class="icon-search nav-search-icon"></i>					
+					</div>
+					</div>					
+										</div>
+										<div class="modal-footer">
+										  <button type="button" class="btn btn-md btn-primary" data-dismiss="modal">Close</button>
+										  <button type="button" class="btn btn-md btn-primary" ng-click="registerTournament(selectedMyTeam,ut.id)">Register</button>										 
+										</div>
+									</div>
 
-                                <button type="button" class="btn btn-md btn-primary"   ng-click="changeContentPage('TournamentDetails.html')">Participate</button>
-                            </td>
-
-                        </tr>                       
+								</div>
+							</div>
+                           </td>						  
+						</tr>                       
 
                     </tbody>
                 </table>
             </div>
         </div>
-    </fieldset>		
+    </fieldset> 	
 </div>

@@ -27,13 +27,23 @@ public class MatchRequest {
     private long requestedToTeam;
     private Date requestedDate;
     private long opponentTeamApprovalCount;
+    @Transient
+    private String  transientmatchDate;
     private Date  matchDate;
     private String matchStartTime;
     private String matchEndTime;
     private String status;
     @Transient
     private long requestedToID;
-	/**
+	
+    public String getTransientmatchDate() {
+		return transientmatchDate;
+	}
+	public void setTransientmatchDate(String transientmatchDate) {
+		this.transientmatchDate = transientmatchDate;
+	}  
+    
+    /**
 	 * @return the requestedToID
 	 */
 	public long getRequestedToID() {

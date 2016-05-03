@@ -1,0 +1,394 @@
+<div class="col-md-6" ng-controller="viewSearchMyTeamCtrl">
+	<div class="row" style="margin-top:20px;">
+		<div class="col-md-12">
+			<form class="form-inline" role="form">
+				<div class="form-group col-md-12">
+					<label for="email">Enter the Team For Search:</label> 
+					<input type="text"	class="form-control" id="email" placeholder="Search Team" ng-model="searchText" ng-keyup="searchMyTeams(searchText)">
+				
+				</div>
+			</form>
+		</div>		
+	</div>
+	 <div class="row">
+	 <div ng-show="false">
+	 {{searchTeamList}}
+	 </div>
+         <div class="col-md-6 box" ng-repeat="team in searchTeamList">
+                 <div class="inner">
+                                <div class="row">                 
+                 <div class="col-md-12">
+    <div class="hovereffect">
+        <img class="img-responsive" src="images/team/team1.jpg" alt="">
+            <div class="overlay">              
+                <h2 style="background:none;"><button class="btn btn-success" ng-click="team.isMatchRequest=true" ng-style="team.isSent && {'background-color':'orange','color':'red'}" ng-init="team.matchRequestText='Request Match'">{{team.matchRequestText}}</button></h2>             
+            </div>
+    </div>
+</div>                 
+ </div>      
+         <div class="row">
+             <table class="table table-hover table-responsive table-condensed borderless">
+              <tbody>
+              <tr>
+               <td>Team Name: </td>
+               <td> 
+                 <a href="#detail_team_view/{{team.teamID}}">{{team.name}} </a>
+               </td>
+              </tr>
+              <tr>
+              <td>City :</td>
+               <td>{{team.city}}</td>                     
+              </tr> 
+              <tr>
+              <td>Area :</td>
+               <td>{{team.area}}</td>                     
+              </tr>
+              <tr>
+              <td>Captain :</td>
+               <td>{{team.captain}}</td>                     
+              </tr>
+              <tr>
+              <td>Contact :</td>
+               <td>{{team.contactNo}}</td>                     
+              </tr>                 
+             </tbody></table>
+         </div>
+         </div>
+           <modal title="Match Request" visible="team.isMatchRequest">
+			<form class="form-horizontal" role="form" ng-controller="matchCtrl">							
+				<div class="form-group" ng-controller="viewMyTeamsCtrl">
+					<script type="text/ng-template" id="customTemplateTeamA.html">
+                    <a>	
+                       <div class="row" style="border-bottom:0px blue solid;">
+                          <div class="col-md-2">
+                            <img src="images/team/team1.jpg" style="height:45px;width:45px">
+                          </div>
+						  <div class="col-md-10">
+                             <div class="col-md-12">
+                              <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+							 </div>
+							 <div class="col-md-12">
+                               <i>({{match.model.city}},{{match.model.area}})</i>
+							 </div>   
+                          </div>
+                        </div>                     
+                    </a>
+	                 </script>
+					<label class="col-md-4 control-label" for="textinput">Select Your Team</label>
+					<div class="col-md-8">					   
+						<input type="text" ng-model="$parent.selectedMyTeam"
+							placeholder="Select Your Team"
+							typeahead="c as c.name for c in myTeamList | filter:$viewValue | limitTo:10"
+							typeahead-min-length='1'
+							typeahead-on-select=''
+							typeahead-template-url="customTemplateTeamA.html"
+							class="form-control"  style="">
+						<i class="icon-search nav-search-icon"></i>					
+					</div>				
+				</div>
+							<div class="form-group">
+								<label class="control-label col-sm-4" for="pwd">Opponent Team:</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" id="pwd" readonly
+										placeholder="Opponent Team" value="{{team.name}}-({{team.city}},{{team.area}})">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="trmEndDate">
+									Match Date
+								</label>
+								<div class="col-md-4">
+									<div class="input-group date" data-date-format="mm-dd-yyyy"
+										date-picker>
+										<input class="form-control" type="text" value="" readonly
+											id="trmEndDate" name="trmEndDate" ng-model="$parent.matchDate"
+											required="" /> <span class="input-group-addon"><i
+											class="glyphicon glyphicon-calendar"></i></span>
+									</div>
+									<span style="color: red"
+										ng-show="touranamentForm.trmEndDate.$invalid && submitted">
+										<span
+										ng-show="touranamentForm.trmEndDate.$error.required && submitted">
+											Match Date Is Required.</span>
+									</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-4" for="pwd">Match Start:</label>
+								<div class="col-sm-8">
+									<ng-timepicker class="input-small"
+										ng-model="$parent.matchStart" theme="red" show-meridian="true"></ng-timepicker>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-4" for="pwd">Match End:</label>
+								<div class="col-sm-8">
+									<ng-timepicker class="input-small"
+										ng-model="$parent.matchEnd" theme="red" show-meridian="true"></ng-timepicker>
+								</div>
+							</div>					
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="button" class="btn-sm btn-success" ng-click="team.isMatchRequest=false">Close</button>
+									<button type="button" class="btn-sm btn-success" ng-click="requestMatch(selectedMyTeam.teamID,team.teamID,matchDate,matchStart,matchEnd,team);">Request</button>
+								</div>
+							</div>
+						</form>
+			</modal>   
+         
+         </div>
+        </div>
+        </div>
+   
+   
+   
+   
+   
+   
+   
+   
+   
+	<div class="row" ng-hide="true">
+	<div class="col-md-12">
+	  <fieldset>
+        <legend>Registerd Teams List</legend>
+        <div ng-show="false">{{searchTeamList | json}}</div>
+       
+        
+        <div class="row">
+       
+            <div class="col-sm-6" ng-repeat="team in searchTeamList">
+            
+            <div class="row">
+            <div class="col-sm-12" style="border:1px solid green;">
+                <div class="col-sm-4">
+                    <a href="#detail_team_view/{{team.teamID}}">
+                        <img src="images/team/team1.jpg" class="pull-left img-box" alt="Virendra Sehwag" width="100%" height="75">
+                    </a>
+                </div>
+                <div class="col-sm-8">
+                    Team Name:<a href="#detail_team_view/{{team.teamID}}">{{team.name}}</a><br>
+                    <span class="uneditable-input">
+                        Captain Name: <a href=""> {{team.captain}}</a></span><br>
+                    <span class="uneditable-input">City: {{team.city}}</span> <br>
+                    <span class="uneditable-input">Area: {{team.area}}</span>
+                    <span class="uneditable-input"><button class="btn-xs btn-success" ng-click="team.isMatchRequest=true" ng-style="team.isSent && {'background-color':'orange','color':'red'}" ng-init="team.matchRequestText='Request Match'">{{team.matchRequestText}}</button></span>
+                </div>
+               </div>
+                </div>
+       <modal title="Match Request" visible="team.isMatchRequest">
+			<form class="form-horizontal" role="form" ng-controller="matchCtrl">							
+				<div class="form-group" ng-controller="viewMyTeamsCtrl">
+					<script type="text/ng-template" id="customTemplateTeamA.html">
+                    <a>	
+                       <div class="row" style="border-bottom:0px blue solid;">
+                          <div class="col-md-2">
+                            <img src="images/team/team1.jpg" style="height:45px;width:45px">
+                          </div>
+						  <div class="col-md-10">
+                             <div class="col-md-12">
+                              <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+							 </div>
+							 <div class="col-md-12">
+                               <i>({{match.model.city}},{{match.model.area}})</i>
+							 </div>   
+                          </div>
+                        </div>                     
+                    </a>
+	                 </script>
+					<label class="col-md-4 control-label" for="textinput">Select Your Team</label>
+					<div class="col-md-8">					   
+						<input type="text" ng-model="$parent.selectedMyTeam"
+							placeholder="Select Your Team"
+							typeahead="c as c.name for c in myTeamList | filter:$viewValue | limitTo:10"
+							typeahead-min-length='1'
+							typeahead-on-select=''
+							typeahead-template-url="customTemplateTeamA.html"
+							class="form-control"  style="">
+						<i class="icon-search nav-search-icon"></i>					
+					</div>				
+				</div>
+							<div class="form-group">
+								<label class="control-label col-sm-4" for="pwd">Opponent Team:</label>
+								<div class="col-sm-8">
+									<input type="text" class="form-control" id="pwd" readonly
+										placeholder="Opponent Team" value="{{team.name}}-({{team.city}},{{team.area}})">
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="col-md-4 control-label" for="trmEndDate">
+									Match Date
+								</label>
+								<div class="col-md-4">
+									<div class="input-group date" data-date-format="mm-dd-yyyy"
+										date-picker>
+										<input class="form-control" type="text" value="" readonly
+											id="trmEndDate" name="trmEndDate" ng-model="$parent.matchDate"
+											required="" /> <span class="input-group-addon"><i
+											class="glyphicon glyphicon-calendar"></i></span>
+									</div>
+									<span style="color: red"
+										ng-show="touranamentForm.trmEndDate.$invalid && submitted">
+										<span
+										ng-show="touranamentForm.trmEndDate.$error.required && submitted">
+											Match Date Is Required.</span>
+									</span>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-4" for="pwd">Match Start:</label>
+								<div class="col-sm-8">
+									<ng-timepicker class="input-small"
+										ng-model="$parent.matchStart" theme="red" show-meridian="true"></ng-timepicker>
+								</div>
+							</div>
+							<div class="form-group">
+								<label class="control-label col-sm-4" for="pwd">Match End:</label>
+								<div class="col-sm-8">
+									<ng-timepicker class="input-small"
+										ng-model="$parent.matchEnd" theme="red" show-meridian="true"></ng-timepicker>
+								</div>
+							</div>					
+							<div class="form-group">
+								<div class="col-sm-offset-2 col-sm-10">
+									<button type="button" class="btn-sm btn-success" ng-click="team.isMatchRequest=false">Close</button>
+									<button type="button" class="btn-sm btn-success" ng-click="requestMatch(selectedMyTeam.teamID,team.teamID,matchDate,matchStart,matchEnd,team);">Request</button>
+								</div>
+							</div>
+						</form>
+			</modal>   
+            </div>  
+            </div> 
+                    
+    </fieldset>
+	</div>
+	</div>
+	
+	
+	
+</div>
+
+<style>
+
+.hovereffect {
+    width: 100%;
+    height: 100%;
+    float: left;
+    overflow: hidden;
+    position: relative;
+    text-align: center;
+    cursor: default;
+}
+.hovereffect .overlay {
+    width: 100%;
+    position: absolute;
+    overflow: hidden;
+    left: 0;
+	top: auto;
+	bottom: 0;
+	padding: 1em;
+	height: 4.75em;
+	background: #79FAC4;
+	color: #3c4a50;
+	-webkit-transition: -webkit-transform 0.35s;
+	transition: transform 0.35s;
+	-webkit-transform: translate3d(0,100%,0);
+	transform: translate3d(0,100%,0);
+}
+
+.hovereffect img {
+    display: block;
+    position: relative;
+	-webkit-transition: -webkit-transform 0.35s;
+	transition: transform 0.35s;
+}
+
+.hovereffect:hover img {
+-webkit-transform: translate3d(0,-10%,0);
+	transform: translate3d(0,-10%,0);
+}
+
+.hovereffect h2 {
+    text-transform: uppercase;
+    color: #fff;
+    text-align: center;
+    position: relative;
+    font-size: 17px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.6);
+	float: left;
+	margin: 0px;
+	display: inline-block;
+}
+
+.hovereffect a.info {
+    display: inline-block;
+    text-decoration: none;
+    padding: 7px 14px;
+    text-transform: uppercase;
+	color: #fff;
+	border: 1px solid #fff;
+	margin: 50px 0 0 0;
+	background-color: transparent;
+}
+.hovereffect a.info:hover {
+    box-shadow: 0 0 5px #fff;
+}
+
+
+.hovereffect p.icon-links a {
+	float: right;
+	color: #3c4a50;
+	font-size: 1.4em;
+}
+
+.hovereffect:hover p.icon-links a:hover,
+.hovereffect:hover p.icon-links a:focus {
+	color: #252d31;
+}
+
+.hovereffect h2,
+.hovereffect p.icon-links a {
+	-webkit-transition: -webkit-transform 0.35s;
+	transition: transform 0.35s;
+	-webkit-transform: translate3d(0,200%,0);
+	transform: translate3d(0,200%,0);
+}
+
+.hovereffect p.icon-links a span:before {
+	display: inline-block;
+	padding: 8px 10px;
+	speak: none;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+
+.hovereffect:hover .overlay,
+.hovereffect:hover h2,
+.hovereffect:hover p.icon-links a {
+	-webkit-transform: translate3d(0,0,0);
+	transform: translate3d(0,0,0);
+}
+
+.hovereffect:hover h2 {
+	-webkit-transition-delay: 0.05s;
+	transition-delay: 0.05s;
+}
+
+.hovereffect:hover p.icon-links a:nth-child(3) {
+	-webkit-transition-delay: 0.1s;
+	transition-delay: 0.1s;
+}
+
+.hovereffect:hover p.icon-links a:nth-child(2) {
+	-webkit-transition-delay: 0.15s;
+	transition-delay: 0.15s;
+}
+
+.hovereffect:hover p.icon-links a:first-child {
+	-webkit-transition-delay: 0.2s;
+	transition-delay: 0.2s;
+}
+</style>
+

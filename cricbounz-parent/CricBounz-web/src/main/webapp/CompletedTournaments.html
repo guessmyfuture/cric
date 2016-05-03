@@ -1,0 +1,69 @@
+<div class="col-md-6" ng-controller="completedTourmentCtrl">
+    <fieldset>
+        <legend>Completed Tournaments</legend>
+        <div class="col-md-12">           
+            <div class="table-responsive">          
+                <table class="table">
+                    <thead>
+                        <tr style='background-color:#dfdfdf;'>
+                            <th align='center'>
+                                S.NO
+                            </th>
+                            <th ng-click="myOrder='name';isDescending=!isDescending;" style="cursor: pointer;">                           
+                                 Name
+                                 <span  class="glyphicon glyphicon-chevron-up" title="ASCENDING NAME" ng-show="isDescending"></span>
+                                 <span  class="glyphicon glyphicon-chevron-down" title="DESCENDING NAME" ng-hide="isDescending"></span>
+                            </th>                           
+                            <th align='center' ng-click="myOrder='tourStartDate';isDescending=!isDescending;">                             
+                               Winner
+                            </th >
+                            <th align='center' >
+                                Runner
+                            </th>
+                            <th align='center'>
+                                Ball Type
+                            </th>
+                            <th align='center'>
+                                Man Of the Series
+                            </th>
+                            <th align='center'>
+                               Batsman Of The Tournament
+                            </th>
+                             <th align='center'>
+                              Bowler Of The Tournament
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="ut in completedTournamentList | orderBy:myOrder:isDescending" ng-style="$index%2==0 && {'background-color':'lightgreen'}">
+                           <td align='center'>
+                               {{$index+1}}
+                            </td>
+                            <td align='center'>
+                                {{ut.name}}
+                            </td>                           
+                            <td align='center'>
+                                {{ut.winner}}
+                            </td>
+                            <td align='center'>
+                               {{ut.runner}}
+                            </td>
+                            <td align='center'>
+                                {{ut.type}}
+                            </td>
+                            <td align='center'>
+                                {{ut.manOfTheSeries}}
+                            </td>
+                            <td align='center'>
+                                {{ut.batsmanOfTheTournament}}
+                            </td>
+                            <td align='center'>
+                                {{ut.bowlerOfTheTournament}}
+                            </td>                         					  
+						</tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </fieldset> 	
+</div>

@@ -1,12 +1,12 @@
 <!--<div class="col-md-6" ng-app="postApp" ng-controller="CreateTeamController">-->
 <div class="col-md-6" ng-controller="ballTypeCtrl">
 	<form class="form-horizontal" name="userForm"
-		ng-controller="CreateTeamController" novalidate>
+		 ng-controller="playerAutoCompleteCtrl" novalidate>
 		<div class="row">
 			<div class="col-sm-12">
 				<fieldset>
 					<!-- Form Name -->
-					<legend>Create Team</legend>
+					<legend>Edit Team</legend>
 					<!-- Text input-->
 					<div ng-show="userForm.$invalid && submitted"
 						class="bg-danger text-danger" style="padding: 10px;">
@@ -26,7 +26,7 @@
 						<label class="col-md-4 control-label" for="textinput">Team
 							Name</label>
 						<div class="col-md-4">
-							<input id="textinput" name="teamName" ng-model="name" placeholder="Team Name"
+							<input id="textinput" name="teamName" ng-model="team.name" placeholder="Team Name"
 								class="form-control input-md"  required="" type="text">
 							<span style="color: red"
 								ng-show="userForm.teamName.$invalid && submitted"> <span
@@ -41,7 +41,7 @@
 						<label class="col-md-4 control-label" for="textinput">Captain
 							Name</label>
 						<div class="col-md-4">
-							<input id="textinput" name="captainName" ng-model="captain"
+							<input id="textinput" name="captainName" ng-model="team.captain"
 								ng-pattern="/^[a-zA-Z\s]*$/" placeholder="Captain Name"
 								class="form-control input-md" ng-unique required type="text">
 							<span style="color: red"
@@ -58,7 +58,7 @@
 					<div class="form-group">
 						<label class="col-md-4 control-label" for="textinput">Managers</label>
 						<div class="col-md-4">
-							<input ng-model="managers" name="managers"
+							<input ng-model="team.managers" name="managers"
 								ng-pattern="/^[a-zA-Z\s]*$/" placeholder="Managers"
 								class="form-control input-md" required type="text"> <span
 								style="color: red"
@@ -79,17 +79,17 @@
 								<div class="col-md-6" ng-repeat='bt in ballTypes'>
 									<label class="checkbox-inline" for="checkboxes-0"> <!--<input type="checkbox" value="{{bt.ballId}}" ng-model="balTypes[bt.ballId]">-->
 										<input type="checkbox" ng-change="sync(bool, bt)"
-										ng-model="bool"> {{bt.ballType}}
+										ng-model="ballType"> {{bt.ballType}}
 									</label>
-								</div>								
+								</div>
 							</div>
 						</div>
 						<!-- Text input-->
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="textinput">Area</label>
 							<div class="col-md-4">
-								<input name="area" ng-model="area" ng-pattern="/^[a-zA-Z\s]*$/"
-				 					placeholder="Area" class="form-control input-md" required
+								<input name="area" ng-model="team.area" ng-pattern="/^[a-zA-Z\s]*$/"
+				 					placeholder="team.area" class="form-control input-md" required
 									type="text"> <span style="color: red"
 									ng-show="userForm.area.$invalid && submitted"> <span
 									ng-show="userForm.area.$error.required && submitted">Area
@@ -103,7 +103,7 @@
 						<div class="form-group">
 							<label class="col-md-4 control-label" for="textinput">City</label>
 							<div class="col-md-4">
-								<input name="city" ng-model="city" placeholder="City"
+								<input name="city" ng-model="team.city" placeholder="City"
 									ng-pattern="/^[a-zA-Z\s]*$/" class="form-control input-md"
 									required type="text"> <span style="color: red"
 									ng-show="userForm.city.$invalid && submitted"> <span
@@ -120,7 +120,7 @@
 								No</label>
 							<div class="col-md-4">
 								<input id="Contact1" name="contact1" valid-number maxlength="10"
-									ng-model="contactNo" placeholder="Contact Details 1"
+									ng-model="team.contactNo" placeholder="Contact Details 1"
 									class="form-control input-md" required="" type="text">
 								<span style="color: red"
 									ng-show="userForm.contactNo.$invalid && submitted"> <span
@@ -176,7 +176,7 @@
 			</div>
 		</div>
 	
-	  <div class="row" ng-controller="playerAutoCompleteCtrl">
+	  <div class="row">
             <fieldset>
                 <!-- Form Name -->
                 <legend></legend>
@@ -237,16 +237,14 @@
                     </div>
                 </div>
             </div>           
-        </div>
-	
+        </div>	
 		<div class="row">
 			<div class="container col-sm-12 center-block" style="padding: 20px;">
 				<button type="submit" id="singlebutton" name="singlebutton"
 					class="btn btn-primary center-block"
-					ng-click="postCreateTeamData(); submitted = true">Create
+					ng-click="updateTeam()" submitted = true">Update
 					Team</button>
 			</div>
 		</div>
-
-	</form>
+	</form>	
 </div>

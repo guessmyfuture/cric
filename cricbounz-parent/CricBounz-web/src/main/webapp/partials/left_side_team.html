@@ -12,16 +12,17 @@
             <div class="profile-sidebar">
                 <!-- SIDEBAR USERPIC -->
                 <div class="profile-userpic">
-                    <img check-image ng-src="{{userData.imageUrl}}" class="img-responsive" alt="">
+                   <!--<img check-image ng-src="{{userData.imageUrl}}" class="img-responsive" alt=""> --> 
+                   <img src="images/team/team1.jpg" class="img-responsive">
                 </div>
                 <!-- END SIDEBAR USERPIC -->
                 <!-- SIDEBAR USER TITLE -->
                 <div class="profile-usertitle">
                     <div class="profile-usertitle-name">
-                        {{user.name}} 
+                        {{teamInfo.name}} <br>
+                        {{teamInfo.city}},{{teamInfo.area}}
                     </div>
-                    <div class="profile-usertitle-job">
-                        {{user.playerRole}}  
+                    <div class="profile-usertitle-job">                     
                     </div>
                 </div>
                 <!-- END SIDEBAR USER TITLE -->
@@ -49,7 +50,15 @@
                                         <h4 class="panel-title">
                                             <a data-toggle="collapse" data-parent="#accordion" href="#friends">
                                                 <span class="fa fa-users">&nbsp;&nbsp;&nbsp;&nbsp;
-                                                </span>Friends </a>
+                                                </span>Team Career {{teamInfo.teamID}} </a>
+                                        </h4>
+                                    </div>                                         
+                                </div>
+                                <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#view_players_team/{{teamInfo.teamID}}"><span class="glyphicon glyphicon-folder-close">&nbsp;
+                                                </span>Player</a>
                                         </h4>
                                     </div>                                         
                                 </div>
@@ -57,11 +66,39 @@
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
                                             <a data-toggle="collapse" data-parent="#accordion" href="#career-records"><span class="glyphicon glyphicon-folder-close">&nbsp;
-                                                </span>My Career Record </a>
+                                                </span>Last 5 Matches</a>
                                         </h4>
                                     </div>                                         
                                 </div>
-                                <div class="panel panel-default">
+                                 <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#career-records"><span class="glyphicon glyphicon-folder-close">&nbsp;
+                                                </span>Participated Tournament</a>
+                                        </h4>
+                                    </div>                                         
+                                </div>
+                                 <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#career-records"><span class="glyphicon glyphicon-folder-close">&nbsp;
+                                                </span>Photos</a>
+                                        </h4>
+                                    </div>                                         
+                                </div>                                
+                                 <div class="panel panel-default">
+                                    <div class="panel-heading">
+                                        <h4 class="panel-title">
+                                            <a data-toggle="collapse" data-parent="#accordion" href="#career-records"><span class="glyphicon glyphicon-folder-close">&nbsp;
+                                                </span>Registered Tournament(visible Member Only)</a>
+                                        </h4>
+                                    </div>                                         
+                                </div>
+                                
+                                
+                                
+                                
+                                <!-- <div class="panel panel-default">
                                     <div class="panel-heading">
                                         <h4 class="panel-title">
                                             <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseTwo">
@@ -117,11 +154,6 @@
                                                 <tr>
                                                     <td>
                                                         <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;<a href="#completed_tournaments" >Completed Tournament</a>
-                                                    </td>
-                                                </tr>
-                                                 <tr>
-                                                    <td>
-                                                        <span class="glyphicon glyphicon-usd"></span>&nbsp;&nbsp;<a href="#my_tournaments" >My Tournaments</a>
                                                     </td>
                                                 </tr>
 
@@ -220,7 +252,7 @@
                                                 </tr>
                                                 <tr>
                                                     <td>
-                                                        <span class="fa fa-university">&nbsp;&nbsp;</span><a href="#schelduled_matches" >Requested Matches</a>
+                                                        <span class="fa fa-university">&nbsp;&nbsp;</span><a href="#schelduled_matches" >Scheduled Matches</a>
                                                     </td>
                                                 </tr>
                                             </table>
@@ -233,5 +265,5 @@
                 </div>
             </div>
         </div>                      
-    </div>
+    </div> -->
 </div>                    <!-- END MENU -->

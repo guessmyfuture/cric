@@ -8,7 +8,7 @@
 				<!-- Text input-->
 				<div class="form-group">
 					<label class="col-md-4 control-label" for="textinput">City</label>
-					<div class="col-md-4" ng-controller="loadCity">		
+					<div class="col-md-4" ng-controller="loadCityArea">		
 						<script type="text/ng-template" id="customTemplateCity.html">
                          <a>	
                         <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
@@ -18,14 +18,13 @@
 					 <input
 							type="text" ng-model="$parent.city"
 							placeholder="Search City"
-							typeahead="c as c.cityName for c in cityList | filter:$viewValue | limitTo:10"
+							typeahead="c as c.city for c in cityLists | filter:$viewValue | limitTo:10"
 							typeahead-min-length='1'
-							typeahead-on-select='onSelectPart($item, $model, $label);changeArea();'
+							typeahead-on-select='onSelectPart($item, $model, $label);'
 							typeahead-template-url="customTemplateCity.html" class="form-control"
 							style=""> 
 							<i class="icon-search nav-search-icon"></i>
-							<textarea ng-show="false">{{$parent.city}}</textarea>						
-					
+							<textarea ng-show="false">{{$parent.city}}</textarea>
 					</div>
 				</div>
 
@@ -113,7 +112,6 @@
 						</span>
 					</div>
 				</div>
-
 				<!-- Text input-->
 				<div class="form-group">
 					<label class="col-md-4 control-label" for="textinput">Contact
@@ -128,7 +126,6 @@
 						</span>
 					</div>
 				</div>
-
 				<!-- Multiple Checkboxes (inline) -->
 				<div class="form-group">
 					<label class="col-md-4 control-label" for="checkboxes">Ball
@@ -144,7 +141,6 @@
 						</div>
 					</div>
 				</div>
-
 				<!-- Multiple Checkboxes (inline) -->
 				<div class="form-group">
 					<label class="col-md-4 control-label" for="checkboxes">Pitch
@@ -174,18 +170,25 @@
 								<th><span style="color: #11C1F3; font-size: 20px;">End
 										Time</span></th>
 							</tr>
-							<tr ng-show="true">
+							<tr ng-show="false">
 							<td colspan="3">{{slots | json}}</td>							
 							</tr>
 							<tr ng-repeat="slot in slots">
 								<td class="style"><span
 									style="color: #11C1F3; font-size: 20px;">Slot #
 										{{$index + 1}}</span></td>
-								<td><ng-timepicker class="input-small"
+								<td>
+								<ng-timepicker class="input-small"
 										ng-model="slot.slotStartTime" theme="red" show-meridian="true"></ng-timepicker>
 								</td>
-								<td><ng-timepicker class="input-small"
+								<td>
+								<ng-timepicker class="input-small"
 										ng-model="slot.slotEndTime" theme="red" show-meridian="true"></ng-timepicker>
+								</td>
+								<td> 
+								  <span ng-show="false" ng-show1='slot.isValid=!(slot.slotStartTime < slot.slotEndTime)' ng-style="color:red;display:none;">
+								    Start time greater than End Time
+								  </span>
 								</td>
 							</tr>
 							<tr>

@@ -1,0 +1,19 @@
+<div class="col-md-6" ng-controller="teamPlayersCtrl">	
+	 <fieldset>
+        <legend>Team Players</legend>
+        <div class="row">
+            <div class="col-md-12" ng-show="false"> {{teamPlayers.playesDetailsList}}</div>
+            <div class="col-sm-6" ng-repeat="player in teamPlayers.playesDetailsList" style="margin-top:5px;">           
+                <div class="col-sm-4">
+                    <a href="#user_profile/{{player.userID}}"><img src="images/2.jpg" class= "img-box"  alt="Virendra Sehwag" width="75" height="75"> </a>	
+                </div> 
+                <div class="col-sm-8">
+                    <span class="uneditable-input">
+                        Name: <a href="#user_profile/{{player.userID}}"> {{player.userName}}</a></span><br>
+                    <span class="uneditable-input"> Role:{{player.playesRoles.BowlingType}},{{player.playesRoles.BattingStyle}},{{player.playesRoles.BowlingStyle}}</span> <br>                   
+                </div>
+            </div>            
+		</div>
+		</fieldset>		
+</div>
+

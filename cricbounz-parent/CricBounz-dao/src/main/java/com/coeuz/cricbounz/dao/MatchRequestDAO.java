@@ -3,6 +3,7 @@ package com.coeuz.cricbounz.dao;
 import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -34,6 +35,7 @@ public class MatchRequestDAO extends BaseDAO<MatchRequest, Integer>{
 	}
 	
 	public void saveMatchRequest(MatchRequest matchRequest) throws NullPointerException,SQLException,ClassCastException{
+		matchRequest.setMatchDate(convertStrToDate(matchRequest.getTransientmatchDate(), TimeZone.getDefault().getID()));
 		long matchreqID = saveAndRetrunUniqkey(matchRequest);
 		if(matchreqID>0 && requestNotifications!=null){
 			List<String> playersList =teamDAO.getPlayersIdFromTeamId(matchRequest.getRequestedToTeam());

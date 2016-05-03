@@ -3,7 +3,7 @@
 
 
 var dbApp = angular.module('dashboardModule', ['infinite-scroll']);
-var dbApp = angular.module("CricApp", ["dashboardModule","teamModule", "groundModule", "tournamentModule", "file-model", "userModule", "jkuri.timepicker", "scoreModule", "AxelSoft", "ngRoute", "angular-contextual-date","ui.router","ui.bootstrap","jkuri.gallery"]);
+var dbApp = angular.module("CricApp", ["dashboardModule","teamModule", "groundModule", "tournamentModule", "file-model", "userModule", "jkuri.timepicker", "scoreModule", "AxelSoft", "ngRoute", "angular-contextual-date","ui.router","ui.bootstrap","jkuri.gallery","matchModule"]);
 
 function getCookie(name) {
     var value = "; " + document.cookie;
@@ -28,8 +28,8 @@ function getCookie(name) {
 			 * "/create-team", templateUrl: "CreateTeam.html" })
 			 * .state('view-team', { url:'/view-team', templateUrl:
 			 * 'ViewTeam.html' }) .state('create-tournament', {
-			 * url:'/create-tournament', templateUrl: 'CreateTournament.html'
-			 *  }) .state('upcoming-tournaments', { url:'/upcoming-tournaments',
+			 * url:'/create-tournament', templateUrl: 'CreateTournament.html' })
+			 * .state('upcoming-tournaments', { url:'/upcoming-tournaments',
 			 * templateUrl: 'UpcomingTournaments.html' })
 			 * 
 			 * .state('view-profile', { url:'/view-profile', templateUrl:
@@ -59,7 +59,6 @@ function getCookie(name) {
 			 * });
 			 */
 
-
 dbApp.config(function ($routeProvider) {
     $routeProvider
             // route for the home page
@@ -77,9 +76,20 @@ dbApp.config(function ($routeProvider) {
                 templateUrl: 'CreateTeam.html'
                         // controller: 'aboutController'
             })
+             // route for the Edit Team
+            /*
+			 * .when('/edit-team/:teamId', { templateUrl: 'EditTeam.html' //
+			 * controller: 'aboutController' })
+			 */
+            
+            .when('/edit-team/:teamId', {
+                templateUrl: 'EditTeam.html'
+                        // controller: 'aboutController'
+            })            
+            
             // route for the View Teams
-            .when('/view-team', {
-                templateUrl: 'ViewTeam.html'
+            .when('/browse-team', {
+                templateUrl: 'BrowseTeam.html'
                         // controller: 'aboutController'
             })
             // route for the Create New Tournamnet
@@ -90,6 +100,11 @@ dbApp.config(function ($routeProvider) {
             // route for the Create New Tournamnet
             .when('/upcoming_tournaments', {
                 templateUrl: 'UpcomingTournaments.html'
+                        // controller: 'UpcomingTournamentsCtrl'
+            })
+              // route for the Completed Tournament List
+            .when('/completed_tournaments', {
+                templateUrl: 'CompletedTournaments.html'
                         // controller: 'UpcomingTournamentsCtrl'
             })
             // route for the View Profile
@@ -133,6 +148,10 @@ dbApp.config(function ($routeProvider) {
             .when('/my_teams', {
                 templateUrl: 'MyTeams.html'
                         // controller: 'UpcomingTournamentsCtrl'
+            })         
+            .when('/create_match', {
+                templateUrl: 'CreateNewMatch.html'
+                        // controller: 'UpcomingTournamentsCtrl'
             })
             .when('/schelduled_matches', {
                 templateUrl: 'SchelduledMatches.html'
@@ -148,29 +167,79 @@ dbApp.config(function ($routeProvider) {
             })
             // route for the Player(User) Profile
             .when('/user_profile/:userId', {
-                templateUrl: 'UserProfile.html',
-                controller: 'viewMyTeamCtrl'
-            })
+                templateUrl: 'UserProfile.html'
+               })
              // route for the Player(User) Profile
             .when('/detail_team_view/:teamId', {
-                templateUrl: 'TeamDetailView.html',
-                controller: 'detailTeamViewCtrl'
+                templateUrl: 'TeamView.html'
+            })
+            // view players from specific team
+            .when('/view_players_team/:teamId', {
+                templateUrl: 'TeamPlayersView.html'
             })
             // route for the Player(User) Profile
             .when('/user_profile/:userId', {
-                templateUrl: 'UserDetailProfile.html',
-                controller: 'viewUserProfileCtrl'
+                templateUrl: 'UserDetailProfile.html',              
             })
+            // route for the Player(User) Profile
+            .when('/detail_ground_view/:groundId', {
+                templateUrl: 'ViewGroundDetails.html'               
+            })            
             .otherwise({
                 redirectTo: '/'
               });
             // $locationProvider.html5Mode(true);
-}).run(function ($rootScope,$http) {       
-	/*
-	 * $http.get('service/rest/user/getcurrentuser') .then(function (res) {
-	 * $rootScope.currentUser=res.data; });
-	 */	
+}).run(function ($rootScope,$http,$window) {
+	$rootScope.leftSideTemplate="partials/left_side.html";
+	if(!angular.isUndefined($window.sessionStorage.currentLeftPage))
+	{
+	 $rootScope.leftSideTemplate=$window.sessionStorage.currentLeftPage;
+	}	
+	 $http.get('service/rest/user/getcurrentuser') .then(function (res) {
+	   $rootScope.loggedInUser=res.data;	  
+	 });
     });
+
+dbApp.controller('entireSearchCtrl', function ($scope, $http,$rootScope,$window,$location) {	
+	$scope.searchedList=[];	
+	$scope.searchFromEverthing=function(selectedObj)
+	{
+		//alert(selectedObj);
+	 $http.get('service/rest/utility/globalSearch?searchText=a').then(function (res) {	            	
+	           $scope.searchedList=res.data;	
+	          // alert(angular.toJson( $scope.searchedList));
+	   });
+	}
+	
+	$scope.openSelectedData=function(SelectedObj)
+	{
+		//alert("Tamil"+angular.toJson(SelectedObj));
+		if(SelectedObj.type=="TEAM")
+		{
+			$http.get('service/rest/team/getTeamFullDetails?teamId=' + SelectedObj.id) .then(function (res) {
+				   $rootScope.teamInfo=res.data;
+				   var url='partials/left_side_team.html';
+				   $rootScope.leftSideTemplate=url;	
+				  // $window.sessionStorage.currentLeftPage=url;	
+				   console.log("Team View "+angular.toJson($rootScope.teamInfo));
+		     });
+			
+		}
+		if(SelectedObj.type=="USER")
+		{
+			$http.get('service/rest/user/getuser?userid='+ SelectedObj.id)
+		   .then(function (res) {
+		    	$rootScope.otherUserData=res.data;		    	
+		    	var url='partials/left_side_other_user.html';
+		    	$rootScope.leftSideTemplate=url;	
+				//$window.sessionStorage.currentLeftPage=url;	
+				console.log("Other User View "+angular.toJson($rootScope.otherUserData));
+		    })		  
+		}
+		
+	}
+ });	
+
 
 dbApp.controller('dateController', function ($scope) {
     $scope.today = function () {
@@ -185,8 +254,68 @@ dbApp.controller('dateController', function ($scope) {
     $scope.showdp = false;
 });
 
+dbApp.controller('pitchTypeCtrl', function ($scope, $http) {	
+	$scope.pitchTypes=[];	
+	 $http.get('service/rest/utility/getAllPitchTypes').then(function (res) {	            	
+	           $scope.pitchTypes=res.data;	           
+	   });	 
+ });
 
 
+
+
+dbApp.controller('ballTypeCtrl', function ($scope, $http) {
+    $scope.addedBallTypes = [];
+    var tempBallTypes = [];
+    $scope.ballTypes=[];
+    // $scope.$parent.addedBallTypes = $scope.addedBallTypes;
+    $http.get('service/rest/utility/getAllBallTypes')
+    // $http.get('response/ballTypes.jsp')
+            .then(function (res) {
+            	angular.forEach(res.data,function(value,key){
+            		var ballType={
+        				ballId:value.id,
+        				ballType:value.ballType
+            		};
+            		$scope.ballTypes.push(ballType);
+            		// alert(value.id+' '+value.ballType);
+            	});
+            });
+
+    $scope.sync = function (bool, item) {
+    	alert(bool);
+        if (bool) {
+            // add item
+            tempBallTypes.push(item);
+        } else {
+            // remove item
+            for (var i = 0; i < tempBallTypes.length; i++) {
+                if (tempBallTypes[i].ballId == item.ballId) {
+                    tempBallTypes.splice(i, 1);
+                }
+            }
+        }
+
+        $scope.addedBallTypes = angular.copy(tempBallTypes);
+
+        for (i = 0; i < $scope.addedBallTypes.length; i++)
+        {
+            delete $scope.addedBallTypes[i].ballType;
+        }
+        $scope.$parent.addedBallTypes=$scope.addedBallTypes;
+        // alert(angular.toJson($scope.addedBallTypes));
+    };
+});
+
+dbApp.filter('myDate', function($filter)
+		{
+		 return function(input)
+		 {
+		  if(input == null){ return ""; }		 
+		  var _date = $filter('date')(new Date(input), 'dd-MM-yyyy');		 
+		  return _date.toUpperCase();
+		 };
+		});
 
 dbApp.directive('enterSubmit', function () {
     return {
@@ -434,8 +563,8 @@ dbApp.controller('videoUploadCtrl', function ($scope, $http) {
  * //Set Other header like file name,size and type
  * reqObj.setRequestHeader('X-File-Name', name);
  * reqObj.setRequestHeader('X-File-Type', type);
- * reqObj.setRequestHeader('X-File-Size', size);
- *  // send the file reqObj.send(fileToUpload);
+ * reqObj.setRequestHeader('X-File-Size', size); // send the file
+ * reqObj.send(fileToUpload);
  * 
  * function uploadProgress(evt) { if (evt.lengthComputable) { var
  * uploadProgressCount = Math.round(evt.loaded * 100 / evt.total);
@@ -525,38 +654,35 @@ dbApp.controller('TodoCtrl', function ($scope, $http) {
 	 */
 });
 
-dbApp.controller('loadCity', function ($scope, $http) {
-    $http.get('json/cityList.json')
-            .then(function (res) {
+dbApp.controller('loadCityArea', function ($scope, $http) {
+	$scope.cityLists=[];
+	$http.get('service/rest/ground/City')
+            .then(function (res) {            	
                 $scope.cityList = res.data;
-                console.log(angular.toJson($scope.cityList));
-            });
+                angular.forEach($scope.cityList,function(value,key){                	
+                	var city={
+                			city:value
+                	}
+                	$scope.cityLists.push(city);                	
+                });              
+                console.log(angular.toJson($scope.cityLists));
+            }); 
     
-    $scope.changeCity=function()
+    $scope.loadArea=function(selectedCity)    
     {
-    	alert('jai');
+    	$scope.areaLists=[];    	
+    	  $http.get('service/rest/ground/City/Area?city='+selectedCity.city)
+          .then(function (res) {
+             $scope.areaList = res.data;
+              angular.forEach($scope.areaList,function(value,key){             
+              	var area={
+              			area:value
+              	}              		
+              	$scope.areaLists.push(area);
+              });              
+          });
     }
-    $scope.changeArea=function()
-    {
-    	alert('jai');
-    }
 });
-dbApp.controller('loadArea', function ($scope, $http) {
-    $http.get('json/areaList.json')
-            .then(function (res) {
-                $scope.areaList = res.data;
-                console.log(angular.toJson($scope.areaList));
-            });
-});
-dbApp.controller('loadGrounds', function ($scope, $http) {
-    $http.get('service/rest/ground/getallgrounds')
-            .then(function (res) {
-                $scope.grounds = res.data;
-                alert(angular.toJson($scope.grounds));
-                console.log(angular.toJson($scope.grounds));
-            });
-});
-
 
 // var to use as a flag to prevent http requests from happening when one is
 // already occuring
@@ -736,7 +862,7 @@ dbApp.controller('dashBoardCtrl', ['$scope', '$http','$rootScope','PostImages', 
         	  timestamp:new Date(),
         	  status:"A"
         	}  
-        	//alert(angular.toJson(data));
+        	// alert(angular.toJson(data));
         	
         	  var config = {
                     headers: {
@@ -814,7 +940,7 @@ dbApp.controller('dashBoardCtrl', ['$scope', '$http','$rootScope','PostImages', 
             	 // var url = 'service/rest/user/getPostDetails?limit=' + 2 +
 					// '&offset=' +$scope.offset;
             	var url = 'service/rest/user/getPostDetails?limit=' + $scope.limit+ '&offset=' +$scope.offset;         	
-            	
+            	console.log(url);
             	 // load the press releases
                 var getPostImages = PostImages.load(url, $scope.last_loaded_url);
                 // this is only run after $http completes

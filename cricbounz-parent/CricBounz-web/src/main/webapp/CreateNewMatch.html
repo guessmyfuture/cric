@@ -1,0 +1,217 @@
+<div class='col-md-6' ng-controller="matchCtrl">
+	<div class="row">
+		<form class="form-horizontal" name="matchForm" novalidate>
+			<fieldset>
+				<!-- Form Name -->
+				<legend>Create New Match</legend>
+				<!-- Text input-->
+				<div class="form-group" ng-controller="viewSearchMyTeamCtrl">
+					<script type="text/ng-template" id="customTemplateTeamA.html">
+                       <a>	
+                       <div class="row">
+                          <div class="col-md-2">
+                            <img src="images/team/team1.jpg" style="height:45px;width:45px">
+                          </div>
+						  <div class="col-md-10">
+                             <div class="col-md-12">
+                              <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+							 </div>
+							 <div class="col-md-12">
+                               <i>({{match.model.city}},{{match.model.area}})</i>
+							 </div>   
+                          </div>
+                        </div>                     
+                     </a>
+	                 </script>
+					 <label class="col-md-4 control-label" for="textinput">Team-A</label>
+					<div class="col-md-4">					    
+						<input type="text" ng-model="$parent.selectedTeamA"
+							placeholder="Select Your Team"
+							typeahead="c as c.name for c in searchTeamList | filter:$viewValue | limitTo:5"
+							typeahead-min-length='1'
+							typeahead-on-select=''
+							ng-keyup="searchMyTeams(selectedTeamA)"
+							typeahead-template-url="customTemplateTeamA.html"
+							class="form-control"  style="">
+						<i class="icon-search nav-search-icon"></i>					
+					</div>
+				</div>		
+							
+					<div class="form-group" ng-controller="viewSearchMyTeamCtrl">
+						<script type="text/ng-template" id="customTemplateTeamB.html">
+                       <a>	
+                       <div class="row">
+                          <div class="col-md-2">
+                            <img src="images/team/team1.jpg" style="height:45px;width:45px">
+                          </div>
+						  <div class="col-md-10">
+                             <div class="col-md-12">
+                              <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+							 </div>
+							 <div class="col-md-12">
+                               <i>({{match.model.city}},{{match.model.area}})</i>
+							 </div>   
+                          </div>
+                        </div>                     
+                     </a>
+	                 </script>
+					 <label class="col-md-4 control-label" for="textinput">Team-B</label>
+					<div class="col-md-4">					    
+						<input type="text" ng-model="$parent.selectedTeamB"
+							placeholder="Select Your Team"
+							typeahead="c as c.name for c in searchTeamList | filter:$viewValue | limitTo:5"
+							typeahead-min-length='1'
+							typeahead-on-select=''
+							ng-keyup="searchMyTeams(selectedTeamB)"
+							typeahead-template-url="customTemplateTeamB.html"
+							class="form-control"  style="">
+						<i class="icon-search nav-search-icon"></i>					
+					</div>
+				</div>				
+				
+					<div class="form-group" ng-controller="searchUserCtrl">
+						<script type="text/ng-template" id="customTemplateTeamB.html">
+                       <a>	
+                       <div class="row">
+                          <div class="col-md-2">
+                            <img src="images/team/team1.jpg" style="height:45px;width:45px">
+                          </div>
+						  <div class="col-md-10">
+                             <div class="col-md-12">
+                              <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+							 </div>
+							 <div class="col-md-12">
+                               <i>({{match.model.city}},{{match.model.area}})</i>
+							 </div>   
+                          </div>
+                        </div>                     
+                     </a>
+	                 </script>
+					 <label class="col-md-4 control-label" for="textinput">Scorer</label>
+					<div class="col-md-4">					    
+						<input type="text" ng-model="$parent.selectedScorer"
+							placeholder="Select Scorer"
+							typeahead="c as c.name for c in userList | filter:$viewValue | limitTo:5"
+							typeahead-min-length='1'
+							typeahead-on-select=''
+							ng-keyup="searchUser(selectedScorer)"
+							typeahead-template-url="customTemplateTeamB.html"
+							class="form-control"  style="" ng-pattern="/^[a-zA-Z\s]*$/" >
+						<i class="icon-search nav-search-icon"></i>	
+						<span
+							style="color: red"
+							ng-show="matchForm.scorer.$invalid && submitted"> <span
+							ng-show="matchForm.scorer.$error.required">Scorer is required.</span> <span
+							ng-show="matchForm.scorer.$error.pattern">Scorer
+								cannot contain numbers or special characters</span>				
+					</div>
+				</div>			
+
+				<!-- Text input-->
+				<!--<div class="form-group">
+					<label class="col-md-4 control-label" for="textinput">Venue</label>
+					<div class="col-md-4">
+						<input name="venue" ng-model="venue" type="text"
+							placeholder="Venue" class="form-control input-md"
+							required=""> <span style="color: red"
+							ng-show="matchForm.venue.$invalid && submitted">
+							<span ng-show="matchForm.venue.$error.required">Venue is required</span>
+						</span>
+					</div>
+				</div>-->
+				
+				<div class="form-group" ng-controller="getGroundsByNameCtrl">
+					<script type="text/ng-template" id="customTemplateGround.html">
+                       <a>	
+                       <div class="row">
+                          <div class="col-md-2">
+                            <img src="images/team/team1.jpg" style="height:45px;width:45px">
+                          </div>
+						  <div class="col-md-10">
+                             <div class="col-md-12">
+                              <span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+							 </div>
+							 <div class="col-md-12">
+                               <i>({{match.model.city}},{{match.model.area}})</i>
+							 </div>   
+                          </div>
+                        </div>                     
+                     </a>
+	                 </script>
+					 <label class="col-md-4 control-label" for="textinput">Venue</label>
+					<div class="col-md-4">					    
+						<input type="text" ng-model="$parent.selectedVenue"
+							placeholder="Select Your Team"
+							typeahead="c as c.name for c in groundList | filter:$viewValue | limitTo:5"
+							typeahead-min-length='1'
+							typeahead-on-select=''
+							ng-keyup="searchGround(selectedVenue)"
+							typeahead-template-url="customTemplateGround.html"
+							class="form-control"  style="">
+						<i class="icon-search nav-search-icon"></i>					
+					</div>
+				</div>	
+				
+
+				<!-- Text input-->
+				<div class="form-group">
+					<label class="col-md-4 control-label" for="textinput">No Of Overs</label>
+					<div class="col-md-4">
+						<input name="overs" ng-model="overs" type="text"
+							ng-pattern="/^[a-zA-Z\s]*$/" placeholder="Overs"
+							class="form-control input-md" required=""> <span
+							style="color: red"
+							ng-show="matchForm.overs.$invalid && submitted"> <span
+							ng-show="matchForm.overs.$error.required && submitted">Overs
+								is required.</span> <span ng-show="matchForm.landMark.$error.pattern">Overs
+								cannot contain numbers or special characters</span>
+						</span>
+					</div>
+				</div>			
+				
+				<!-- Multiple Checkboxes (inline) -->
+				<div class="form-group" ng-controller="ballTypeCtrl">
+					<label class="col-md-4 control-label" for="checkboxes">Ball
+						Type</label>
+					<div class="col-md-7">
+						<div class="row" style="padding: 2px;">							
+							<div class="col-md-7">
+							  <select ng-model="$parent.ballType" class='form-control'>
+							    <option ng-repeat='bt in ballTypes' value="{{bt.ballId}}">
+							    {{bt.ballType}}
+                                </option>
+							  </select>						 
+							</div>																				
+						</div>
+					</div>
+				</div>
+				<!-- Multiple Checkboxes (inline) -->
+				<div class="form-group" ng-controller="pitchTypeCtrl">
+					<label class="col-md-4 control-label" for="checkboxes">Pitch
+						type</label>
+					<div class="col-md-4">
+					   <select ng-model="$parent.pitchType" class='form-control'>
+						    <option ng-repeat='pt in pitchTypes' value="{{pt.id}}">
+						    {{pt.pitchType}}
+                            </option>
+					  </select>
+					</div>
+				</div>				
+			</fieldset>
+			<!-- Button-->
+			<div class="alert alert-success" ng-show="isSuccess">
+				<a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+				<strong>Status!</strong> Ground Information Added Successfully.
+			</div>
+			<hr>
+			<div class="form-group">
+				<label class="col-md-4 control-label" for="singlebutton"></label>
+				<div class="col-md-4 center-block">
+					<button id="singlebutton" name="singlebutton" type="submit"
+						class="btn btn-primary center-block"
+						ng-click="createMatch();submitted = true">Submit</button>
+				</div>
+			</div>
+		</form>
+	</div>
+</div>

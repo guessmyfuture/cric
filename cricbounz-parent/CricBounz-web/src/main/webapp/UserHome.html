@@ -17,6 +17,7 @@
         <link href="css/tooltip.css" rel="stylesheet" type="text/css"/>
         <link href="css/ngGallery.css" rel="stylesheet" type="text/css"/>        
         <!--<link href="css/jquery-ui.min.css" rel="stylesheet" type="text/css"/> -->
+        <link href="css/massautocomplete.theme.css" rel="stylesheet" type="text/css"/>
 
         <script src="js/jquery.min.js"></script>
         <script src="js/bootstrap.min.js"></script>            
@@ -31,7 +32,7 @@
         <div ng-include="'partials/header.html'"></div>
         <div class="container-fluid">
             <div class="row no-gutters">
-                <div ng-include="'partials/left_side.html'"></div>                                
+                <div ng-include="leftSideTemplate"></div>                                
                  <div ng-view></div>
                 <div ng-include="'partials/right_side.html'"></div>                
             </div><!--end row --> 
@@ -53,9 +54,13 @@
         <script src="js/angular/Tournament/tournamentController.js" type="text/javascript"></script>
         <script src="js/angular/User/userController.js" type="text/javascript"></script>
         <script src="js/angular/com/loadController.js" type="text/javascript"></script>
+        <script src="js/angular/Match/matchController.js" type="text/javascript"></script>
+        
         <script src="js/customSelect.js" type="text/javascript"></script>
         <script src="js/angular/Team/scoreCard.js" type="text/javascript"></script>        
         <script src="js/angular/com/ng-file-upload.min.js" type="text/javascript"></script>    
         <script src="js/angular-contextual-date.js" type="text/javascript"></script>
+         <script src="js/angular-sanitize.js" type="text/javascript"></script>
+        <script src="js/massautocomplete.js" type="text/javascript"></script>
 </body>
 </html>

@@ -1,145 +1,6 @@
 <!--Column middle-->
-<div class="col-md-6" id="content" style='border: 0px solid green;'
-	ng-controller="dashBoardCtrl">
-	<div class="row">
-		<div class="panel with-nav-tabs panel-primary">
-			<div class="panel-heading clearfix">
-				<div>
-					<ul class="nav nav-tabs">
-						<li class="active expand"><a data-target="#update"
-							data-toggle="tab">Update Status</a></li>
-						<li class="expand"><a data-target="#photos" data-toggle="tab">Upload
-								Photos</a></li>
-						<li class="expand"><a data-target="#videos" data-toggle="tab">Upload
-								Videos</a></li>
-					</ul>
-				</div>
-			</div>
-			<div class="panel-body">
-				<div class="tab-content">
-					<div class="tab-pane fade in active" id="update">
-						<div class="panel panel-default">
-							<div class="panel-body">
-								<textarea name="message" cols="40" rows="10" id="status_message"
-									class="form-control message"
-									style="height: 62px; overflow: hidden;"
-									placeholder="What's on your mind ?" ng-model="statusMessage"></textarea>
-							</div>
-							<div class="panel-footer">
-								<div class="row">
-									<div class="col-md-7">
-										<div class="form-group">
-											<div class="btn-group">
-												<button type="button" class="btn btn-default">
-													<i class="icon icon-map-marker"></i> Location
-												</button>
-												<button type="button" class="btn btn-default">
-													<i class="icon icon-picture"></i> Photo
-												</button>
-											</div>
-										</div>
-									</div>
-									<div class="col-md-5">
-										<div class="form-group">
-											<select name="privacy"
-												class="form-control privacy-dropdown pull-left input-sm">
-												<option value="1" selected="selected">Public</option>
-												<option value="2">Only my friends</option>
-												<option value="3">Only me</option>
-											</select>
-											<button class="btn btn-primary" ng-click="postUserPost();"
-												style="margin-top: 8px; width: 80px;">Post</button>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="tab-pane fade" id="photos"
-						ng-controller="ImageUploadMultipleCtrl">
-						<div class="col-md-12"
-							style="text-align: center; margin-bottom: 10px;">
-							<input type="file" id="file" name="file"
-								ng-files="getTheFiles($files)"
-								onchange="angular.element(this).scope().setFile(this);"
-								accept="image/*" class="btn btn-warning" />
-						</div>
-						<div class="col-md-12" style="padding: 10px;">
-							Caption Text :<input type="text" ng-model="caption" />
-						</div>
-						<div class="col-md-12">
-							<button ng-click="uploadFiles()" class="btn btn-primary">Upload
-								File</button>
-						</div>
-
-						<div class="col-md-12">
-							<div class="row">
-								<div class="col-md-3" ng-repeat="file in fileList"
-									style="padding: 5px;">
-									<div class="panel panel-default">
-										<div class="panel-body">
-											<img class="img img-responsive" ng-src="{{file.imageData}}" />
-										</div>
-										<div class="panel-heading" ng-show="file.caption">{{file.caption}}</div>
-										<div class="panel-footer">
-											<div class="col-md-12" style="padding: 4px;">
-												<span id="{{'P' + $index}}"
-													style="margin-top: -12px; color: red; fonts-size: 15px;"
-													class="pull-left"></span> <a ng-click="removeFile($index);"
-													class="pull-right" style="margin-top: -12px;"> <span
-													class="glyphicon glyphicon-remove"></span>
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="tab-pane fade" id="videos"
-						ng-controller="videoUploadCtrl">
-						<div class="col-md-12"
-							style="text-align: center; margin-bottom: 10px;">
-							<input type="file" id="file" name="file"
-								ng-files="getTheFiles($files)"
-								onchange="angular.element(this).scope().setFile(this);"
-								accept="video/*" class="btn btn-warning" />
-						</div>
-						<div class="col-md-12" style="padding: 10px;">
-							Caption Text :<input type="text" ng-model="caption" />
-						</div>
-						<div class="col-md-12">
-							<button ng-click="uploadFiles()" class="btn btn-primary">Upload
-								Video</button>
-						</div>
-						<div class="col-md-12">
-							<div class="row">
-								<div class="col-md-3" ng-repeat="file in fileList"
-									style="padding: 5px;">
-									<div class="panel panel-default">
-										<div class="panel-body">
-											<img class="img img-responsive" ng-src="{{file.imageData}}" />
-										</div>
-										<div class="panel-heading" ng-show="file.caption">{{file.caption}}</div>
-										<div class="panel-footer">
-											<div class="col-md-12" style="padding: 4px;">
-												<span id="{{'P' + $index}}"
-													style="margin-top: -12px; color: red; fonts-size: 15px;"
-													class="pull-left"></span> <a ng-click="removeFile($index);"
-													class="pull-right" style="margin-top: -12px;"> <span
-													class="glyphicon glyphicon-remove"></span>
-												</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+<div class="col-md-12" id="content" style='border: 0px solid green;'
+	ng-controller="dashBoardCtrl">	
 	<!--Column middle Start-->
 	<div class="row">
 		<div infinite-scroll="loadItems()" infinite-scroll-distance="10">
@@ -176,7 +37,7 @@
 							<section class="mbr-gallery mbr-section mbr-section--no-padding">
 							   
 							   
-							  <!--  <ng-gallery images="post.postedImagesJson" thumbs-num="4">
+							   <!-- <ng-gallery images="post.postedImagesJson" thumbs-num="4">
                                 </ng-gallery> -->  
                               
 							
@@ -283,7 +144,7 @@
 																		</div>
 																	</div>
 																</section>
-																<!-- <section
+																<section
 																	class="mbr-gallery mbr-section mbr-section--no-padding">
 																	<div class="mbr-gallery-layout-default">
 																		<div class="row mbr-gallery-row no-gutter">
@@ -321,7 +182,7 @@
 																			</div>
 																		</div>
 																	</div>
-																</section> -->
+																</section>
 															</div>
 														</div>
 													</div>
@@ -332,6 +193,8 @@
 												</div>
 											</div>
 											<div class="panel-footer">
+											 
+											
 											<div class="col-md-4"> 
 											<div class="form-group">
 											<select name="privacy"
@@ -387,7 +250,7 @@
 											<div class="col-md-8 less-padding">
 												<div class="form-group">
 													<textarea
-														placeholder="place your comments.Try Shift + Enter for new line"
+														placeholder="place your comments.Try Shift + Enter for new line jai1"
 														style='width: 100%' ng-model="post.myComment"
 														enter-submit="$parent.currentComments =  post.commentDetailsList; updateComment(post.postId, 
                                                               post.myComment); post.myComment = ''"></textarea>

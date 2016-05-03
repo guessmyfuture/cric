@@ -1,20 +1,19 @@
-<div class="col-md-6" ng-controller="detailTeamViewCtrl">   
-    <div ng-show="myTeam">
-        <h4 ng-show="false">{{myTeam.teamName}} {{myTeam| json}}</h4>    
+<div class="col-md-6" ng-controller="teamDetailViewCtrl">  
+    <div>
+        <h4 ng-show="false"> {{team| json}}</h4>    
         <div class="row" style='background-color:#11C1F3;'>
             <div class="col-md-5"> 
                 <div class='row slide'>
                     <div class="col-sm-12">
-                        <img src="{{myTeam.imageUrl}}" class="img  center-block" alt="Virendra Sehwag" width="140" height="95" style="margin-top:20px;">	
+                        <img src="images/user/1.jpg" class="img  center-block" alt="Virendra Sehwag" width="140" height="95" style="margin-top:20px;">	
                     </div>
                 </div>
                 <div class='row slide'>
                     <div class="col-sm-8" style='margin-top:15px;margin-left:55px;'>
-                        Name:<a href="">{{myTeam.teamName}}</a><br>                   
-                        <span class="uneditable-input">Role: {{myTeam.role}}</span><br>
-                        <span class="uneditable-input">Average: {{myTeam.average}}</span> <br>
-                        <span class="uneditable-input">Strike Rate: {{myTeam.strikeRate}}</span><br>
-                        <span class="uneditable-input">Captain Rate: {{myTeam.captainName}}</span>
+                        Name:<a href="">{{team.name}}</a><br>                   
+                        <span class="uneditable-input">City: {{team.city}}</span><br>
+                        <span class="uneditable-input">Area: {{team.area}}</span> <br>
+                        <span class="uneditable-input">Captain: {{team.captain}}</span><br>
                     </div>
                 </div>	
             </div>
@@ -23,16 +22,16 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-6" ng-repeat="tm in myTeam.userList" style="margin-top: 5px;">
+            <div class="col-md-6" ng-repeat="tm in team.playesDetailsList" style="margin-top: 5px;">
                 <div class="col-md-12"  style="border: 1px solid #000000;background-color:#11C1F3;color:#FFFFFF;">
                     <div class='row slide' style="padding:5px;">
                         <div class="col-md-4" class="img-responsive">
-                            <a href="#user_profile/{{tm.userId}}">                                
-                                <img src="{{tm.userImageUrl}}" class="img img-thumbnail" alt="Virendra Sehwag" style="height:80px;">	
+                            <a href="#user_profile/{{tm.userID}}">                                
+                                <img src="{{tm.userImage}}" class="img img-thumbnail" alt="{{tm.userName}}" style="height:80px;">	
                             </a>
                         </div>                
                         <div class="col-md-8">
-                            Name:<a href="#user_profile/{{tm.userId}}">{{tm.name}}</a><br>
+                            Name:<a href="#user_profile/{{tm.userID}}">{{tm.userName}}</a><br>
                             <span class="uneditable-input">Role: {{tm.role}}</span><br>                    
                             <span class="uneditable-input">Average: {{tm.average}}</span> <br>
                             <span class="uneditable-input">Strike Rate: {{tm.strikeRate}}</span>

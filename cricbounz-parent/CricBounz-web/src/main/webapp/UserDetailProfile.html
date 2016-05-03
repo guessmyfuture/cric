@@ -1,17 +1,18 @@
 <div class="col-md-6" ng-controller="viewUserProfileCtrl">
-
-    <fieldset><legend>Profile</legend>
-        <table class="table table-borderless">
-            <tr ng-show="false">
-              <td colspan='2'>{{user | json}}</td>
-            </tr>
-            <tr>
+    <div ng-show='false'>{{userDetail| json}}</div>
+    <div class="row">
+        <div class="col-md-4 less-padding">
+            <img src="images/2.jpg" class="img img-responsive img-thumbnail">
+        </div>
+        <div class="col-md-6 less-padding">
+            <table class="table bg-info">
+                <tr>
             
                 <th>Name:</th>
                 <th>{{user.name}}</th></tr>
             <tr>
                 <th>DOB</th>
-                <th>{{user.dob}}</th>
+                <th>{{user.dob | date:'MM/dd/yyyy'}}</th>
             </tr>
             <tr>
                 <th>Team</th>
@@ -23,431 +24,264 @@
                 <th>Bowling Style</th>
                 <th>{{user.bowlingStyle}} ({{user.bowlingType}})</th>
             </tr>
-        </table>
-    </fieldset>
-
-    <fieldset>  
-        <legend>Batting Careers</legend>  
-        <div class="table-responsive">          
-            <table class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th align='center' title="Ball Type">
-                            BT
-                        </th>
-                        <th align='center'>
-                            Matches
-                        </th>
-                        <th align='center'>
-                            Innings
-                        </th >
-                        <th align='center'>
-                            Not Out
-                        </th >
-                        <th align='center'>
-                            Runs
-                        </th>
-                        <th align='center'>
-                            BF
-                        </th>
-                        <th align='center'>
-                            Average
-                        </th>
-
-                        <th align='center' title="Strike Rate">
-                            SR
-                        </th>
-                        <th align='center'>
-                            100's
-                        </th>
-                        <th align='center'>
-                            50's</th>
-                        <th align='center'>
-                            6's</th>
-                        <th align='center'>
-                            4's</th>
-                        <th align='center' title="High Score">
-                            HS
-                        </th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td align='center'>
-                            Red cosco
-                        </td>
-                        <td align='center'>
-                            20
-                        </td>
-                        <td align='center'>
-                            18
-                        </td>
-                        <td align='center'>
-                            65
-                        </td>
-                        <td align='center'>
-                            510
-                        </td>
-                        <td align='center'>
-                            769
-                        </td>
-                        <td align='center'>
-                            38.89
-                        </td>
-                        <td align='center'>
-                            76.65
-                        </td>
-                        <td align='center'>
-                            769
-                        </td>
-                        <td align='center'>
-                            4
-                        </td>
-                        <td align='center'>
-                            7
-                        </td>
-                        <td align='center'>
-                            21
-                        </td>
-                        <td align='center'>
-                            77
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align='center'>
-                            Red cosco
-                        </td>
-                        <td align='center'>
-                            20
-                        </td>
-                        <td align='center'>
-                            18
-                        </td>
-                        <td align='center'>
-                            65
-                        </td>
-                        <td align='center'>
-                            510
-                        </td>
-                        <td align='center'>
-                            769
-                        </td>
-                        <td align='center'>
-                            38.89
-                        </td>
-                        <td align='center'>
-                            76.65
-                        </td>
-                        <td align='center'>
-                            769
-                        </td>
-                        <td align='center'>
-                            4
-                        </td>
-                        <td align='center'>
-                            7
-                        </td>
-                        <td align='center'>
-                            21
-                        </td>
-                        <td align='center'>
-                            77
-                        </td>
-                    </tr><tr>
-                        <td align='center'>
-                            Red cosco
-                        </td>
-                        <td align='center'>
-                            20
-                        </td>
-                        <td align='center'>
-                            18
-                        </td>
-                        <td align='center'>
-                            65
-                        </td>
-                        <td align='center'>
-                            510
-                        </td>
-                        <td align='center'>
-                            769
-                        </td>
-                        <td align='center'>
-                            38.89
-                        </td>
-                        <td align='center'>
-                            76.65
-                        </td>
-                        <td align='center'>
-                            769
-                        </td>
-                        <td align='center'>
-                            4
-                        </td>
-                        <td align='center'>
-                            7
-                        </td>
-                        <td align='center'>
-                            21
-                        </td>
-                        <td align='center'>
-                            77
-                        </td>
-                    </tr><tr>
-                        <td align='center'>
-                            Red cosco
-                        </td>
-                        <td align='center'>
-                            20
-                        </td>
-                        <td align='center'>
-                            18
-                        </td>
-                        <td align='center'>
-                            65
-                        </td>
-                        <td align='center'>
-                            510
-                        </td>
-                        <td align='center'>
-                            769
-                        </td>
-                        <td align='center'>
-                            38.89
-                        </td>
-                        <td align='center'>
-                            76.65
-                        </td>
-                        <td align='center'>
-                            769
-                        </td>
-                        <td align='center'>
-                            4
-                        </td>
-                        <td align='center'>
-                            7
-                        </td>
-                        <td align='center'>
-                            21
-                        </td>
-                        <td align='center'>
-                            77
-                        </td>
-                    </tr>
-                </tbody>
             </table>
         </div>
-    </fieldset>
+        <div class="row">
+      <div class="col-md-12">
+        <div class="custom-tab">
+    <div class="custom-tab-inner info">
+        <ul class="nav nav-tabs nav-tabs-user">
+            <li class="active">
+                <a data-target="#records" data-toggle="tab" title="Career Records">
+                    <span class="rounded">
+                        <i class="glyphicon glyphicon-tasks"></i>
+                    </span>
+                </a>
+            </li>
 
+            <li>
+                <a data-target="#friends" data-toggle="tab" title="Friends">
+                    <span class="rounded">
+                        <i class="glyphicon glyphicon-user"></i>
+                    </span> 
+                </a>
+            </li>
+            <li>
+                <a data-target="#photos" data-toggle="tab" title="Photos">
+                    <span class="rounded">
+                        <i class="glyphicon glyphicon-camera"></i>
+                    </span>
+                </a>
+            </li>
+			<li>
+                <a data-target="#videos" data-toggle="tab" title="Videos">
+                    <span class="rounded">
+                        <i class="glyphicon glyphicon-facetime-video"></i>
+                    </span> 
+                </a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="tab-content">
+        <div class="tab-pane fade in active" id="records">
+           <div ng-include="'CareerRecords.html'"></div>
+        </div>
+        <div class="tab-pane fade" id="friends">
+              <div class="col-md-12">
     <fieldset>
-        <legend>Bowling Careers</legend>
+        <legend>Friends</legend>
+        <div class="row">
+            <div class="col-sm-6" >
+                <div class="col-sm-4">
+                    <a href="#"><img src="images/2.jpg" class= "img-box"  alt="Virendra Sehwag" width="75" height="75"> </a>	
+                </div> 
+                <div class="col-sm-8">
+                    <span class="uneditable-input">
+                        Name: <a href=""> Suresh</a></span><br>
+                    <span class="uneditable-input"> Area:Medavakkam</span> <br>
+                    <span class="uneditable-input">City: chennai</span>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="col-sm-4">
+                    <a href="#"><img src="images/1.jpg" class= "img-box"  alt="Virendra Sehwag" width="75" height="75"> </a>	
+                </div> 
+                <div class="col-sm-8">
 
-        <div class="table-responsive">          
-            <table class="table table-hover table-striped">
-                <thead>
-                    <tr>
-                        <th align='center' title="Ball Type">
-                            BT
-                        </th>
-                        <th align='center'>
-                            Matches
-                        </th>
-                        <th align='center'>
-                            Innings
-                        </th >
-                        <th align='center'>
-                            Balls
-                        </th >
-                        <th align='center'>
-                            Runs
-                        </th>
-                        <th align='center'>
-                            Wickets
-                        </th>
-                        <th align='center'>
-                            Average
-                        </th>
-                        <th align='center'>
-                            Economy
-                        </th>
-                        <th align='center' title="Strike Rate">
-                            SR
-                        </th>
-                        <th align='center'>
-                            Wickets
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td align='center'>
-                            Red Cosco
-                        </td>
-                        <td align='center'>
-                            21
-                        </td>
-                        <td align='center'>
-                            21
-                        </td>
-                        <td align='center'>
-                            850
-                        </td>
-                        <td align='center'>
-                            767
-                        </td>
-                        <td align='center'>
-                            15
-                        </td>
-                        <td align='center'>
-                            8
-                        </td>
-                        <td align='center'>
-                            29
-                        </td>
-                        <td align='center'>
-                            76.0
-                        </td>
-                        <td align='center'>
-                            0
-                        </td>
-                    </tr>
+                    <span class="uneditable-input">
+                        Captain Name:<a href=""> Aravindan</a></span><br>
+                         <span class="uneditable-input">Area: Tambaram</span> <br>
+                    <span class="uneditable-input">City: Chennai</span> 
+                   
+                </div>
+
+            </div>	
+        </div>
 
 
+        <div class="row" style='margin-top:15px;'>
 
-                    <tr>
-                        <td align='center'>
-                            Red Cosco
-                        </td>
-                        <td align='center'>
-                            21
-                        </td>
-                        <td align='center'>
-                            21
-                        </td>
-                        <td align='center'>
-                            850
-                        </td>
-                        <td align='center'>
-                            767
-                        </td>
-                        <td align='center'>
-                            15
-                        </td>
-                        <td align='center'>
-                            8
-                        </td>
-                        <td align='center'>
-                            29
-                        </td>
-                        <td align='center'>
-                            76.0
-                        </td>
-                        <td align='center'>
-                            0
-                        </td>
-                    </tr>
+            <div class="col-sm-6">
+
+                <div class="col-sm-4">
+                    <a href="#">
+                        <img src="images/1.jpg" class="img-box" alt="Virendra Sehwag" width="75"  height="75"></a>
+                </div>
+                <div class="col-sm-8">
+
+                    <span class="uneditable-input">
+                        Captain Name: <a href=""> Karthi</a></span><br>
+                    <span class="uneditable-input">Area: velacherry</span> <br>
+                    <span class="uneditable-input">City: Chennai</span>
+                </div>
+            </div>
+            <div class="col-sm-6">
+
+                <div class="col-sm-4">
+                    <a href="#">
+                        <img src="images/1.jpg" class="img-box" alt="Virendra Sehwag" width="75"  height="75"></a>
+                </div>
+                <div class="col-sm-8">
+
+                    <span class="uneditable-input">
+                        Captain Name: <a href=""> Robert</a></span><br>
+                    <span class="uneditable-input">Area: Avadi</span> <br>
+                    <span class="uneditable-input">City: Kanchipuram</span>
+                </div>
+            </div>
 
 
-
-                    <tr>
-                        <td align='center'>
-                            Red Cosco
-                        </td>
-                        <td align='center'>
-                            21
-                        </td>
-                        <td align='center'>
-                            21
-                        </td>
-                        <td align='center'>
-                            850
-                        </td>
-                        <td align='center'>
-                            767
-                        </td>
-                        <td align='center'>
-                            15
-                        </td>
-                        <td align='center'>
-                            8
-                        </td>
-                        <td align='center'>
-                            29
-                        </td>
-                        <td align='center'>
-                            76.0
-                        </td>
-                        <td align='center'>
-                            0
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td align='center'>
-                            Red Cosco
-                        </td>
-                        <td align='center'>
-                            21
-                        </td>
-                        <td align='center'>
-                            21
-                        </td>
-                        <td align='center'>
-                            850
-                        </td>
-                        <td align='center'>
-                            767
-                        </td>
-                        <td align='center'>
-                            15
-                        </td>
-                        <td align='center'>
-                            8
-                        </td>
-                        <td align='center'>
-                            29
-                        </td>
-                        <td align='center'>
-                            76.0
-                        </td>
-                        <td align='center'>
-                            0
-                        </td>
-                    </tr>
-                    <tr>
-                        <td align='center'>
-                            Red Cosco
-                        </td>
-                        <td align='center'>
-                            21
-                        </td>
-                        <td align='center'>
-                            21
-                        </td>
-                        <td align='center'>
-                            850
-                        </td>
-                        <td align='center'>
-                            767
-                        </td>
-                        <td align='center'>
-                            15
-                        </td>
-                        <td align='center'>
-                            8
-                        </td>
-                        <td align='center'>
-                            29
-                        </td>
-                        <td align='center'>
-                            76.0
-                        </td>
-                        <td align='center'>
-                            0
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
 
         </div>
-    </fieldset>
+        <div class="row" style='margin-top:15px;'>
 
+            <div class="col-sm-6">
+
+                <div class="col-sm-4">
+                    <a href="#">
+                        <img src="images/3.jpg" class="img-box" alt="Virendra Sehwag" width="75"  height="75"></a>
+                </div>
+                <div class="col-sm-8">
+
+                    <span class="uneditable-input">
+                        Captain Name: <a href=""> Harish</a></span><br>
+                    <span class="uneditable-input">Area: Guindy</span> <br>
+                    <span class="uneditable-input">City:Chennai</span>
+                </div>
+            </div>
+             <div class="col-sm-6">
+
+                <div class="col-sm-4">
+                    <a href="#">
+                        <img src="images/2.jpg" class="img-box" alt="Virendra Sehwag" width="75"  height="75"></a>
+                </div>
+                <div class="col-sm-8">
+
+                    <span class="uneditable-input">
+                        Captain Name: <a href=""> Abilash</a></span><br>
+                    <span class="uneditable-input">Area: Perambur</span> <br>
+                    <span class="uneditable-input">City: Velacherry</span>
+                </div>
+            </div>
+
+        </div>  
+        <div class="row" style='margin-top:15px;'>
+
+            <div class="col-sm-6">
+
+                <div class="col-sm-4">
+                    <a href="#">
+                        <img src="images/2.jpg" class="img-box" alt="Virendra Sehwag" width="75"  height="75"></a>
+                </div>
+                <div class="col-sm-8">
+
+                    <span class="uneditable-input">
+                        Captain Name: <a href=""> Abilash</a></span><br>
+                    <span class="uneditable-input">Area: Perambur</span> <br>
+                    <span class="uneditable-input">City: Velacherry</span>
+                </div>
+            </div>
+             <div class="col-sm-6">
+
+                <div class="col-sm-4">
+                    <a href="#">
+                        <img src="images/2.jpg" class="img-box" alt="Virendra Sehwag" width="75"  height="75"></a>
+                </div>
+                <div class="col-sm-8">
+
+                    <span class="uneditable-input">
+                        Captain Name: <a href=""> Abilash</a></span><br>
+                    <span class="uneditable-input">Area: Perambur</span> <br>
+                    <span class="uneditable-input">City: Velacherry</span>
+                </div>
+            </div>
+
+        </div>
+          <div class="row" style='margin-top:15px;'>
+
+            <div class="col-sm-6">
+
+                <div class="col-sm-4">
+                    <a href="#">
+                        <img src="images/2.jpg" class="img-box" alt="Virendra Sehwag" width="75"  height="75"></a>
+                </div>
+                <div class="col-sm-8">
+
+                    <span class="uneditable-input">
+                        Captain Name: <a href=""> Abilash</a></span><br>
+                    <span class="uneditable-input">Area: Perambur</span> <br>
+                    <span class="uneditable-input">City: Velacherry</span>
+                </div>
+            </div>
+             <div class="col-sm-6">
+
+                <div class="col-sm-4">
+                    <a href="#">
+                        <img src="images/2.jpg" class="img-box" alt="Virendra Sehwag" width="75"  height="75"></a>
+                </div>
+                <div class="col-sm-8">
+
+                    <span class="uneditable-input">
+                        Captain Name: <a href=""> Abilash</a></span><br>
+                    <span class="uneditable-input">Area: Perambur</span> <br>
+                    <span class="uneditable-input">City: Velacherry</span>
+                </div>
+            </div>
+
+        </div>
+
+          <div class="row" style='margin-top:15px;'>
+
+            <div class="col-sm-6">
+
+                <div class="col-sm-4">
+                    <a href="#">
+                        <img src="images/2.jpg" class="img-box" alt="Virendra Sehwag" width="75"  height="75"></a>
+                </div>
+                <div class="col-sm-8">
+
+                    <span class="uneditable-input">
+                        Captain Name: <a href=""> Abilash</a></span><br>
+                    <span class="uneditable-input">Area: Perambur</span> <br>
+                    <span class="uneditable-input">City: Velacherry</span>
+                </div>
+            </div>
+             <div class="col-sm-6">
+
+                <div class="col-sm-4">
+                    <a href="#">
+                        <img src="images/2.jpg" class="img-box" alt="Virendra Sehwag" width="75"  height="75"></a>
+                </div>
+                <div class="col-sm-8">
+
+                    <span class="uneditable-input">
+                        Captain Name: <a href=""> Abilash</a></span><br>
+                    <span class="uneditable-input">Area: Perambur</span> <br>
+                    <span class="uneditable-input">City: Velacherry</span>
+                </div>
+            </div>
+        </div>
+</div>              
+</div>
+        <div class="tab-pane fade" id="photos">
+             <img class="img-thumbnail" src="https://en.gravatar.com/userimage/24822979/532d74db01eae5901f8b4708d5822d86.jpeg" data-holder-rendered="true" >
+            <img class="img-thumbnail" src="https://en.gravatar.com/userimage/24822979/532d74db01eae5901f8b4708d5822d86.jpeg" data-holder-rendered="true">
+           
+        </div>
+
+		<div class="tab-pane fade" id="videos">
+            <h3 class="head text-center">Videos </h3>
+           
+        </div>
+        <div class="clearfix"></div>
+    </div>
+</div>
+</div>
+  </div>
+  <div class="row">
+    <div class="col-md-12" ng-include="'partials/my_posts.html'">
+  
+    </div>
+  </div>
+</div>

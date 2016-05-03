@@ -6,10 +6,8 @@
 var groundApp = angular.module('groundModule', []);
 groundApp.controller("CreateNewGroundCtrl", function ($scope, $http) {
 	$scope.isSuccess=false;
-	
     $scope.postAddGround = function () {
-        var pitch = [];
-
+        var pitch = [];  
         if (!angular.isUndefined($scope.pitchTurf))
         {
             if ($scope.pitchTurf)
@@ -32,7 +30,7 @@ groundApp.controller("CreateNewGroundCtrl", function ($scope, $http) {
                 pitch.push(pitch2);
             }
         }
-
+     
         for (i = 0; i < $scope.slots.length; i++)
         {
             if (!angular.isUndefined($scope.slots[i].startTime) && !angular.isUndefined($scope.slots[i].endTime))
@@ -42,7 +40,7 @@ groundApp.controller("CreateNewGroundCtrl", function ($scope, $http) {
                // alert($scope.slots[i].startTime + ' ' + $scope.slots[i].endTime);
             }
         }      
-        
+      
         var ballIds='';       
         angular.forEach($scope.addedBallTypes, function(value,key){
         	if(key==0)
@@ -54,7 +52,7 @@ groundApp.controller("CreateNewGroundCtrl", function ($scope, $http) {
         		ballIds=ballIds+","+value.ballId;
         	}
         });
-        
+     
         var pitches='';
         angular.forEach(pitch, function(value,key){
         	if(key==0)
@@ -66,22 +64,26 @@ groundApp.controller("CreateNewGroundCtrl", function ($scope, $http) {
         		pitches=pitches+","+value.name;
         	}
         });        
+      
+       // alert(angular.toJson($scope.city));
+      //alert($scope.a);
+        
         
         var data = {
-            city: $scope.city.cityName,
+            city: $scope.city,
             area: $scope.area,
             name: $scope.groundName,
             address: $scope.groundAddress,
             landmark: $scope.landMark,
-            manager: $scope.manager,            
+            //manager: ,            
             contactno:$scope.contactno,
             balltype: ballIds,
             pitchtype: pitches,
-            groundSlotsList:$scope.slots
+            slotsList:$scope.slots
         };
-       
-       console.warn("hit the servicer: "+angular.toJson(data));
-        
+        //alert(angular.toJson(data));
+       //console.warn("create ground data: "+angular.toJson(data));
+        //return;
         var config = {
             headers: {
                 'Content-Type': 'application/json'
@@ -106,34 +108,142 @@ groundApp.controller("CreateNewGroundCtrl", function ($scope, $http) {
     };
 });
 
+
+groundApp.controller("getGroundsByNameCtrl", function ($scope, $http) {	
+	$scope.searchGround=function(searchText)
+	{
+		//alert(searchText);
+		var url="service/rest/ground/getGroundsByName?searchText="+searchText;	
+		$http.get(url)
+	    .then(function (res) {
+	        $scope.groundList= res.data;
+	        console.log(angular.toJson($scope.groundList));
+	        //alert(angular.toJson($scope.groundList));
+	    });	
+	}
+});
+
+groundApp.controller("ViewMyBookingCtrl", function ($scope, $http) {	
+	var url="service/rest/ground/myBookingHistory";	
+	$http.get(url)
+    .then(function (res) {
+        $scope.myBookings= res.data;
+        console.log(angular.toJson($scope.myBookings));
+        
+    });	
+});
+
+groundApp.controller("viewGroundDetailCtrl", function ($scope, $http,$routeParams) {
+	//alert($routeParams.groundId);
+	//return;	
+	var url="service/rest/ground/getgrounddetails?groundId="+$routeParams.groundId;	
+	$http.get(url)
+    .then(function (res) {
+        $scope.groundDetail= res.data;
+        console.log(angular.toJson($scope.groundDetail));
+        
+    });	
+});
+
+
+
 groundApp.controller("BookGroundCtrl", function ($scope, $http) {	
 	
-	$scope.getSlotDetails = function () {
-		//alert(angular.toJson($scope.selectedGround));
-		var ground=$scope.selectedGround;
-		var grounId=ground.groundId;
-        var date=$scope.date;		
-		var url='service/rest/ground/getavailableslots?groundId='+ground.groundId+'&date='+date;
-		alert(url);
+	$scope.bindGroundDetails=function(cityObj,areaObj)
+	{		
+		$http.get('service/rest/ground/getGrounds?city='+cityObj.city+'&area='+areaObj.area)
+          .then(function (res) {
+              $scope.grounds = res.data;
+              console.log(angular.toJson($scope.grounds));
+          });
+	}
+
+	
+	$scope.getSlotDetails = function () {       
+        if(angular.isUndefined($scope.selectedGround) && angular.isUndefined($scope.date))
+        {
+        	alert('Choose Ground and Date');
+        	return;
+        }
+        if(angular.isUndefined($scope.selectedGround))
+        {
+        	alert('Ground  Is Required');
+        	return;
+        }
+        if(angular.isUndefined($scope.date))
+        {
+        	alert('Date Is Required');
+        	return;
+        }
+        if(angular.isUndefined($scope.selectedGround.groundId))
+        {
+        	alert('Choose Ground Properly');
+        	return;
+        }
+       
+        var date=$scope.date;	
+        var groundId=$scope.selectedGround.groundId;
+        
+        var url='service/rest/ground/getavailableslots?groundId='+groundId+'&date='+date;
+        
+		console.log(url);		
 		 $http.get(url).then(function (res) {
-			  alert(res.data);
+			  $scope.availableSlots=res.data;
 		 });		
 	}
 	
-	$scope.postBookGround = function () {      
-		alert("postBookGround");
-        var data = {        		
-        		groundId:'',
-        		date:new Date,
-        		slotId:23,
-        		status:'true',
+	$scope.postBookGround = function () {    
+	
+		 /*var data = {        		
+        		groundId:$scope.selectedGround.groundId,
+        		dateOfPlay:$scope.date,
+        		slotId:$scope.selectedSlot.slotId,        		
         		dateOfRequest:new Date(),
+        		ballTypeId:$scope.selectBallId,
+        		status:'booked',
         		teamAId:1,
-        		teamBId:2,
-        		ballTypeId:3,
+        		teamBId:2,        		
         		bookedBy:5           
+        };	*/
+		
+		if(angular.isUndefined($scope.selectedMyTeam))
+		{
+			alert("Select Your Team");
+			return;
+		}
+		if(angular.isUndefined($scope.selectedOpponentTeam))
+		{
+			alert("Select Opponent Team");
+			return;
+		}
+		
+		if(angular.isUndefined($scope.selectedMyTeam.teamID))
+		{
+			alert("Select Your Team");
+			return;
+		}
+		if(angular.isUndefined($scope.selectedOpponentTeam.teamID))
+		{
+			alert("Select Opponent Team");
+			return;
+		}
+		if(angular.isUndefined($scope.selectedSlot))
+		{
+			alert("Select The Slot");
+			return;
+		}	
+		
+		var data = {        		
+        		groundId:$scope.selectedGround.groundId,
+        		playingDate:$scope.date,
+        		slotId:$scope.selectedSlot.slotId,
+        		ballTypeId:$scope.selectBallId,        		
+        		myTeam:$scope.selectedMyTeam.teamID,
+        		opponentTeam:$scope.selectedOpponentTeam.teamID
         };
-      
+		
+        alert("pasted Data:"+angular.toJson(data));      
+             
         var config = {
             headers: {
                 'Content-Type': 'application/json'
@@ -143,8 +253,7 @@ groundApp.controller("BookGroundCtrl", function ($scope, $http) {
         $http.post('service/rest/ground/addgroundbookingdetails', data, config)
                 .success(function (data, status, headers, config) {
                     $scope.PostDataResponse = data;
-                    alert('sucesss');
-
+                    alert('Ground Booked Succesfully');
                 })
                 .error(function (data, status, header, config) {
                     $scope.ResponseDetails = "Data: " + data +
