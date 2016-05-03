@@ -92,7 +92,7 @@ public class TeamController {
 		return cities;
 	}
 	
-	@RequestMapping(value = "/getGrounds", method = RequestMethod.GET)
+	@RequestMapping(value = "/getTeams", method = RequestMethod.GET)
 	public @ResponseBody List<TeamDetails> getTeams(@RequestParam("city") String cityName, 
 			@RequestParam("area") String areaName) {
 		List<TeamDetails> teams = teamDAO.getTeams(cityName, areaName);
