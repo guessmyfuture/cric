@@ -41,6 +41,8 @@ public class MatchDetailsController {
 	
 	private static String MATCH_COMPLETED = "COMPLETED";
 	
+	private static String MATCH_INPROGRESS = "IN_PROGRESS";
+	
 	private static String MATCH_SCHEDULED = "SCHEDULED";
 
 	private static final Logger logger = LoggerFactory.getLogger(MatchDetailsController.class);
@@ -203,6 +205,7 @@ public class MatchDetailsController {
 			innings.add(firstInnings);
 			innings.add(secondInnings);
 			match.setInnings(innings);
+			match.setStatus(MATCH_INPROGRESS);
 			matchDetailsDAO.saveorUpdate(match);
 			}
 			else
@@ -246,6 +249,23 @@ public class MatchDetailsController {
 	public @ResponseBody List<LiveMatches> getLiveMatches() {
 		
 		List<LiveMatches> livematches = matchAction.liveMatches();
+		return livematches;
+	}
+	@RequestMapping(value = "/upComingMatches", method = RequestMethod.GET)
+	public @ResponseBody List<MatchDetails> getUpComingMatches(HttpServletRequest request) {
+		String id = (String) request.getSession(false).getAttribute("userId");
+		id = id.trim();
+		Long userId = Long.parseLong(id);
+		List<MatchDetails> livematches = matchDetailsDAO.getUpcomingMatches(userId);
+		return livematches;
+	}
+	
+	@RequestMapping(value = "/matchScoring", method = RequestMethod.GET)
+	public @ResponseBody List<MatchDetails> getMyScoringMatches(HttpServletRequest request) {
+		String id = (String) request.getSession(false).getAttribute("userId");
+		id = id.trim();
+		Long userId = Long.parseLong(id);
+		List<MatchDetails> livematches = matchDetailsDAO.getMyScoringMatches(userId);
 		return livematches;
 	}
 

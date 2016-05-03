@@ -93,4 +93,13 @@ public class GroundDAO extends BaseDAO<Ground, Integer> {
 		return grounds;
 	}
 	
+	public List<Ground> getMyGrounds(long userId) {
+		List<Ground> grounds = null;
+		session = getSessionFactory().openSession();
+		Criteria cr =session.createCriteria(Ground.class);
+		cr.add(Restrictions.eq("manager", userId));
+		grounds = cr.list();
+		return grounds;
+	}
+	
 }

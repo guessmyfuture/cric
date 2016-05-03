@@ -119,6 +119,16 @@ public class GroundBookingDetailsDAO extends BaseDAO<GroundBookingDetails, Integ
 		return bookingDetails;
 	}
 	
+	public List<GroundBookingDetails> getMyGroundBookings(long userId) {
+		session = getSessionFactory().openSession();
+		String hql = "SELECT FROM GroundBookingDetails gbd WHERE gbd.groundId IN (SELECT g.groundId "
+				+ "from Ground g WHERE g.manager = :user_Id)";
+		Query q = session.createQuery(hql);
+		q.setParameter("user_Id", userId);
+		List<GroundBookingDetails> gb = q.list();
+		return gb;
+	}
+	
 	public List<GroundBookingDetails> getGroundBookInfo(long groundId, String date) {
 		session = getSessionFactory().openSession();
 		Criteria cr = session.createCriteria(GroundBookingDetails.class);
@@ -126,7 +136,6 @@ public class GroundBookingDetailsDAO extends BaseDAO<GroundBookingDetails, Integ
 		Date serverDate = (Date) convertStrToDate(date, TimeZone.getDefault().getID());
 		cr.add(Restrictions.eq("dateOfPlay", serverDate));
 		List<GroundBookingDetails> gb = cr.list();
-		session.close();
 		return gb;
 	}
 	

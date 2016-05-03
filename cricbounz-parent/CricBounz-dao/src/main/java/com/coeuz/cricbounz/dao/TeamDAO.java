@@ -26,6 +26,8 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 	@Autowired
 	UserDAO userDAO;
 
+	private Session session;
+
 	@Autowired
 	public TeamDAO(SessionFactory sessionFactory) {
 		super(TeamDetails.class);
@@ -56,7 +58,7 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 		List<TeamDetails> teamLists = cr.list();
 		return teamLists;
 	}
-	
+
 	public String getTeamName(long teamId) {
 		Session session = getSessionFactory().openSession();
 		Criteria cr = session.createCriteria(TeamDetails.class);
@@ -64,6 +66,7 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 		List<TeamDetails> teamLists = cr.list();
 		return teamLists.get(0).getName();
 	}
+
 	public List<TeamDetails> getAllTeams(String text) {
 		Session session = getSessionFactory().openSession();
 		Criteria cr = session.createCriteria(TeamDetails.class);
@@ -75,17 +78,16 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 		session.close();
 		return teamLists;
 	}
-	
-	public List<GlobalSearch> getTeamsForGlobalSearch(String text)
-	{		
+
+	public List<GlobalSearch> getTeamsForGlobalSearch(String text) {
 		text = text.toLowerCase();
 		Session session = getSessionFactory().openSession();
-		Query q = session.createQuery("SELECT e.teamID AS id, e.name AS name"
-				+ " FROM TeamDetails e WHERE LOWER(e.name) like :text").setResultTransformer(Transformers.aliasToBean(GlobalSearch.class));
-		q.setParameter("text", "%"+text+"%");
+		Query q = session.createQuery(
+				"SELECT e.teamID AS id, e.name AS name" + " FROM TeamDetails e WHERE LOWER(e.name) like :text")
+				.setResultTransformer(Transformers.aliasToBean(GlobalSearch.class));
+		q.setParameter("text", "%" + text + "%");
 		List<GlobalSearch> userLists = q.list();
-		for(GlobalSearch a: userLists)
-		{
+		for (GlobalSearch a : userLists) {
 			a.setType("TEAM");
 		}
 		return userLists;
@@ -142,4 +144,32 @@ public class TeamDAO extends BaseDAO<TeamDetails, Integer> {
 		return teamDetails;
 	}
 
+	public List<String> getAllCities() {
+		List<String> cities = null;
+		session = getSessionFactory().openSession();
+		Query q = session.createQuery("SELECT DISTINCT city FROM TeamDetails");
+		cities = q.list();
+		return cities;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<String> getAreaFromCityName(String city) {
+		List<String> area = null;
+		session = getSessionFactory().openSession();
+		Query q = session.createQuery("SELECT DISTINCT area FROM TeamDetails where city = :city_name");
+		q.setParameter("city_name", city);
+		area = q.list();
+		return area;
+	}
+
+	@SuppressWarnings("unchecked")
+	public List<TeamDetails> getTeams(String city, String area) {
+		List<TeamDetails> teams = null;
+		session = getSessionFactory().openSession();
+		Query q = session.createQuery("FROM TeamDetails where city = :city_name and area = :area_name");
+		q.setParameter("city_name", city);
+		q.setParameter("area_name", area);
+		teams = q.list();
+		return teams;
+	}
 }

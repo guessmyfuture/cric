@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.coeuz.cricbounz.dao.TeamDAO;
+import com.coeuz.cricbounz.model.Ground;
 import com.coeuz.cricbounz.model.ResponseStatus;
 import com.coeuz.cricbounz.model.TeamDetails;
 
@@ -75,6 +76,27 @@ public class TeamController {
 	public @ResponseBody TeamDetails getTeamMembersFullDetailsByTeamId(@RequestParam("teamId") long teamId) {
 		TeamDetails teamDetails = teamDAO.getTeamMembersFullDetailsByTeamId(teamId);
 		return teamDetails;
+	}
+	
+	@RequestMapping(value = "/City", method = RequestMethod.GET)
+	public @ResponseBody List<String> getAllCityName() {
+		logger.info("Starting getting All City Names having Teams");
+		List<String> cities = teamDAO.getAllCities();
+		return cities;
+	}
+	
+	@RequestMapping(value = "/City/Area", method = RequestMethod.GET)
+	public @ResponseBody List<String> getAreaByCityName(@RequestParam("city") String cityName) {
+		logger.info("Starting getting All Area Names having Team");
+		List<String> cities = teamDAO.getAreaFromCityName(cityName);
+		return cities;
+	}
+	
+	@RequestMapping(value = "/getGrounds", method = RequestMethod.GET)
+	public @ResponseBody List<TeamDetails> getTeams(@RequestParam("city") String cityName, 
+			@RequestParam("area") String areaName) {
+		List<TeamDetails> teams = teamDAO.getTeams(cityName, areaName);
+		return teams;
 	}
 
 }

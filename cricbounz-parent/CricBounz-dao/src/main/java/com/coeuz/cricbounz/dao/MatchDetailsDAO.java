@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -44,7 +45,7 @@ public class MatchDetailsDAO extends BaseDAO<MatchDetails, Integer> {
 		update(matchDetails);
 		if(matchDetails.getStatus().equals(MATCH_COMPLETED))
 		{
-			
+			matchDAO.releaseLock(matchDetails.getMatchID());
 		}
 	}
 
@@ -80,5 +81,24 @@ public class MatchDetailsDAO extends BaseDAO<MatchDetails, Integer> {
 		q.setParameter("inningsId", inningsId);
 		q.setParameter("status", null);
 		List<UserDetails> userDtl = q.list();
-		return userDtl;	}
+		return userDtl;	
+		}
+	
+	public List<MatchDetails> getUpcomingMatches(long userId)
+	{
+		sess = getSessionFactory().openSession();
+		String hql = "FROM MatchDetails m WHERE m.status = 'SCHEDULED' AND (m.teamAId OR m.teamBId IN (SELECT t.teamID FROM"
+				+ " TeamDetails t WHERE t.players like %'"+userId+"'%))";
+		Query q = sess.createQuery(hql);
+		List<MatchDetails> matchDetails = q.list();
+		return matchDetails;
+	}
+	
+	public List<MatchDetails> getMyScoringMatches(long userId)
+	{
+		sess = getSessionFactory().openSession();
+		Criteria cr = sess.createCriteria(MatchDetails.class);
+		cr.add(Restrictions.eq("scorer", userId));
+		return cr.list();
+	}
 }

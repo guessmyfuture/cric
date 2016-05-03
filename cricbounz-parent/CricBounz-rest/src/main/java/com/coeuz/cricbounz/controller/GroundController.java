@@ -2,7 +2,6 @@ package com.coeuz.cricbounz.controller;
 
 import java.sql.SQLException;
 import java.util.List;
-import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -19,7 +18,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.coeuz.cricbounz.dao.BallTypeDAO;
 import com.coeuz.cricbounz.dao.GroundBookingDetailsDAO;
 import com.coeuz.cricbounz.dao.GroundDAO;
-import com.coeuz.cricbounz.dao.GroundSlotDAO;
 import com.coeuz.cricbounz.dao.PitchTypeDAO;
 import com.coeuz.cricbounz.dao.SlotsDAO;
 import com.coeuz.cricbounz.dao.TeamDAO;
@@ -27,7 +25,6 @@ import com.coeuz.cricbounz.model.BallTypeDetails;
 import com.coeuz.cricbounz.model.Ground;
 import com.coeuz.cricbounz.model.GroundBookingDetails;
 import com.coeuz.cricbounz.model.GroundBookingHistory;
-import com.coeuz.cricbounz.model.GroundSlots;
 import com.coeuz.cricbounz.model.PitchTypeDetails;
 import com.coeuz.cricbounz.model.ResponseStatus;
 import com.coeuz.cricbounz.model.Slots;
@@ -96,20 +93,6 @@ public class GroundController {
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
 	}
-	
-	@RequestMapping(value = "/getAllBallTypes", method = RequestMethod.GET)
-	public @ResponseBody BallTypeDetails getAllBallTypes(@RequestParam("ballId") long ballId) {
-		logger.info("Starting getBallTypeDetails");
-		BallTypeDetails ballTypeDetails = ballTypeDAO.getBallTypeDetails(ballId);
-		return ballTypeDetails;
-	}
-
-	@RequestMapping(value = "/getballdetails", method = RequestMethod.GET)
-	public @ResponseBody BallTypeDetails getBallTypeDetails(@RequestParam("ballId") long ballId) {
-		logger.info("Starting getBallTypeDetails");
-		BallTypeDetails ballTypeDetails = ballTypeDAO.getBallTypeDetails(ballId);
-		return ballTypeDetails;
-	}
 
 	@RequestMapping(value = "/addpitchdetails", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus addPitchDetails(@RequestBody PitchTypeDetails pitchTypeDetails) {
@@ -119,29 +102,6 @@ public class GroundController {
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
 	}
-
-	@RequestMapping(value = "/getpitchdetails", method = RequestMethod.GET)
-	public @ResponseBody PitchTypeDetails getPitchTypeDetails(@RequestParam("pitchId") long pitchId) {
-		logger.info("Starting getPitchTypeDetails");
-		PitchTypeDetails pitchTypeDetails = pitchTypeDAO.getPitchTypeDetails(pitchId);
-		return pitchTypeDetails;
-	}
-
-	/*@RequestMapping(value = "/addslotdetails", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus addSlotDetails(@RequestBody GroundSlots groundSlots) {
-		logger.info("Starting addSlotDetails");
-		ResponseStatus responseStatus = new ResponseStatus();
-		groundSlotDAO.addGroundSlotDetails(groundSlots);
-		responseStatus.setResponseStatus("Success");
-		return responseStatus;
-	}
-
-	@RequestMapping(value = "/getslotdetails", method = RequestMethod.GET)
-	public @ResponseBody GroundSlots getSlotDetails(@RequestParam("slotId") long slotId) {
-		logger.info("Starting getSlotDetails");
-		GroundSlots groundSlotDetails = groundSlotDAO.getGroundSlotDetails(slotId);
-		return groundSlotDetails;
-	}*/
 
 	@RequestMapping(value = "/addgroundbookingdetails", method = RequestMethod.POST)
 	public @ResponseBody ResponseStatus addGroundBookingDetails(HttpServletRequest request, @RequestBody GroundBookingDetails bookingDetails) {
@@ -245,6 +205,30 @@ public class GroundController {
 		groundBookingDetailsDAO.confirmGroundBooking(userId, bookingId, requestAction);
 		ResponseStatus res = new ResponseStatus();
 		res.setResponseStatus("The Ground Slot Booking has been Confirmed");
+		return res;
+	}
+	
+	@RequestMapping(value = "/MyGrounds", method = RequestMethod.GET)
+	public @ResponseBody List<Ground> getMyGrounds(HttpServletRequest request) {
+		String userIdStr = (String)request.getSession(false).getAttribute("userId");
+		long userId = Long.parseLong(userIdStr.trim());
+		List<Ground> grounds = groundDAO.getMyGrounds(userId);
+		return grounds;
+	}
+	
+	@RequestMapping(value = "/updateGroundDetails", method = RequestMethod.GET)
+	public @ResponseBody ResponseStatus updateGroundDetails(@RequestBody Ground ground) {
+		groundDAO.update(ground);
+		ResponseStatus res = new ResponseStatus();
+		res.setResponseStatus("The Ground Details have been Updated Successfully");
+		return res;
+	}
+	
+	@RequestMapping(value = "/getMyGroundBookings", method = RequestMethod.GET)
+	public @ResponseBody List<GroundBookingDetails> getMyGroundBookings(HttpServletRequest request) {
+		String userIdStr = (String)request.getSession(false).getAttribute("userId");
+		long userId = Long.parseLong(userIdStr.trim());
+		List<GroundBookingDetails> res = groundBookingDetailsDAO.getMyGroundBookings(userId);
 		return res;
 	}
 }

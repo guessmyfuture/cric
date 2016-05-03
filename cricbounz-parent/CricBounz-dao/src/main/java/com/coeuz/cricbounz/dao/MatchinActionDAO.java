@@ -7,6 +7,7 @@ import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,5 +63,24 @@ public class MatchinActionDAO extends BaseDAO <MatchinAction, Integer> {
 		Query q = sess.createQuery(hql).setResultTransformer(Transformers.aliasToBean(LiveMatches.class));
 		List<LiveMatches> liveMatches = q.list();
 		return liveMatches;
+	}
+	
+	public void releaseLock(long matchId)
+	{
+		sess = getSessionFactory().openSession();
+		Transaction tx = sess.beginTransaction();
+		String hql = "DELETE FROM MatchinAction WHERE matchID = :match_ID";
+		String hql1 = "DELETE FROM LiveAction la WHERE la.playerId IN(SELECT b.batsmanId FROM BattingDetails b "
+				+ "WHERE b.scoreDetailsId IN (SELECT su.scoreDetailsId FROM ScoreUpdate su WHERE"
+				+ " su.inningsId IN (SELECT in.inningsId FROM Innings in WHERE in.matchID = :match_ID)))";
+		Query q = sess.createQuery(hql);
+		q.setParameter("match_ID", matchId);
+		Query q1 = sess.createQuery(hql);
+		q1.setParameter("match_ID", matchId);
+		q.executeUpdate();
+		q1.executeUpdate();
+		sess.flush();
+		tx.commit();
+		sess.close();
 	}
 }
