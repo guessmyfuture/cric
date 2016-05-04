@@ -7,9 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -110,10 +108,9 @@ public class CreateTournamentController {
 	@RequestMapping(value = "/schedulematchesbyleague", method = RequestMethod.GET)
 	public @ResponseBody Map<Integer, List<MatchDetails>> scheduleMatchesByLeague(@RequestParam long tournamentId,
 			@RequestParam int noOfGroup, @RequestParam int countOfFaceToFace,
-			@RequestParam String typeOfNextLevel) {
+			@RequestParam String typeOfNextLevel,@RequestParam("StartDate") String StartDate,@RequestParam("EndtDate")String EndtDate,@RequestParam("weekendFlag") boolean weekendFlag) {
 		List<TeamDetails> resultList = createRegisteredTeamDAO
 				.retrieveRegisteredTeamBasedOnTournamentID(tournamentId);
-
 		Integer teamCount = Integer.valueOf(resultList.size());
 		Integer teamCountinGroup = teamCount / noOfGroup;
 		Integer remainingTeamCount = teamCount % noOfGroup;
@@ -123,7 +120,6 @@ public class CreateTournamentController {
 
 			Integer groupId = i;
 			List<TeamDetails> teamDetails = new ArrayList<TeamDetails>();
-
 			List<TeamDetails> resultListTemp = new ArrayList<TeamDetails>();
 			resultListTemp.addAll(resultList);
 			for (Iterator iterator = resultListTemp.iterator(); iterator.hasNext();) {
@@ -149,7 +145,7 @@ public class CreateTournamentController {
 		}
 
 		Map<Integer, List<MatchDetails>> leaugeMatchDetails = new HashMap<Integer, List<MatchDetails>>();
-
+		List<MatchDetails> allMatchDetails = new ArrayList<MatchDetails>();
 		for (Integer groupId : leaugeTeamDetails.keySet()) {
 			List<TeamDetails> teamDetails = leaugeTeamDetails.get(groupId);
 			List<MatchDetails> matchDetails = new ArrayList<MatchDetails>();
@@ -159,14 +155,19 @@ public class CreateTournamentController {
 						MatchDetails matchDetail = new MatchDetails();
 						matchDetail.setTeamAId(teamDetails.get(i).getTeamID());
 						matchDetail.setTeamBId(teamDetails.get(j).getTeamID());
+						matchDetail.setTournamentId(tournamentId);
+						matchDetail.setGroup(groupId);
+						//matchDetailsDAO.save(matchDetail);
 						matchDetails.add(matchDetail);
+						allMatchDetails.add(matchDetail);
+						
 					}
 				}
 				
 			}
 			leaugeMatchDetails.put(groupId, matchDetails);
 		}
-
+		matchDetailsDAO.saveTournmentFixture(allMatchDetails);
 		return leaugeMatchDetails;
 
 	}

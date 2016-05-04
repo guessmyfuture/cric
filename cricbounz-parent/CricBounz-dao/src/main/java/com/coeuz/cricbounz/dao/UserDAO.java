@@ -18,107 +18,124 @@ import org.springframework.stereotype.Repository;
 
 import com.coeuz.cricbounz.model.GlobalSearch;
 import com.coeuz.cricbounz.model.UserDetails;
+import com.coeuz.cricbounz.model.UserRegistration;
+
 @Repository
-public class UserDAO extends BaseDAO <UserDetails, Integer> {
+public class UserDAO extends BaseDAO<UserDetails, Integer> {
 
 	@Autowired
-    public UserDAO(SessionFactory sessionFactory) {
-        super(UserDetails.class);
-        super.setSessionFactory(sessionFactory);
-    }
-	
-	public void registerUserDetails(UserDetails userDetails){
+	public UserDAO(SessionFactory sessionFactory) {
+		super(UserDetails.class);
+		super.setSessionFactory(sessionFactory);
+	}
+
+	public void registerUserDetails(UserDetails userDetails) {
 		saveorUpdate(userDetails);
 	}
-	
-	public UserDetails getUserDetails(long userId){
+
+	public UserDetails getUserDetails(long userId) {
 		UserDetails userDetails = null;
-		userDetails=(UserDetails)get(userId);
+		userDetails = (UserDetails) get(userId);
 		return userDetails;
 	}
 
-	public String getUserIdFromMail(String email)
-	{
+	public String getUserIdFromMail(String email) {
 		String userId = "";
 		Session session = getSessionFactory().openSession();
 		Criteria cr = session.createCriteria(UserDetails.class);
 		cr.add(Restrictions.eq("email", email));
 		List results = cr.list();
-		if(results.size() != 0)
-		{
-			UserDetails userDetails = (UserDetails)results.get(0);
+		if (results.size() != 0) {
+			UserDetails userDetails = (UserDetails) results.get(0);
 			Long l = userDetails.getUserId();
 			userId = l.toString();
 		}
 		return userId;
 	}
-	
-	/*jai*/
-	public List<UserDetails> getUsersByName(String text)
-	{		
+
+	/* jai */
+	public List<UserDetails> getUsersByName(String text) {
 		Session session = getSessionFactory().openSession();
-		Criteria cr = session.createCriteria(UserDetails.class);		
+		Criteria cr = session.createCriteria(UserDetails.class);
 		cr.add(Restrictions.or(Restrictions.ilike("name", text, MatchMode.ANYWHERE),
 				Restrictions.or((Restrictions.ilike("profileName", text, MatchMode.ANYWHERE)),
 						(Restrictions.ilike("email", text, MatchMode.ANYWHERE)))));
-	List<UserDetails> userLists = cr.list();		
+		List<UserDetails> userLists = cr.list();
 		return userLists;
 	}
-	
-	public List<GlobalSearch> getUsersForGlobalSearch(String text)
-	{		
+
+	public List<GlobalSearch> getUsersForGlobalSearch(String text) {
 		text = text.toLowerCase();
 		Session session = getSessionFactory().openSession();
-		Query q = session.createQuery("SELECT e.userId AS id, e.name AS name, e.profileImageUrl AS imageUrl"
-				+ " FROM UserDetails e WHERE LOWER(e.name) like :text OR LOWER(e.profileName) like :text_profile"
-				+ " OR LOWER(e.email) like :text_mail").setResultTransformer(Transformers.aliasToBean(GlobalSearch.class));
-		q.setParameter("text", "%"+text+"%");
-		q.setParameter("text_profile","%"+text+"%");
-		q.setParameter("text_mail", "%"+text+"%");
+		Query q = session
+				.createQuery("SELECT e.userId AS id, e.name AS name, e.profileImageUrl AS imageUrl"
+						+ " FROM UserDetails e WHERE LOWER(e.name) like :text OR LOWER(e.profileName) like :text_profile"
+						+ " OR LOWER(e.email) like :text_mail")
+				.setResultTransformer(Transformers.aliasToBean(GlobalSearch.class));
+		q.setParameter("text", "%" + text + "%");
+		q.setParameter("text_profile", "%" + text + "%");
+		q.setParameter("text_mail", "%" + text + "%");
 		List<GlobalSearch> userLists = q.list();
-		for(GlobalSearch a: userLists)
-		{
+		for (GlobalSearch a : userLists) {
 			a.setType("USER");
 		}
 		return userLists;
 	}
-	
-	public List<Map> getFriendsListDetailsByUserID(long userID) throws NumberFormatException , NullPointerException, ArrayIndexOutOfBoundsException, SQLException{
+
+	public List<Map> getFriendsListDetailsByUserID(long userID)
+			throws NumberFormatException, NullPointerException, ArrayIndexOutOfBoundsException, SQLException {
 		List<Map> friendsListDetails = new ArrayList<Map>();
-		UserDetails  userDetails = (UserDetails)get(userID);
+		UserDetails userDetails = (UserDetails) get(userID);
 		String userFriends = userDetails.getFriends();
-		if(userFriends!=null){
-			String [] userFriendsIDArray = userFriends.split(",");	
-			for(String friendsID:userFriendsIDArray){
-				if(friendsID.length()>0){
-				UserDetails friednsDetails = get(Long.parseLong(friendsID));
-				Map<String,String> freindsDetailsMap = new HashMap<String,String>();
-				freindsDetailsMap.put("UserID",friendsID);
-				freindsDetailsMap.put("Name", friednsDetails.getName());
-				freindsDetailsMap.put("Area", friednsDetails.getArea());
-				freindsDetailsMap.put("City", friednsDetails.getCity());
-				freindsDetailsMap.put("BattingStyle", friednsDetails.getBattingStyle());
-				freindsDetailsMap.put("BowlingStyle", friednsDetails.getBowlingStyle());
-				freindsDetailsMap.put("BowlingType", friednsDetails.getBowlingType());
-				friendsListDetails.add(freindsDetailsMap);
+		if (userFriends != null) {
+			String[] userFriendsIDArray = userFriends.split(",");
+			for (String friendsID : userFriendsIDArray) {
+				if (friendsID.length() > 0) {
+					UserDetails friednsDetails = get(Long.parseLong(friendsID));
+					Map<String, String> freindsDetailsMap = new HashMap<String, String>();
+					freindsDetailsMap.put("UserID", friendsID);
+					freindsDetailsMap.put("Name", friednsDetails.getName());
+					freindsDetailsMap.put("Area", friednsDetails.getArea());
+					freindsDetailsMap.put("City", friednsDetails.getCity());
+					freindsDetailsMap.put("BattingStyle", friednsDetails.getBattingStyle());
+					freindsDetailsMap.put("BowlingStyle", friednsDetails.getBowlingStyle());
+					freindsDetailsMap.put("BowlingType", friednsDetails.getBowlingType());
+					friendsListDetails.add(freindsDetailsMap);
 				}
-			 }
+			}
 		}
-							
+
 		return friendsListDetails;
-		
+
 	}
-	
-	public List getUserNameFromUserIds(List userId)
-	{
+
+	public List getUserNameFromUserIds(List userId) {
 		Session session = getSessionFactory().openSession();
 		String hql = "SELECT user.name AS name from UserDetails user WHERE user.userId IN (:user_Id)";
 		Query q = session.createQuery(hql);
 		q.setParameterList("user_Id", userId);
 		return q.list();
 	}
-	
-	
-	
-	
+
+	public void changeCurrentPassword(long userId, String currPass, String newPass, String confPass) {
+
+		UserRegistration userRegistration = new UserRegistration();
+		UserDetails userDetails = new UserDetails();
+		long Id = userDetails.getUserId();
+		String password = userRegistration.getPassword();
+		if (Id == userId) {
+			if (currPass.equals(password)) {
+				if (newPass.equals(confPass)) {
+					userRegistration.setPassword(confPass);
+				} else {
+					System.out.println("Mismatch Password");
+				}
+			} else {
+				System.out.println("Wrong Password");
+
+			}
+		}
+
+	}
+
 }

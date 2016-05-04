@@ -183,19 +183,29 @@ public class UserController {
 		} catch (NumberFormatException | SQLException | NullPointerException | ArrayIndexOutOfBoundsException e) {
 			logger.error("Exception occured at getFriendsListDetailsByUserID");
 			throw new Exception(e);
-			
+
 		}
 		return userFriendsDetails;
 	}
-	
+
 	@RequestMapping(value = "/getPostDetailsByFriend", method = RequestMethod.GET)
-	public @ResponseBody List<PostDetails> getPostDetailsByFriend(@RequestParam("userid") long userId, @RequestParam("limit") int limit,
-			@RequestParam("offset") int offset) {
+	public @ResponseBody List<PostDetails> getPostDetailsByFriend(@RequestParam("userid") long userId,
+			@RequestParam("limit") int limit, @RequestParam("offset") int offset) {
 		logger.info("Start getPostDetailsByFriend");
 		ResponseStatus responseStatus = new ResponseStatus();
 		List<PostDetails> postdetailsList = postDAO.getPostDetails(userId, limit, offset);
 		responseStatus.setResponseStatus("Success");
 		return postdetailsList;
+	}
+
+	@RequestMapping(value = "/changeCurrentPassword", method = RequestMethod.POST)
+	public @ResponseBody ResponseStatus changeCurrentPassword(@RequestParam("userId") long userId,@RequestParam("currPass") String currPass,
+			@RequestParam("newPass") String newPass, @RequestParam("confPass") String confPass) {
+		ResponseStatus responseStatus = new ResponseStatus();
+		userDAO.changeCurrentPassword(userId, currPass, newPass, confPass);
+		responseStatus.setResponseStatus("Sucess");
+		return responseStatus;
+
 	}
 
 }

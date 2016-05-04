@@ -9,6 +9,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
+import java.util.StringTokenizer;
 import java.util.TimeZone;
 import org.hibernate.Query;
 import org.hibernate.Session;
@@ -76,7 +77,7 @@ public class TournamentDAO extends BaseDAO<Tournament, Integer> {
 								
 						while(start.before(end)){
 							int slot=1;
-							while(slot==4){
+							while(slot<=4){
 								matchDetails.setGroup(groupID);
 								matchDetails.setPlayingDate(start.getTime());
 								matchDetails.setSlot(1);
@@ -92,6 +93,63 @@ public class TournamentDAO extends BaseDAO<Tournament, Integer> {
 									
 				}else if(matchDetails.getMatchType().equals("Weekends")){
 					
+					String tournmentHql="FROM Tournament tm WHERE tm.id='"+matchDetails.getTournamentId();
+					Session session =getSessionFactory().openSession();
+					Query tournmenQuery = session.createQuery(tournmentHql);
+					List<Tournament> tournamentList =(List<Tournament>)tournmenQuery.list(); 
+					if(tournamentList!=null && tournamentList.size()>0){
+						Tournament tournament = tournamentList.get(0);
+						Date tournmentStartDate = tournament.getTourStartDate();
+						Date tournmentEndDate =tournament.getTourEndDate();
+						
+						SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+						Date startDate = formatter.parse(tournmentStartDate.toString());
+						Date endDate = formatter.parse(tournmentEndDate.toString());
+						 
+						Calendar start = Calendar.getInstance();
+						start.setTime(startDate);
+
+						Calendar end = Calendar.getInstance();
+						end.setTime(endDate);
+								
+						while(start.before(end)){
+							    String dateString = start.getTime().toString();
+							    String delimit=" ";
+							    StringTokenizer stringTokenizer = new StringTokenizer(dateString,delimit);
+							    while(stringTokenizer.hasMoreTokens()){
+							    	String days = stringTokenizer.nextToken();
+							    	if(days.equals("Sat")){
+							    		int slot=1;
+										while(slot<=4){
+											matchDetails.setGroup(groupID);
+											matchDetails.setPlayingDate(start.getTime());
+											matchDetails.setSlot(1);
+											matchDetails.setStatus("Scheduled");
+											matchDetailsDAO.save(matchDetails);
+											slot=slot+1;
+										}
+							    		
+							    	}
+							    	if(days.equals("Sun")){
+							    		int slot=1;
+										while(slot<=4){
+											matchDetails.setGroup(groupID);
+											matchDetails.setPlayingDate(start.getTime());
+											matchDetails.setSlot(1);
+											matchDetails.setStatus("Scheduled");
+											matchDetailsDAO.save(matchDetails);
+											slot=slot+1;
+										}
+							    		
+							    	}
+							    }
+							    																
+						    start.add(Calendar.DATE, 1);
+						}
+						
+					}
+					
+					
 					
 				}
 				
@@ -101,16 +159,6 @@ public class TournamentDAO extends BaseDAO<Tournament, Integer> {
 		return updatedTournmentdetails;	
 	}
 	
-	public  boolean isWeekends(Date date)
-    {
- 	    LocalDate localDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-		int year  = localDate.getYear();
-		int month = localDate.getMonthValue();
-		int day   = localDate.getDayOfMonth();
-		Calendar cal = new GregorianCalendar(year, month -1, day);
-        int dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
-        return (Calendar.SUNDAY == dayOfWeek || Calendar.SATURDAY == dayOfWeek);
-    }
 	
 	
 	

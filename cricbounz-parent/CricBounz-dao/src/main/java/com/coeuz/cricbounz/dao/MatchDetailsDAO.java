@@ -1,16 +1,14 @@
 package com.coeuz.cricbounz.dao;
 
 import java.util.List;
-import java.util.TimeZone;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.coeuz.cricbounz.model.MatchDetails;
 import com.coeuz.cricbounz.model.UserDetails;
 
@@ -101,4 +99,21 @@ public class MatchDetailsDAO extends BaseDAO<MatchDetails, Integer> {
 		cr.add(Restrictions.eq("scorer", userId));
 		return cr.list();
 	}
+	
+	
+	public void saveTournmentFixture(List<MatchDetails> matchDetailsList)
+	{
+		sess = getSessionFactory().openSession();
+		Transaction tx = sess.beginTransaction();
+		for(MatchDetails matchDetails : matchDetailsList)
+		{
+			sess.save(matchDetails);
+		}
+		sess.flush();
+		sess.clear();
+		tx.commit();
+		sess.close();
+	}
+	
+	
 }
