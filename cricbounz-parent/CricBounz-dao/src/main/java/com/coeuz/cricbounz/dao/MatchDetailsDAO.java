@@ -7,9 +7,11 @@ import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 import org.hibernate.criterion.Restrictions;
+import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import com.coeuz.cricbounz.model.MatchDetails;
+import com.coeuz.cricbounz.model.TempMatchDetails;
 import com.coeuz.cricbounz.model.UserDetails;
 
 @Repository
@@ -85,9 +87,15 @@ public class MatchDetailsDAO extends BaseDAO<MatchDetails, Integer> {
 	public List<MatchDetails> getUpcomingMatches(long userId)
 	{
 		sess = getSessionFactory().openSession();
-		String hql = "FROM MatchDetails m WHERE m.status = 'SCHEDULED' AND (m.teamAId OR m.teamBId IN (SELECT t.teamID FROM"
-				+ " TeamDetails t WHERE t.players like %'"+userId+"'%))";
-		Query q = sess.createQuery(hql);
+		String hql = "SELECT ma.matchId, ma.teamAId as teamAID, ma.teamBId as teamBID, ma.city, ma.area, ma.venue, ma.playingDate, ma.overs, "
+				+ "ma.matchType, ma.slot, ta.teamAName, tb.teamBName, tour.name as tournamentName FROM (SELECT t.name AS teamAName, t.teamID FROM TeamDetails t)ta, "
+				+ "(SELECT t.name AS teamBName, t.teamID FROM TeamDetails t)tb, "
+				+ "(SELECT m.matchID as matchId, m.teamAId, m.tournamentId, m.teamBId, m.city, m.area, m.venue, m.playingDate, m.overs, m.matchType, m.slot"
+				+ " FROM MatchDetails m WHERE m.status = 'SCHEDULED' AND m.teamAId IN "
+				+ "(SELECT t.teamID FROM TeamDetails t WHERE t.players LIKE '%,"+userId+",%') OR "
+				+ "m.teamBId IN (SELECT t.teamID FROM TeamDetails t WHERE t.players LIKE '%,"+userId+",%')) ma, tournament tour "
+				+ "WHERE ta.teamID = ma.teamAId OR tb.teamID = ma.teamBId OR tour.id = ma.tournamentId";
+		Query q = sess.createSQLQuery(hql).setResultTransformer(Transformers.aliasToBean(TempMatchDetails.class));
 		List<MatchDetails> matchDetails = q.list();
 		return matchDetails;
 	}
