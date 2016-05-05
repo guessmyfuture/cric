@@ -2,6 +2,7 @@ package com.coeuz.cricbounz.controller;
 
 import java.sql.SQLException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -24,6 +25,7 @@ import com.coeuz.cricbounz.model.PostDetails;
 import com.coeuz.cricbounz.model.ResponseStatus;
 import com.coeuz.cricbounz.model.ShareDetails;
 import com.coeuz.cricbounz.model.UserDetails;
+import com.coeuz.cricbounz.model.UserRegistration;
 
 @Controller
 @RequestMapping(value = "/rest/user")
@@ -68,6 +70,7 @@ public class UserController {
 		System.out.println("Session Current User id :" + request.getSession().getAttribute("userId"));
 		String id = (String) request.getSession(false).getAttribute("userId");
 		id = id.trim();
+		System.out.println(id);
 		Long userId = Long.parseLong(id);
 		UserDetails userDetails = userDAO.getUserDetails(userId);
 		return userDetails;
@@ -198,14 +201,35 @@ public class UserController {
 		return postdetailsList;
 	}
 
-	@RequestMapping(value = "/changeCurrentPassword", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus changeCurrentPassword(@RequestParam("userId") long userId,@RequestParam("currPass") String currPass,
-			@RequestParam("newPass") String newPass, @RequestParam("confPass") String confPass) {
-		ResponseStatus responseStatus = new ResponseStatus();
-		userDAO.changeCurrentPassword(userId, currPass, newPass, confPass);
-		responseStatus.setResponseStatus("Sucess");
-		return responseStatus;
+	@RequestMapping(value = "/changeCurrentPassword", method = RequestMethod.GET)
+	public @ResponseBody Map<String, Boolean> changeCurrentPassword(@RequestParam("userId") long userId,
+			@RequestParam("currPass") String currPass, @RequestParam("newPass") String newPass) {
+		
+		
+		/*ResponseStatus responseStatus = new ResponseStatus();
+		 * UserRegistration userRegistration = new UserRegistration();
+		 * UserDetails userDetails = new UserDetails(); long Id =
+		 * userDetails.getUserId(); String password =
+		 * userRegistration.getPassword(); if (Id == userId) { if
+		 * (currPass.equals(password)) { if (newPass.equals(confPass)) {
+		 * userRegistration.setPassword(confPass);
+		 * 
+		 * } else { System.out.println("Mismatch Password"); } } else {
+		 * System.out.println("Wrong Password");
+		 * 
+		 * } }
+		 */
+		int count = userDAO.changeCurrentPassword(userId, currPass, newPass);
+		Map<String, Boolean> jsonMap = new HashMap<String, Boolean>();
+		if (count > 0) {
+			jsonMap.put("status", true);
+		} else {
+			jsonMap.put("status", false);
+		}
 
+		return jsonMap;
 	}
+	
+
 
 }

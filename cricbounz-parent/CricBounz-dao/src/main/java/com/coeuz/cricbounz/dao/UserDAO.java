@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.hibernate.Criteria;
 import org.hibernate.Query;
+import org.hibernate.SQLQuery;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.criterion.MatchMode;
@@ -117,25 +118,17 @@ public class UserDAO extends BaseDAO<UserDetails, Integer> {
 		return q.list();
 	}
 
-	public void changeCurrentPassword(long userId, String currPass, String newPass, String confPass) {
-
-		UserRegistration userRegistration = new UserRegistration();
-		UserDetails userDetails = new UserDetails();
-		long Id = userDetails.getUserId();
-		String password = userRegistration.getPassword();
-		if (Id == userId) {
-			if (currPass.equals(password)) {
-				if (newPass.equals(confPass)) {
-					userRegistration.setPassword(confPass);
-				} else {
-					System.out.println("Mismatch Password");
-				}
-			} else {
-				System.out.println("Wrong Password");
-
-			}
-		}
-
+	public int changeCurrentPassword(long userID, String currPass,String newPass) {
+		Session session = getSessionFactory().openSession();
+		UserDetails userDetails = null;
+		userDetails = (UserDetails) get(userID);
+		String email =userDetails.getEmail();		
+		String sql ="UPDATE users SET password='"+newPass+"' WHERE userName='"+email+"' AND  PASSWORD='"+currPass+"'";		
+		SQLQuery sqlQuery=session.createSQLQuery(sql);
+		int affectedCount=sqlQuery.executeUpdate();
+		return affectedCount;
+		
 	}
 
+		
 }
