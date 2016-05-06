@@ -19,7 +19,7 @@ import com.coeuz.cricbounz.dao.CreateRegisteredTeamDAO;
 import com.coeuz.cricbounz.dao.MatchDetailsDAO;
 import com.coeuz.cricbounz.dao.RegisterTournamentDAO;
 import com.coeuz.cricbounz.dao.TournamentDAO;
-import com.coeuz.cricbounz.model.MatchDetails;
+import com.coeuz.cricbounz.model.Matches;
 import com.coeuz.cricbounz.model.ResponseStatus;
 import com.coeuz.cricbounz.model.TeamDetails;
 import com.coeuz.cricbounz.model.Tournament;
@@ -39,7 +39,7 @@ public class CreateTournamentController {
 	private CreateRegisteredTeamDAO createRegisteredTeamDAO;
 	
 	@Autowired
-	MatchDetailsDAO matchDetailsDAO;
+	private MatchDetailsDAO matchDetailsDAO;
 	
 
 	@RequestMapping(value = "/create", method = RequestMethod.POST)
@@ -106,7 +106,7 @@ public class CreateTournamentController {
 	}
 
 	@RequestMapping(value = "/schedulematchesbyleague", method = RequestMethod.GET)
-	public @ResponseBody Map<Integer, List<MatchDetails>> scheduleMatchesByLeague(@RequestParam long tournamentId,
+	public @ResponseBody Map<Integer, List<Matches>> scheduleMatchesByLeague(@RequestParam long tournamentId,
 			@RequestParam int noOfGroup, @RequestParam int countOfFaceToFace,
 			@RequestParam String typeOfNextLevel,@RequestParam("StartDate") String StartDate,@RequestParam("EndtDate")String EndtDate,@RequestParam("weekendFlag") boolean weekendFlag) {
 		List<TeamDetails> resultList = createRegisteredTeamDAO
@@ -144,31 +144,31 @@ public class CreateTournamentController {
 			leaugeTeamDetails.put(groupId, teamDetails);
 		}
 
-		Map<Integer, List<MatchDetails>> leaugeMatchDetails = new HashMap<Integer, List<MatchDetails>>();
-		List<MatchDetails> allMatchDetails = new ArrayList<MatchDetails>();
+		Map<Integer, List<Matches>> leaugeTeamMatch = new HashMap<Integer, List<Matches>>();
+		List<Matches> allTeamMatch = new ArrayList<Matches>();
 		for (Integer groupId : leaugeTeamDetails.keySet()) {
 			List<TeamDetails> teamDetails = leaugeTeamDetails.get(groupId);
-			List<MatchDetails> matchDetails = new ArrayList<MatchDetails>();
+			List<Matches> teamMatch = new ArrayList<Matches>();
 			for(int l=1;l<=countOfFaceToFace;l++){
 				for (int i = 0; i < teamDetails.size(); i++) {
 					for (int j = i + 1; j < teamDetails.size(); j++) {
-						MatchDetails matchDetail = new MatchDetails();
+						Matches matchDetail = new Matches();
 						matchDetail.setTeamAId(teamDetails.get(i).getTeamID());
 						matchDetail.setTeamBId(teamDetails.get(j).getTeamID());
 						matchDetail.setTournamentId(tournamentId);
-						matchDetail.setGroup(groupId);
-						//matchDetailsDAO.save(matchDetail);
-						matchDetails.add(matchDetail);
-						allMatchDetails.add(matchDetail);
+						matchDetail.setGroupNumber(groupId);
+						//TeamMatchDAO.save(matchDetail);
+						teamMatch.add(matchDetail);
+						allTeamMatch.add(matchDetail);
 						
 					}
 				}
 				
 			}
-			leaugeMatchDetails.put(groupId, matchDetails);
+			leaugeTeamMatch.put(groupId, teamMatch);
 		}
-		matchDetailsDAO.saveTournmentFixture(allMatchDetails);
-		return leaugeMatchDetails;
+		matchDetailsDAO.saveTournmentFixture(allTeamMatch);
+		return leaugeTeamMatch;
 
 	}
 	

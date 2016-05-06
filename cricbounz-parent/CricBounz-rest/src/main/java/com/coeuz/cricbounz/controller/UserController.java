@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,7 +24,6 @@ import com.coeuz.cricbounz.model.PostDetails;
 import com.coeuz.cricbounz.model.ResponseStatus;
 import com.coeuz.cricbounz.model.ShareDetails;
 import com.coeuz.cricbounz.model.UserDetails;
-import com.coeuz.cricbounz.model.UserRegistration;
 
 @Controller
 @RequestMapping(value = "/rest/user")
@@ -204,11 +202,12 @@ public class UserController {
 	@RequestMapping(value = "/changeCurrentPassword", method = RequestMethod.GET)
 	public @ResponseBody Map<String, Boolean> changeCurrentPassword(@RequestParam("userId") long userId,
 			@RequestParam("currPass") String currPass, @RequestParam("newPass") String newPass) {
-		
-		
-		/*ResponseStatus responseStatus = new ResponseStatus();
+
+		/*
+		 * ResponseStatus responseStatus = new ResponseStatus();
 		 * UserRegistration userRegistration = new UserRegistration();
 		 * UserDetails userDetails = new UserDetails(); long Id =
+		 * 
 		 * userDetails.getUserId(); String password =
 		 * userRegistration.getPassword(); if (Id == userId) { if
 		 * (currPass.equals(password)) { if (newPass.equals(confPass)) {
@@ -219,6 +218,7 @@ public class UserController {
 		 * 
 		 * } }
 		 */
+
 		int count = userDAO.changeCurrentPassword(userId, currPass, newPass);
 		Map<String, Boolean> jsonMap = new HashMap<String, Boolean>();
 		if (count > 0) {
@@ -229,7 +229,19 @@ public class UserController {
 
 		return jsonMap;
 	}
-	
 
+	@RequestMapping(value = "/forgetPassword", method = RequestMethod.GET)
+	public @ResponseBody Map<String, Boolean> forgetPassword(@RequestParam("emailId") String emailId) {
+		Map<String, Boolean> responseStatus = new HashMap<String, Boolean>();
 
+		if (userDAO.isUserAvailable(emailId)) {
+			userDAO.forgotPassword(emailId);
+			responseStatus.put("status", true);
+			responseStatus.put("isUserAvailable", true);
+		} else {
+			responseStatus.put("status", false);
+			responseStatus.put("isUserAvailable", false);
+		}
+		return responseStatus;
+	}
 }

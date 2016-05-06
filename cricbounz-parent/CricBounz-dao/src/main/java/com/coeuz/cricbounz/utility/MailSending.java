@@ -44,8 +44,6 @@ public class MailSending {
 
 			Transport.send(message);
 
-			System.out.println("Done");
-
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
@@ -82,7 +80,6 @@ public class MailSending {
 
 			Transport.send(message);
 			isSent=true;
-			System.out.println("Done");
 
 		} catch (MessagingException e) {
 			isSent=false;

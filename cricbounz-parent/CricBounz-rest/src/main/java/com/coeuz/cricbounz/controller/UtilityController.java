@@ -1,10 +1,6 @@
 package com.coeuz.cricbounz.controller;
 
-import java.sql.SQLException;
 import java.util.List;
-
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.coeuz.cricbounz.dao.BallTypeDAO;
 import com.coeuz.cricbounz.dao.GroundBookingDetailsDAO;
 import com.coeuz.cricbounz.dao.GroundDAO;
@@ -25,13 +20,8 @@ import com.coeuz.cricbounz.dao.TeamDAO;
 import com.coeuz.cricbounz.dao.UserDAO;
 import com.coeuz.cricbounz.model.BallTypeDetails;
 import com.coeuz.cricbounz.model.GlobalSearch;
-import com.coeuz.cricbounz.model.Ground;
-import com.coeuz.cricbounz.model.GroundBookingDetails;
 import com.coeuz.cricbounz.model.PitchTypeDetails;
 import com.coeuz.cricbounz.model.ResponseStatus;
-import com.coeuz.cricbounz.model.Slots;
-import com.coeuz.cricbounz.model.TeamDetails;
-import com.coeuz.cricbounz.model.UserDetails;
 
 @Controller
 @RequestMapping(value = "/rest/utility")

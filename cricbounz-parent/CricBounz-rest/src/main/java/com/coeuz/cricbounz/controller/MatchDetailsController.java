@@ -27,10 +27,11 @@ import com.coeuz.cricbounz.model.BowlingDetails;
 import com.coeuz.cricbounz.model.Innings;
 import com.coeuz.cricbounz.model.LiveAction;
 import com.coeuz.cricbounz.model.LiveMatches;
-import com.coeuz.cricbounz.model.MatchDetails;
+import com.coeuz.cricbounz.model.Matches;
 import com.coeuz.cricbounz.model.PlayingEleven;
 import com.coeuz.cricbounz.model.ResponseStatus;
 import com.coeuz.cricbounz.model.ScoreUpdate;
+import com.coeuz.cricbounz.model.TempMatchDetails;
 import com.coeuz.cricbounz.model.UserDetails;
 
 @Controller
@@ -56,7 +57,7 @@ public class MatchDetailsController {
 	private UserDAO userDAO;
 
 	@RequestMapping(value = "/createMatch", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus createMatchDetils(HttpServletRequest request, @RequestBody MatchDetails matchDetails) {
+	public @ResponseBody ResponseStatus createMatchDetils(HttpServletRequest request, @RequestBody Matches matchDetails) {
 		logger.info("Starting MatchDetails");
 		ResponseStatus responseStatus = new ResponseStatus();
 		String id = (String) request.getSession(false).getAttribute("userId");
@@ -65,7 +66,7 @@ public class MatchDetailsController {
 		try {
 			matchDetails.setPlayingDate(new Date());
 			matchDetails.setStatus(MATCH_SCHEDULED);
-			matchDetails.setCreatedBy(userId);
+			matchDetails.setOwner(userId);
 			matchDetailsDAO.save(matchDetails);
 		} catch (NullPointerException | ClassCastException ex) {
 			responseStatus.setErrorMessage("Excpetion occured at createMatchDetils" + ex);
@@ -104,8 +105,8 @@ public class MatchDetailsController {
 		ResponseStatus responseStatus = new ResponseStatus();
 		try {
 			long matchId = inningsAb.getMatchId();
-			MatchDetails match = matchDetailsDAO.get(matchId);
-			List<Innings> innings = match.getInnings();
+			Matches match = matchDetailsDAO.get(matchId);
+			List<Innings> innings = match.getInningsDetails();
 			List<PlayingEleven> playing11 = inningsAb.getPlaying11();
 			List<LiveAction> NAPlayers = liveaction.checkForPlayerAvailability(playing11);
 			if(NAPlayers == null || NAPlayers.isEmpty())
@@ -183,7 +184,7 @@ public class MatchDetailsController {
 		Long userId = Long.parseLong(id);
 		try {
 			long matchId = inningsAb.getMatchId();
-			MatchDetails match = matchDetailsDAO.get(matchId);
+			Matches match = matchDetailsDAO.get(matchId);
 			boolean status = matchAction.checkMatchStatus(match);
 			if(status)
 			{
@@ -204,7 +205,7 @@ public class MatchDetailsController {
 			List<Innings> innings = new ArrayList<Innings>();
 			innings.add(firstInnings);
 			innings.add(secondInnings);
-			match.setInnings(innings);
+			//match.setInnings(innings);
 			match.setStatus(MATCH_INPROGRESS);
 			matchDetailsDAO.saveorUpdate(match);
 			}
@@ -239,9 +240,9 @@ public class MatchDetailsController {
 	}
 
 	@RequestMapping(value = "/getmatchdetails", method = RequestMethod.POST)
-	public @ResponseBody MatchDetails getMatchidDetails(@RequestParam("matchId") long Id) {
+	public @ResponseBody Matches getMatchIdDetails(@RequestParam("matchId") long Id) {
 		logger.info("Starting getMatchidDetails");
-		MatchDetails matchDetails = matchDetailsDAO.get(Id);
+		Matches matchDetails = matchDetailsDAO.get(Id);
 		return matchDetails;
 	}
 	
@@ -252,20 +253,21 @@ public class MatchDetailsController {
 		return livematches;
 	}
 	@RequestMapping(value = "/upComingMatches", method = RequestMethod.GET)
-	public @ResponseBody List<MatchDetails> getUpComingMatches(HttpServletRequest request) {
+	public @ResponseBody List<TempMatchDetails> getUpComingMatches(HttpServletRequest request) {
 		String id = (String) request.getSession(false).getAttribute("userId");
 		id = id.trim();
 		Long userId = Long.parseLong(id);
-		List<MatchDetails> livematches = matchDetailsDAO.getUpcomingMatches(userId);
+		List<TempMatchDetails> livematches = matchDetailsDAO.getUpcomingMatches(userId);
 		return livematches;
 	}
 	
 	@RequestMapping(value = "/matchScoring", method = RequestMethod.GET)
-	public @ResponseBody List<MatchDetails> getMyScoringMatches(HttpServletRequest request) {
+	public @ResponseBody List<TempMatchDetails> getMyScoringMatches(HttpServletRequest request) {
 		String id = (String) request.getSession(false).getAttribute("userId");
 		id = id.trim();
 		Long userId = Long.parseLong(id);
-		List<MatchDetails> livematches = matchDetailsDAO.getMyScoringMatches(userId);
+		userId = (long)9;
+		List<TempMatchDetails> livematches = matchDetailsDAO.getMyScoringMatches(userId);
 		return livematches;
 	}
 

@@ -2,23 +2,20 @@ package com.coeuz.cricbounz.dao;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
-import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TimeZone;
+
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.coeuz.cricbounz.model.Ground;
-import com.coeuz.cricbounz.model.MatchDetails;
+import com.coeuz.cricbounz.model.Matches;
 import com.coeuz.cricbounz.model.Tournament;
 
 @Repository
@@ -50,12 +47,12 @@ public class TournamentDAO extends BaseDAO<Tournament, Integer> {
 		return results;
 	}
 	
-	public Map<Integer, List<MatchDetails>> saveUpdatedTournmentDetails(Map<Integer, List<MatchDetails>> updatedTournmentdetails) throws ParseException{
+	public Map<Integer, List<Matches>> saveUpdatedTournmentDetails(Map<Integer, List<Matches>> updatedTournmentdetails) throws ParseException{
 		
 		for(Integer groupID : updatedTournmentdetails.keySet()){
-			List<MatchDetails> matchDetailsList = updatedTournmentdetails.get(groupID);
-			for(MatchDetails matchDetails:matchDetailsList){
-				if(matchDetails.getMatchType().equals("Daily")){
+			List<Matches> matchDetailsList = updatedTournmentdetails.get(groupID);
+			for(Matches matchDetails:matchDetailsList){
+				if(matchDetails.getMatchInfo().equals("Daily")){
 					String tournmentHql="FROM Tournament tm WHERE tm.id='"+matchDetails.getTournamentId();
 					Session session =getSessionFactory().openSession();
 					Query tournmenQuery = session.createQuery(tournmentHql);
@@ -78,9 +75,9 @@ public class TournamentDAO extends BaseDAO<Tournament, Integer> {
 						while(start.before(end)){
 							int slot=1;
 							while(slot<=4){
-								matchDetails.setGroup(groupID);
+								matchDetails.setGroupNumber(groupID);
 								matchDetails.setPlayingDate(start.getTime());
-								matchDetails.setSlot(1);
+								matchDetails.setSlotNumber(1);
 								matchDetails.setStatus("Scheduled");
 								matchDetailsDAO.save(matchDetails);
 								slot=slot+1;
@@ -91,7 +88,7 @@ public class TournamentDAO extends BaseDAO<Tournament, Integer> {
 						
 					}
 									
-				}else if(matchDetails.getMatchType().equals("Weekends")){
+				}else if(matchDetails.getMatchInfo().equals("Weekends")){
 					
 					String tournmentHql="FROM Tournament tm WHERE tm.id='"+matchDetails.getTournamentId();
 					Session session =getSessionFactory().openSession();
@@ -121,9 +118,9 @@ public class TournamentDAO extends BaseDAO<Tournament, Integer> {
 							    	if(days.equals("Sat")){
 							    		int slot=1;
 										while(slot<=4){
-											matchDetails.setGroup(groupID);
+											matchDetails.setGroupNumber(groupID);
 											matchDetails.setPlayingDate(start.getTime());
-											matchDetails.setSlot(1);
+											matchDetails.setSlotNumber(1);
 											matchDetails.setStatus("Scheduled");
 											matchDetailsDAO.save(matchDetails);
 											slot=slot+1;
@@ -133,9 +130,9 @@ public class TournamentDAO extends BaseDAO<Tournament, Integer> {
 							    	if(days.equals("Sun")){
 							    		int slot=1;
 										while(slot<=4){
-											matchDetails.setGroup(groupID);
+											matchDetails.setGroupNumber(groupID);
 											matchDetails.setPlayingDate(start.getTime());
-											matchDetails.setSlot(1);
+											matchDetails.setSlotNumber(1);
 											matchDetails.setStatus("Scheduled");
 											matchDetailsDAO.save(matchDetails);
 											slot=slot+1;

@@ -14,7 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 import com.coeuz.cricbounz.model.LiveMatches;
-import com.coeuz.cricbounz.model.MatchDetails;
+import com.coeuz.cricbounz.model.Matches;
 import com.coeuz.cricbounz.model.MatchinAction;
 
 @Repository
@@ -27,7 +27,7 @@ public class MatchinActionDAO extends BaseDAO <MatchinAction, Integer> {
 		super.setSessionFactory(sessionFactory);
 	}
 	
-	public boolean checkMatchStatus(MatchDetails matchDetail)
+	public boolean checkMatchStatus(Matches matchDetail)
 	{
 		boolean status = true;
 		sess = getSessionFactory().openSession();

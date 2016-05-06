@@ -1,8 +1,6 @@
 package com.coeuz.cricbounz.model;
 
 import java.util.List;
-import java.util.Set;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -25,6 +23,7 @@ public class Innings {
 	private String inningsType;
 	private long battingTeam;
 	private long bowlingTeam;
+	
 	@OneToOne
 	@JoinColumn(name = "inningsId")
 	private ScoreUpdate scoreUpdate;

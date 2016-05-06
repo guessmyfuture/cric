@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.hibernate.Criteria;
 import org.hibernate.Query;
 import org.hibernate.SQLQuery;
@@ -16,10 +15,10 @@ import org.hibernate.criterion.Restrictions;
 import org.hibernate.transform.Transformers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
-
 import com.coeuz.cricbounz.model.GlobalSearch;
 import com.coeuz.cricbounz.model.UserDetails;
-import com.coeuz.cricbounz.model.UserRegistration;
+import com.coeuz.cricbounz.utility.MailSending;
+import com.coeuz.cricbounz.utility.RandomPasswordGenerator;
 
 @Repository
 public class UserDAO extends BaseDAO<UserDetails, Integer> {
@@ -118,17 +117,61 @@ public class UserDAO extends BaseDAO<UserDetails, Integer> {
 		return q.list();
 	}
 
-	public int changeCurrentPassword(long userID, String currPass,String newPass) {
+	public int changeCurrentPassword(long userID, String currPass, String newPass) {
 		Session session = getSessionFactory().openSession();
-		UserDetails userDetails = null;
-		userDetails = (UserDetails) get(userID);
-		String email =userDetails.getEmail();		
-		String sql ="UPDATE users SET password='"+newPass+"' WHERE userName='"+email+"' AND  PASSWORD='"+currPass+"'";		
-		SQLQuery sqlQuery=session.createSQLQuery(sql);
-		int affectedCount=sqlQuery.executeUpdate();
+		UserDetails userDetails = (UserDetails) get(userID);
+		String email = userDetails.getEmail();
+		String sql = "UPDATE users SET password='" + newPass + "' WHERE userName='" + email + "' AND  PASSWORD='"
+				+ currPass + "'";
+		SQLQuery sqlQuery = session.createSQLQuery(sql);
+		int affectedCount = sqlQuery.executeUpdate();
 		return affectedCount;
-		
+
 	}
 
-		
+	public boolean isUserAvailable(String email) {
+		Session session = getSessionFactory().openSession();
+		// String res = "SELECT COUNT(*) AS COUNT FROM users WHERE username='" +
+		// email + "'";
+		/*
+		 * String res = "select count(*) from userdetails where email='"
+		 * +email+"'"; Query q = session.createQuery(res); int count = ((Long)
+		 * q.uniqueResult()).intValue(); if (count > 0) { return true; } else {
+		 * 
+		 * return false; }
+		 */
+
+		Criteria cr = session.createCriteria(UserDetails.class);
+		cr.add(Restrictions.eq("email", email));
+		List results = cr.list();
+		if (results.size() > 0) {
+			return true;
+		} else {
+			return false;
+		}
+
+	}
+
+	public boolean forgotPassword(String emailId) {
+		int noOfCAPSAlpha = 0;
+		int noOfDigits = 0;
+		int noOfSplChars = 0;
+		int minLen = 6;
+		int maxLen = 8;
+		char[] pswd = RandomPasswordGenerator.generatePswd(minLen, maxLen, noOfCAPSAlpha, noOfDigits, noOfSplChars);
+		System.out.println("Len = " + pswd.length + ", " + new String(pswd));
+		String password = new String(pswd);
+		Session session = getSessionFactory().openSession();
+		MailSending send = new MailSending();
+		boolean isSent = send.senMail(emailId, "<font size='6' color='green'>Your Passwword : " + password
+				+ "</font><br><font size='7' color='red'>CricBounz</font>");
+		boolean isUpdate = false;
+		if (isSent) {
+			String sql = "UPDATE users SET PASSWORD ='" + password + "' WHERE username='" + emailId + "'";
+			SQLQuery sqlQuery = session.createSQLQuery(sql);
+			isUpdate = (sqlQuery.executeUpdate() > 0) ? true : false;
+		}
+		return (isSent && isUpdate);
+	}
+
 }

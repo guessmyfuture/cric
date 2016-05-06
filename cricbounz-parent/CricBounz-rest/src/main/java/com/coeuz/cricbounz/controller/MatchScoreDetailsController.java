@@ -11,9 +11,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.coeuz.cricbounz.dao.LiveActionDAO;
 import com.coeuz.cricbounz.dao.MatchDetailsDAO;
-import com.coeuz.cricbounz.dao.TeamDAO;
-import com.coeuz.cricbounz.dao.UserDAO;
-import com.coeuz.cricbounz.model.MatchDetails;
+import com.coeuz.cricbounz.model.Matches;
 import com.coeuz.cricbounz.model.ResponseStatus;
 
 @Controller
@@ -26,28 +24,22 @@ public class MatchScoreDetailsController {
 	private MatchDetailsDAO matchDetailsDAO;
 
 	@Autowired
-	private TeamDAO teamDAO;
-
-	@Autowired
 	LiveActionDAO playersinActionDAO;
-	
-	@Autowired
-	private UserDAO userDAO;
 
 	@RequestMapping(value = "/savescoredetails", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus saveMatchDetails(@RequestBody MatchDetails MatchDetails) {
+	public @ResponseBody ResponseStatus saveMatchDetails(@RequestBody Matches matchDetails) {
 		logger.info("Start scoring Details method");
 		ResponseStatus responseStatus = new ResponseStatus();
-		matchDetailsDAO.saveMatchDetails(MatchDetails);
+		matchDetailsDAO.saveMatchDetails(matchDetails);
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
 	}
-	
+
 	@RequestMapping(value = "/updatescoredetails", method = RequestMethod.POST)
-	public @ResponseBody ResponseStatus updateMatchDetails(@RequestBody MatchDetails MatchDetails) {
+	public @ResponseBody ResponseStatus updateMatchDetails(@RequestBody Matches matchDetails) {
 		logger.info("Start scoring Details method");
 		ResponseStatus responseStatus = new ResponseStatus();
-		matchDetailsDAO.updateMatchDetails(MatchDetails);
+		matchDetailsDAO.updateMatchDetails(matchDetails);
 		responseStatus.setResponseStatus("Success");
 		return responseStatus;
 	}

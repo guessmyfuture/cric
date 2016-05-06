@@ -15,5 +15,20 @@
   <artifactId>CricBounz-model</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   </dependency>
-  </dependencies>
+  <dependency>
+	<groupId>javax.activation</groupId>
+	<artifactId>activation</artifactId>
+	<version>1.1.1</version>
+  </dependency>
+  <dependency>
+	<groupId>javax.mail</groupId>
+	<artifactId>mail</artifactId>
+	<version>1.4</version>
+</dependency>
+  <dependency>
+	<groupId>javax</groupId>
+	<artifactId>javaee-api</artifactId>
+	<version>7.0</version>
+</dependency>
+   </dependencies>
 </project>

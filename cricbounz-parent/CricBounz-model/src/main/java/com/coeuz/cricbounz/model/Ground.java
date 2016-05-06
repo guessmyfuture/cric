@@ -1,7 +1,6 @@
 package com.coeuz.cricbounz.model;
 
 import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,7 +15,7 @@ import org.springframework.stereotype.Component;
 @Table(name = "ground")
 @Component
 public class Ground {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	@Column(name = "groundId")
@@ -31,6 +30,7 @@ public class Ground {
 	private String balltype;
 	private String pitchtype;
 	private String activate;
+	
 	@Transient
 	List<Slots> slotsList;
 
@@ -142,7 +142,6 @@ public class Ground {
 	public void setActivate(String activate) {
 		this.activate = activate;
 	}
-	
 	  
 
 }

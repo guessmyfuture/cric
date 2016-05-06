@@ -12,7 +12,7 @@ import org.hibernate.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-import com.coeuz.cricbounz.model.MatchDetails;
+import com.coeuz.cricbounz.model.Matches;
 import com.coeuz.cricbounz.model.MatchRequest;
 import com.coeuz.cricbounz.model.RequestNotifications;
 @Repository
@@ -23,8 +23,7 @@ public class MatchRequestDAO extends BaseDAO<MatchRequest, Integer>{
 	RequestNotifications requestNotifications;
 	@Autowired
 	MatchDetailsDAO matchDetailsDAO;
-	@Autowired
-	MatchDetails matchDetails;
+	
 	@Autowired
 	TeamDAO teamDAO;
 	
@@ -67,6 +66,7 @@ public class MatchRequestDAO extends BaseDAO<MatchRequest, Integer>{
 				saveorUpdate(retrievedmatchRequest);
 								
 			}else if(retrievedmatchRequest.getOpponentTeamApprovalCount()==4){
+				Matches matchDetails = new Matches();
 				matchDetails.setTeamAId(matchRequest.getRequestedByTeam());
 				matchDetails.setTeamBId(matchRequest.getRequestedToTeam());
 				matchDetails.setStatus("Sheduled");

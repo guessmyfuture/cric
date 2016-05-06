@@ -32,6 +32,7 @@ public class TeamDetails {
 	private String ballType;
 	private long managers;
 	private long createdBy;
+	
 	public long getCreatedBy() {
 		return createdBy;
 	}
