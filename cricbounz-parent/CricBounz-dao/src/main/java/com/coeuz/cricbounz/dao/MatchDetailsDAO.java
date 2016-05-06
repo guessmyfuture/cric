@@ -87,7 +87,8 @@ public class MatchDetailsDAO extends BaseDAO<Matches, Integer> {
 		String hql = "SELECT ma.matchId, ma.teamAId as teamAID, ma.teamBId as teamBID, ma.city, ma.area, ma.venue, ma.playingDate, ma.overs, "
 				+ "ma.matchType, ma.slot, ta.teamAName, tb.teamBName, tour.name as tournamentName FROM (SELECT t.name AS teamAName, t.teamID FROM TeamDetails t)ta, "
 				+ "(SELECT t.name AS teamBName, t.teamID FROM TeamDetails t)tb, "
-				+ "(SELECT m.matchID as matchId, m.teamAId, m.tournamentId, m.teamBId, m.city, m.area, m.venue, m.playingDate, m.overs, m.matchType, m.slot"
+				+ "(SELECT m.matchID as matchId, m.teamAId, m.tournamentId, m.teamBId, m.cityName as city, m.areaName as area, m.venue, m.playingDate, m.overs, m.matchInfo"
+				+ " as matchType, m.slotNumber as slot"
 				+ " FROM matches m WHERE m.status = 'SCHEDULED' AND m.teamAId IN "
 				+ "(SELECT t.teamID FROM TeamDetails t WHERE t.players LIKE '%," + userId + ",%') OR "
 				+ "m.teamBId IN (SELECT t.teamID FROM TeamDetails t WHERE t.players LIKE '%," + userId
@@ -103,8 +104,9 @@ public class MatchDetailsDAO extends BaseDAO<Matches, Integer> {
 		String hql = "SELECT ma.matchId, ma.teamAId as teamAID, ma.teamBId as teamBID, ma.city, ma.area, ma.venue, ma.playingDate, ma.overs, "
 				+ "ma.matchType, ma.slot, ta.teamAName, tb.teamBName, tour.name as tournamentName FROM (SELECT t.name AS teamAName, t.teamID FROM TeamDetails t)ta, "
 				+ "(SELECT t.name AS teamBName, t.teamID FROM TeamDetails t)tb, "
-				+ "(SELECT m.matchID as matchId, m.teamAId, m.tournamentId, m.teamBId, m.city, m.area, m.venue, m.playingDate, m.overs, m.matchType, m.slot"
-				+ " FROM matches m WHERE m.status = 'SCHEDULED' AND m.scorer=" + userId + ") ma, tournament tour "
+				+ "(SELECT m.matchID as matchId, m.teamAId, m.tournamentId, m.teamBId, m.cityName as city"
+				+ ", m.areaName as area, m.venue, m.playingDate, m.overs, m.matchInfo as matchType, m.slotNumber as slot"
+				+ " FROM matches m WHERE (m.status = 'SCHEDULED' OR m.status = 'IN_PROGRESS') AND m.scorer=" + userId + ") ma, tournament tour "
 				+ "WHERE ta.teamID = ma.teamAId OR tb.teamID = ma.teamBId OR tour.id = ma.tournamentId";
 		Query q = sess.createSQLQuery(hql).setResultTransformer(Transformers.aliasToBean(TempMatchDetails.class));
 		List<TempMatchDetails> matchDetails = (List<TempMatchDetails>) q.list();
